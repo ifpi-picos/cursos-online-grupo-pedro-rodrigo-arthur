@@ -2,29 +2,28 @@ class Aluno {
   private id: number;
   private nome: string;
   private email: string;
-  private telefone: string;
+  private telefone: number;
   private numeromatricula: string;
 
   constructor(
-    id: number,
     nome: string,
     email: string,
-    telefone: string,
+    telefone: number,
     numeromatricula: string,
-    cursos: string[]
+    id?: number
   ) {
     this.nome = nome;
     this.email = email;
     this.telefone = telefone;
     this.numeromatricula = numeromatricula;
-    this.id = id;
+    this.id = id || 0;
   }
 
   public getNome(): string {
     return this.nome;
   }
 
-  public getTelefone(): string {
+  public getTelefone(): number {
     return this.telefone;
   }
 

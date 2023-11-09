@@ -1,19 +1,14 @@
-class Diciplina {
+export class Disciplina {
   private nome: string;
-  private id: string;
+  private id: number;
   private ementa: string;
   private cargaHoraria: number;
 
-  constructor(
-    nome: string,
-    id: string,
-    ementa: string,
-    cargaHoraria: number
-  ) {
+  constructor(nome: string, ementa: string, cargaHoraria: number, id?: number) {
     this.nome = nome;
-    this.id = id;
     this.ementa = ementa;
     this.cargaHoraria = cargaHoraria;
+    this.id = id || 0;
   }
 
   getNome(): string {
@@ -24,11 +19,11 @@ class Diciplina {
     this.nome = nome;
   }
 
-  getCodigo(): string {
+  getCodigo(): number {
     return this.id;
   }
 
-  setCodigo(id: string): void {
+  setCodigo(id: number): void {
     this.id = id;
   }
 

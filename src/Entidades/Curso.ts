@@ -1,14 +1,14 @@
-class Curso {
+export class Curso {
   private id: number;
   private nome: string;
   private cargaHoraria: number;
-  private status: boolean;
+  private status: string;
 
-  constructor(nome: string, cargaHoraria: number, status: boolean, id: number) {
+  constructor(nome: string, cargaHoraria: number, status: string, id?: number) {
     this.nome = nome;
     this.cargaHoraria = cargaHoraria;
     this.status = status;
-    this.id = id;
+    this.id = id || 0;
   }
 
   getNome(): string {
@@ -31,11 +31,11 @@ class Curso {
     this.cargaHoraria = cargaHoraria;
   }
 
-  getStatus(): boolean {
+  getStatus(): string {
     return this.status;
   }
 
-  setStatus(status: boolean): void {
+  setStatus(status: string): void {
     this.status = status;
   }
 }

@@ -1,14 +1,14 @@
-class Professor {
+export class Professor {
   private nome: string;
-  private id: string;
+  private id: number;
   private telefone: string;
   private email: string;
 
-  constructor(nome: string, id: string, telefone: string, email: string) {
+  constructor(nome: string, telefone: string, email: string, id?: number) {
     this.nome = nome;
-    this.id = id;
     this.telefone = telefone;
     this.email = email;
+    this.id = id || 0;
   }
 
   getNome(): string {
@@ -19,7 +19,7 @@ class Professor {
     return (this.nome = nome);
   }
 
-  getid(): string {
+  getid(): number {
     return this.id;
   }
 
