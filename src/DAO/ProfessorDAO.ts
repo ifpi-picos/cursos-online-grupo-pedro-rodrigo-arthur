@@ -2,7 +2,7 @@ import { Professor } from "../Entidades/Professor";
 import Conexao from "./Conexao";
 import { IDAO } from "./IDAO";
 
-class ProfessorDAO implements IDAO<Professor> {
+export class ProfessorDAO implements IDAO<Professor> {
   private conexao: Conexao;
 
   constructor(conexao: Conexao) {
