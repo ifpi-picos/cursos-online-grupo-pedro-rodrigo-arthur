@@ -1,3 +1,4 @@
+import { Aluno } from "../Entidades/Aluno";
 import { IDAO } from "./IDAO";
 
 class AlunoDAO implements IDAO<Aluno> {
