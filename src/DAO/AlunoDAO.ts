@@ -1,7 +1,7 @@
 import { Aluno } from "../Entidades/Aluno";
 import { IDAO } from "./IDAO";
 
-class AlunoDAO implements IDAO<Aluno> {
+export class AlunoDAO implements IDAO<Aluno> {
   cadastrar(t: Aluno): Promise<Aluno> {
     throw new Error("Method not implemented.");
   }
