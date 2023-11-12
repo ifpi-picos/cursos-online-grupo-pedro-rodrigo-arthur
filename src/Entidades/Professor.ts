@@ -11,23 +11,34 @@ export class Professor {
     this.id = id || 0;
   }
 
-  getNome(): string {
+  public getNome(): string {
     return this.nome;
   }
 
-  setNome(nome: string) {
+  public setNome(nome: string) {
     return (this.nome = nome);
   }
 
-  getid(): number {
+  public getid(): number {
     return this.id;
   }
 
-  getEmail(): string {
+  public getEmail(): string {
     return this.email;
   }
 
-  getTelefone(): string {
+  public getTelefone(): string {
     return this.telefone;
+  }
+  public setTelefone(telefone: string) {
+    return (this.telefone = telefone);
+  }
+
+  public setEmail(email: string) {
+    return (this.email = email);
+  }
+
+  public toString(): string {
+    return `Nome: ${this.nome} | Email: ${this.email} | Telefone: ${this.telefone}`;
   }
 }

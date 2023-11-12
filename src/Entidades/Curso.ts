@@ -11,31 +11,35 @@ export class Curso {
     this.id = id || 0;
   }
 
-  getNome(): string {
+  public getNome(): string {
     return this.nome;
   }
 
-  getId(): number {
+  public getId(): number {
     return this.id;
   }
 
-  setNome(nome: string): void {
+  public setNome(nome: string): void {
     this.nome = nome;
   }
 
-  getCargaHoraria(): number {
+  public getCargaHoraria(): number {
     return this.cargaHoraria;
   }
 
-  setCargaHoraria(cargaHoraria: number): void {
+  public setCargaHoraria(cargaHoraria: number): void {
     this.cargaHoraria = cargaHoraria;
   }
 
-  getStatus(): string {
+  public getStatus(): string {
     return this.status;
   }
 
-  setStatus(status: string): void {
+  public setStatus(status: string): void {
     this.status = status;
+  }
+
+  public toString(): string {
+    return `Nome: ${this.nome} | Carga Horaria: ${this.cargaHoraria} | Status: ${this.status}`;
   }
 }

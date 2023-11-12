@@ -11,35 +11,39 @@ export class Disciplina {
     this.id = id || 0;
   }
 
-  getNome(): string {
+  public getNome(): string {
     return this.nome;
   }
 
-  setNome(nome: string): void {
+  public setNome(nome: string): void {
     this.nome = nome;
   }
 
-  getCodigo(): number {
+  public getCodigo(): number {
     return this.id;
   }
 
-  setCodigo(id: number): void {
+  public setCodigo(id: number): void {
     this.id = id;
   }
 
-  getEmenta(): string {
+  public getEmenta(): string {
     return this.ementa;
   }
 
-  setEmenta(ementa: string): void {
+  public setEmenta(ementa: string): void {
     this.ementa = ementa;
   }
 
-  getCargaHoraria(): number {
+  public getCargaHoraria(): number {
     return this.cargaHoraria;
   }
 
-  setCargaHoraria(cargaHoraria: number): void {
+  public setCargaHoraria(cargaHoraria: number): void {
     this.cargaHoraria = cargaHoraria;
+  }
+
+  public toString(): string {
+    return `Nome: ${this.nome} | Ementa: ${this.ementa} | Carga Horaria: ${this.cargaHoraria}`;
   }
 }

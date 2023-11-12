@@ -27,7 +27,7 @@ export class Aluno {
     return this.telefone;
   }
 
-  getNumeromatricula(): string {
+  public getNumeromatricula(): string {
     return this.numeromatricula;
   }
 
@@ -35,7 +35,27 @@ export class Aluno {
     return this.email;
   }
 
-  getId(): number {
+  public getId(): number {
     return this.id;
+  }
+
+  public setNome(nome: string): void {
+    this.nome = nome;
+  }
+
+  public setTelefone(telefone: number): void {
+    this.telefone = telefone;
+  }
+
+  public setEmail(email: string): void {
+    this.email = email;
+  }
+
+  public setNumeromatricula(numeromatricula: string): void {
+    this.numeromatricula = numeromatricula;
+  }
+
+  public toString(): string {
+    return `Nome: ${this.nome} | Email: ${this.email} | Telefone: ${this.telefone} | Numero de Matricula: ${this.numeromatricula}`;
   }
 }
