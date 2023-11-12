@@ -18,7 +18,9 @@ export class ProfessorDAO implements IDAO<Professor> {
       if (!client) {
         throw new Error("Não foi possível conectar ao banco de dados");
       }
+      // Armazenar os valores a serem inseridos
       const values = [t.getNome(), t.getTelefone(), t.getEmail()];
+      // Executar a query
       const res = await this.conexao.query(insert, values);
 
       return res && res[0] ? (res[0] as Professor) : null;
@@ -27,8 +29,24 @@ export class ProfessorDAO implements IDAO<Professor> {
       return null;
     }
   }
-  buscarTodos(): Promise<Professor[]> {
-    throw new Error("Method not implemented.");
+  async buscarTodos(): Promise<Professor[]> {
+    const select = "SELECT * FROM professores";
+
+    try {
+      const client = await this.conexao.query(select, []);
+
+      if (client) {
+        // Mapear os resutados do banco de dados para objetos da classe Professor
+        return client.map((p) => {
+          return new Professor(p.nome, p.telefone, p.email, p.id);
+        });
+      } else {
+        return [];
+      }
+    } catch (err) {
+      console.log(err);
+      return [];
+    }
   }
   atualizar(id: number, dados: Professor): Promise<Professor> {
     throw new Error("Method not implemented.");
