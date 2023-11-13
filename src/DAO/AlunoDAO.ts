@@ -10,7 +10,7 @@ constructor(conexao: Conexao) {
 }
 async cadastrar(t: Aluno): Promise<Aluno | null> {
   const insert =
-    "INSERT INTO alunos (nome, telefone, email) VALUES ($1, $2, $3) RETURNING *";
+    "INSERT INTO alunos (nome, telefone, email, numero da matricula) VALUES ($1, $2, $3) RETURNING *";
 
   try {
     const client = await Conexao.getConexao();
@@ -18,7 +18,7 @@ async cadastrar(t: Aluno): Promise<Aluno | null> {
       throw new Error("Não foi possível conectar ao banco de dados");
     }
     // Armazenar os valores a serem inseridos
-    const values = [t.getNome(), t.getTelefone(), t.getEmail()];
+    const values = [t.getNome(), t.getTelefone(), t.getEmail(), t.getNumeromatricula()];
     // Executar a query
     const res = await this.conexao.query(insert, values);
 
