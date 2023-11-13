@@ -29,7 +29,7 @@ async cadastrar(t: Aluno): Promise<Aluno | null> {
   }
   }
   async buscarTodos(): Promise<Aluno[]> {
-    const select = "SELECT * FROM professores";
+    const select = "SELECT * FROM alunos";
 
     try {
       const client = await this.conexao.query(select, []);
