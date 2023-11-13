@@ -1,7 +1,6 @@
 import { Curso } from "../Entidades/Curso";
 import { IDAO } from "./IDAO";
 import Conexao from "./Conexao";
-import { Aluno } from "../Entidades/Aluno";
 
 export class CursoDAO implements IDAO<Curso> {
   private conexao: Conexao;
@@ -11,13 +10,13 @@ export class CursoDAO implements IDAO<Curso> {
   }
   async cadastrar(t: Curso): Promise<Curso | null> {
     const insert =
-      "INSERT INTO alunos (nome, telefone, email, matricula) VALUES ($1, $2, $3, $4) RETURNING *";
+      "INSERT INTO alunos (nome,carga_horaria,status) VALUES ($1, $2, $3) RETURNING *";
     try {
       const client = await Conexao.getConexao();
       if (!client) {
         throw new Error("Não foi possível conectar ao banco de dados");
       }
-      const values = [t.getNome(), t.getCargaHoraria];
+      const values = [t.getNome(), t.getCargaHoraria(), t.getStatus()];
       const res = await this.conexao.query(insert, values);
       return res && res[0] ? (res[0] as Curso) : null;
     } catch (err) {
