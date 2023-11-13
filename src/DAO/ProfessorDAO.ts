@@ -11,7 +11,7 @@ export class ProfessorDAO implements IDAO<Professor> {
 
   async cadastrar(t: Professor): Promise<Professor | null> {
     const insert =
-      "INSERT INTO professores (nome, telefone, email) VALUES ($1, $2, $3) RETURNING *";
+      "INSERT INTO professor (nome, telefone, email) VALUES ($1, $2, $3) RETURNING *";
 
     try {
       const client = await Conexao.getConexao();
@@ -30,7 +30,7 @@ export class ProfessorDAO implements IDAO<Professor> {
     }
   }
   async buscarTodos(): Promise<Professor[]> {
-    const select = "SELECT * FROM professores";
+    const select = "SELECT * FROM professor";
 
     try {
       const client = await this.conexao.query(select, []);
@@ -44,12 +44,27 @@ export class ProfessorDAO implements IDAO<Professor> {
         return [];
       }
     } catch (err) {
-      console.log(err);
+      console.log("Erro na consulta de todos os professores", err);
       return [];
     }
   }
-  atualizar(id: number, dados: Professor): Promise<Professor> {
-    throw new Error("Method not implemented.");
+  async atualizar(id: number, dados: Professor): Promise<Professor> {
+    const update =
+      "UPDATE professor SET nome = $1, telefone = $2, email = $3 WHERE id = $4 RETURNING *";
+
+    try {
+      const values = [
+        dados.getNome(),
+        dados.getTelefone(),
+        dados.getEmail(),
+        id,
+      ];
+      const res = await this.conexao.query(update, values);
+      return res && res[0] ? (res[0] as Professor) : dados;
+    } catch (err) {
+      console.log("Erro na atualização do professor", err);
+      return dados;
+    }
   }
   deletar(id: number): Promise<Professor | null> {
     throw new Error("Method not implemented.");
