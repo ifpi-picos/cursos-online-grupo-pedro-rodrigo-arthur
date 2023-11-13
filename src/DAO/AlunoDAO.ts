@@ -18,7 +18,7 @@ async cadastrar(t: Aluno): Promise<Aluno | null> {
       throw new Error("Não foi possível conectar ao banco de dados");
     }
     // Armazenar os valores a serem inseridos
-    const values = [t.getNome(), t.getTelefone(), t.getEmail(), t.getNumeromatricula()];
+    const values = [t.getNome(), t.getTelefone(), t.getEmail(), t.getNumeromatricula(), t.getId()];
     // Executar a query
     const res = await this.conexao.query(insert, values);
 
@@ -35,8 +35,8 @@ async cadastrar(t: Aluno): Promise<Aluno | null> {
       const client = await this.conexao.query(select, []);
 
       if (client) {
-        // Mapear os resutados do banco de dados para objetos da classe Professor
-        return client.map((p: { nome: string; telefone: string; email: number; id: string; }) => {
+        
+        return client.map((p: { nome: string; telefone: string; email: number; id: string; numeromatricula: string }) => {
           return new Aluno(p.nome, p.telefone, p.email, p.id);
         });
       } else {
