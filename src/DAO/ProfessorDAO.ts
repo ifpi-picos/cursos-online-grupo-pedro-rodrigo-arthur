@@ -8,9 +8,6 @@ export class ProfessorDAO implements IDAO<Professor> {
   constructor(conexao: Conexao) {
     this.conexao = conexao;
   }
-  deletar(id: number): Promise<Professor | null> {
-    throw new Error("Method not implemented.");
-  }
 
   async cadastrar(t: Professor): Promise<Professor | null> {
     const insert =
@@ -68,6 +65,20 @@ export class ProfessorDAO implements IDAO<Professor> {
     } catch (err) {
       console.log("Erro na atualização do professor", err);
       return dados;
+    }
+  }
+
+  async deletar(id: number): Promise<Professor | null> {
+    const deletar = "DELETE FROM professor WHERE id = $1 RETURNING *";
+
+    try {
+      const values = [id];
+      const res = await this.conexao.query(deletar, values);
+
+      return res && res[0] ? (res[0] as Professor) : null;
+    } catch (err) {
+      console.log("Erro ao deletar professor", err);
+      return null;
     }
   }
 }
