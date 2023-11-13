@@ -1,10 +1,10 @@
 import { Client, ClientConfig } from "pg";
 
-class Conexao {
+export class Conexao {
   private static config: ClientConfig = {
     host: "localhost",
     port: 5432,
-    database: "cursosoline",
+    database: "cursosonline",
     user: "postgres",
     password: "1234",
   };
