@@ -10,7 +10,7 @@ export class CursoDAO implements IDAO<Curso> {
   }
   async cadastrar(t: Curso): Promise<Curso | null> {
     const insert =
-      "INSERT INTO alunos (nome,carga_horaria,status) VALUES ($1, $2, $3) RETURNING *";
+      "INSERT INTO cursos (nome,carga_horaria,status) VALUES ($1, $2, $3) RETURNING *";
     try {
       const client = await Conexao.getConexao();
       if (!client) {
@@ -44,7 +44,7 @@ export class CursoDAO implements IDAO<Curso> {
   }
   async atualizar(id: number, dados: Curso): Promise<Curso> {
     const update =
-      "UPDATE curso SET nome = $1, carga_horaria = $2, status = $3 WHERE id = $4 RETURNING *";
+      "UPDATE cursos SET nome = $1, carga_horaria = $2, status = $3 WHERE id = $4 RETURNING *";
 
     try {
       const values = [
@@ -61,7 +61,7 @@ export class CursoDAO implements IDAO<Curso> {
     }
   }
   async deletar(id: number): Promise<Curso | null> {
-    const deletar = "DELETE FROM curso WHERE id = $1 RETURNING *";
+    const deletar = "DELETE FROM cursos WHERE id = $1 RETURNING *";
 
     try {
       const values = [id];
