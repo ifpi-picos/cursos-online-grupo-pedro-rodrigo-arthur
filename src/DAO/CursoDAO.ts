@@ -4,7 +4,11 @@ import Conexao from "./Conexao";
 import { Aluno } from "../Entidades/Aluno";
 
 export class CursoDAO implements IDAO<Curso> {
-  conexao: any;
+  private conexao: Conexao;
+
+  constructor(conexao: Conexao) {
+    this.conexao = conexao;
+  }
   async cadastrar(t: Curso): Promise<Curso | null> {
     const insert =
       "INSERT INTO alunos (nome, telefone, email, matricula) VALUES ($1, $2, $3, $4) RETURNING *";
@@ -13,12 +17,7 @@ export class CursoDAO implements IDAO<Curso> {
       if (!client) {
         throw new Error("Não foi possível conectar ao banco de dados");
       }
-      const values = [
-        t.getNome(),
-        t.getTelefone(),
-        t.getEmail(),
-        t.getNumeromatricula(),
-      ];
+      const values = [t.getNome(), t.getCargaHoraria];
       const res = await this.conexao.query(insert, values);
       return res && res[0] ? (res[0] as Curso) : null;
     } catch (err) {
@@ -33,14 +32,8 @@ export class CursoDAO implements IDAO<Curso> {
       const client = await this.conexao.query(select, []);
 
       if (client) {
-        return client.map((p:any) => {
-          return new Aluno(
-            p.nome,
-            p.telefone,
-            p.email,
-            p.numeromatricula,
-            p.id
-          );
+        return client.map((p: any) => {
+          return new Curso(p.nome, p.carga_horaria, p.status, p.id);
         });
       } else {
         return [];
@@ -52,13 +45,13 @@ export class CursoDAO implements IDAO<Curso> {
   }
   async atualizar(id: number, dados: Curso): Promise<Curso> {
     const update =
-      "UPDATE curso SET nome = $1, telefone = $2, email = $3 WHERE id = $4 RETURNING *";
+      "UPDATE curso SET nome = $1, carga_horaria = $2, status = $3 WHERE id = $4 RETURNING *";
 
     try {
       const values = [
         dados.getNome(),
-        dados.getTelefone(),
-        dados.getEmail(),
+        dados.getCargaHoraria(),
+        dados.getStatus(),
         id,
       ];
       const res = await this.conexao.query(update, values);
