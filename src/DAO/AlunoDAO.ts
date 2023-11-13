@@ -23,7 +23,6 @@ export class AlunoDAO implements IDAO<Aluno> {
         t.getTelefone(),
         t.getEmail(),
         t.getNumeromatricula(),
-        t.getId(),
       ];
       // Executar a query
       const res = await this.conexao.query(insert, values);
