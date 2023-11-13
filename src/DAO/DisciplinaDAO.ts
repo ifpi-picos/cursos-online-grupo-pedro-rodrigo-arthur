@@ -50,7 +50,17 @@ export class DisciplinaDAO implements IDAO<Disciplina> {
   atualizar(id: number, dados: Disciplina): Promise<Disciplina> {
     throw new Error("Method not implemented");
   }
-  deletar(id: number): Promise<Disciplina | null> {
-    throw new Error("Method not implemented");
+  async deletar(id: number): Promise<Disciplina | null> {
+    const deletar = "DELETE FROM disciplinas WHERE id = $1 RETURNING *";
+
+    try {
+      const values = [id];
+      const res = await this.conexao.query(deletar, values);
+
+      return res && res[0] ? (res[0] as Disciplina) : null;
+    } catch (err) {
+      console.log("Nao foi possivel deletar a disciplina", err);
+      return null;
+    }
   }
 }
