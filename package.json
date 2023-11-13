@@ -4,9 +4,12 @@
   "main": "index.js",
   "scripts": {
     "build": "tsc",
-    "start": "npm run build && node dist/app.js"
+    "start": "npm run build && node dist/teste.js"
   },
   "author": "",
   "license": "ISC",
-  "description": ""
+  "description": "",
+  "dependencies": {
+    "httpie": "^1.1.2"
+  }
 }
