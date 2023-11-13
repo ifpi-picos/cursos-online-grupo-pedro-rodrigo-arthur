@@ -37,9 +37,16 @@ export class ProfessorDAO implements IDAO<Professor> {
 
       if (client) {
         // Mapear os resutados do banco de dados para objetos da classe Professor
-        return client.map((p) => {
-          return new Professor(p.nome, p.telefone, p.email, p.id);
-        });
+        return client.map(
+          (p: {
+            nome: string;
+            telefone: string;
+            email: string;
+            id: number | undefined;
+          }) => {
+            return new Professor(p.nome, p.telefone, p.email, p.id);
+          }
+        );
       } else {
         return [];
       }

@@ -36,9 +36,16 @@ export class DisciplinaDAO implements IDAO<Disciplina> {
     try {
       const client = await this.conexao.query(select, []);
       if (client) {
-        return client.map((p) => {
-          return new Disciplina(p.nome, p.ementa, p.carga_horaria, p.id);
-        });
+        return client.map(
+          (p: {
+            nome: string;
+            ementa: string;
+            carga_horaria: number;
+            id: number | undefined;
+          }) => {
+            return new Disciplina(p.nome, p.ementa, p.carga_horaria, p.id);
+          }
+        );
       } else {
         return [];
       }
