@@ -8,6 +8,9 @@ export class ProfessorDAO implements IDAO<Professor> {
   constructor(conexao: Conexao) {
     this.conexao = conexao;
   }
+  deletar(id: number): Promise<Professor | null> {
+    throw new Error("Method not implemented.");
+  }
 
   async cadastrar(t: Professor): Promise<Professor | null> {
     const insert =
@@ -36,7 +39,7 @@ export class ProfessorDAO implements IDAO<Professor> {
       const client = await this.conexao.query(select, []);
 
       if (client) {
-        // Mapear os resutados do banco de dados para objetos da classe Professor
+        // Mapear os resutados do banco de dados para objetos da class Professor
         return client.map((p) => {
           return new Professor(p.nome, p.telefone, p.email, p.id);
         });
@@ -48,6 +51,7 @@ export class ProfessorDAO implements IDAO<Professor> {
       return [];
     }
   }
+
   async atualizar(id: number, dados: Professor): Promise<Professor> {
     const update =
       "UPDATE professor SET nome = $1, telefone = $2, email = $3 WHERE id = $4 RETURNING *";
@@ -65,8 +69,5 @@ export class ProfessorDAO implements IDAO<Professor> {
       console.log("Erro na atualização do professor", err);
       return dados;
     }
-  }
-  deletar(id: number): Promise<Professor | null> {
-    throw new Error("Method not implemented.");
   }
 }

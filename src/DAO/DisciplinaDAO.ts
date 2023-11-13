@@ -48,9 +48,9 @@ export class DisciplinaDAO implements IDAO<Disciplina> {
     }
   }
   atualizar(id: number, dados: Disciplina): Promise<Disciplina> {
-    throw new Error("Method not implemented.");
+    throw new Error("Method not implemented");
   }
   deletar(id: number): Promise<Disciplina | null> {
-    throw new Error("Method not implemented.");
+    throw new Error("Method not implemented");
   }
 }
