@@ -75,8 +75,19 @@ export class AlunoDAO implements IDAO<Aluno> {
       console.log("Erro na atualização do aluno", err);
       return dados;
     }
-  }
-  deletar(id: number): Promise<Aluno | null> {
-    throw new Error("Method not implemented.");
+  } 
+  async deletar(id: number): Promise<Aluno | null> {
+    const deletar = "DELETE FROM alunos WHERE id = 1$ RETURNING *";
+
+    try {
+      const values = [id];
+      const res = await this.conexao.query(deletar, values);
+
+      return res && res[0] ? (res[0] as Aluno) : null;
+    } catch(err) {
+      console.log("Erro ao deletar aluno", err);
+      return null;
+    
+    }
   }
 }
