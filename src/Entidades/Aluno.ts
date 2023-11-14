@@ -1,21 +1,23 @@
+import { StatusAluno } from "../ENUM/StatusAluno";
+
 export class Aluno {
   private id: number;
   private nome: string;
   private email: string;
   private telefone: number;
-  private numeromatricula: string;
+  private status: StatusAluno;
 
   constructor(
     nome: string,
     email: string,
     telefone: number,
-    numeromatricula: string,
+    status: StatusAluno,
     id?: number
   ) {
     this.nome = nome;
     this.email = email;
     this.telefone = telefone;
-    this.numeromatricula = numeromatricula;
+    this.status = status;
     this.id = id || 0;
   }
 
@@ -25,10 +27,6 @@ export class Aluno {
 
   public getTelefone(): number {
     return this.telefone;
-  }
-
-  public getNumeromatricula(): string {
-    return this.numeromatricula;
   }
 
   public getEmail(): string {
@@ -51,11 +49,15 @@ export class Aluno {
     this.email = email;
   }
 
-  public setNumeromatricula(numeromatricula: string): void {
-    this.numeromatricula = numeromatricula;
+  public toString(): string {
+    return `Nome: ${this.nome} | Email: ${this.email} | Telefone: ${this.telefone}`;
   }
 
-  public toString(): string {
-    return `Nome: ${this.nome} | Email: ${this.email} | Telefone: ${this.telefone} | Numero de Matricula: ${this.numeromatricula}`;
+  getStatus(): StatusAluno {
+    return this.status;
+  }
+
+  setStatus(status: StatusAluno): void {
+    this.status = status;
   }
 }
