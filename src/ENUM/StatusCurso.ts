@@ -1,4 +1,4 @@
 export enum StatusCurso {
-  ATIVO = "Aberto",
-  INATIVO = "Fechado",
+  ATIVO = "ATIVO",
+  INATIVO = "INATIVO",
 }
