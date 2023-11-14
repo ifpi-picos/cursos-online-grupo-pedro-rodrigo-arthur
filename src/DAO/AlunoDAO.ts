@@ -57,8 +57,24 @@ export class AlunoDAO implements IDAO<Aluno> {
       return [];
     }
   }
-  atualizar(id: number, dados: Aluno): Promise<Aluno> {
-    throw new Error("Method not implemented.");
+  async atualizar(id: number, dados: Aluno): Promise<Aluno> {
+    const update = "UPDATE alunos SET email = 1$, nome = 2$, telefone = 3$, numeromatricula = 4$ RETURNING *";
+   
+    try {
+      const values = [
+       dados.getEmail,
+       dados.getNome,
+       dados.getTelefone,
+       dados.getNumeromatricula,
+       id,     
+      ];
+
+      const res = await this.conexao.query(update, values);
+      return res && res[0] ? (res[0] as Aluno) : dados;
+    } catch (err) {
+      console.log("Erro na atualização do aluno", err);
+      return dados;
+    }
   }
   deletar(id: number): Promise<Aluno | null> {
     throw new Error("Method not implemented.");
