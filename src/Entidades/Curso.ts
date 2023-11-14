@@ -1,10 +1,17 @@
+import { StatusCurso } from "../ENUM/StatusCurso";
+
 export class Curso {
   private id: number;
   private nome: string;
   private cargaHoraria: number;
-  private status: string;
+  private status: StatusCurso = StatusCurso.ATIVO;
 
-  constructor(nome: string, cargaHoraria: number, status: string, id?: number) {
+  constructor(
+    nome: string,
+    cargaHoraria: number,
+    status: StatusCurso,
+    id?: number
+  ) {
     this.nome = nome;
     this.cargaHoraria = cargaHoraria;
     this.status = status;
@@ -31,11 +38,11 @@ export class Curso {
     this.cargaHoraria = cargaHoraria;
   }
 
-  public getStatus(): string {
+  public getStatus(): StatusCurso {
     return this.status;
   }
 
-  public setStatus(status: string): void {
+  public setStatus(status: StatusCurso): void {
     this.status = status;
   }
 
