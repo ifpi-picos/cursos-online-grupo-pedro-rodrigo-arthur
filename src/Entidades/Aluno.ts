@@ -14,7 +14,7 @@ export class Aluno {
     email: string,
     telefone: number,
     status: StatusAluno,
-    cursos: Curso[],
+    cursos: Curso[] = [],
     id?: number
   ) {
     this.nome = nome;
