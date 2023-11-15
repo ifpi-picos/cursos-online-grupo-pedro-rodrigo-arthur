@@ -1,3 +1,4 @@
 export enum StatusCurso {
-  ATIVO,INATIVO
+  ATIVO = 1,
+  INATIVO = 0,
 }
