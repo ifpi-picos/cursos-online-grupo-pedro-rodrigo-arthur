@@ -5,19 +5,16 @@ export class Curso {
   private nome: string;
   private cargaHoraria: number;
   private status: StatusCurso;
-  private notas: number[];
 
   constructor(
     nome: string,
     cargaHoraria: number,
     status: StatusCurso,
-    notas: number[],
     id?: number
   ) {
     this.nome = nome;
     this.cargaHoraria = cargaHoraria;
     this.status = status;
-    this.notas = notas;
     this.id = id || 0;
   }
 
@@ -47,14 +44,6 @@ export class Curso {
 
   public setStatus(status: StatusCurso): void {
     this.status = status;
-  }
-
-  getNotas(): number[] {
-    return this.notas;
-  }
-
-  setNotas(notas: number[]): void {
-    this.notas = notas;
   }
 
   public toString(): string {
