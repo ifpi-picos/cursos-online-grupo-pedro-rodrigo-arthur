@@ -19,7 +19,7 @@ export class Professor {
     return (this.nome = nome);
   }
 
-  public getid(): number {
+  public getId(): number {
     return this.id;
   }
 
