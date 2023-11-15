@@ -10,7 +10,7 @@ export class AlunoDAO implements IDAO<Aluno> {
   }
   async cadastrar(t: Aluno): Promise<Aluno | null> {
     const insert =
-      "INSERT INTO alunos (nome, telefone, email, matricula) VALUES ($1, $2, $3, $4) RETURNING *";
+      "INSERT INTO alunos (nome, telefone, email,status) VALUES ($1, $2, $3,$4) RETURNING *";
 
     try {
       const client = await Conexao.getConexao();
@@ -18,12 +18,7 @@ export class AlunoDAO implements IDAO<Aluno> {
         throw new Error("Não foi possível conectar ao banco de dados");
       }
       // Armazenar os valores a serem inseridos
-      const values = [
-        t.getNome(),
-        t.getTelefone(),
-        t.getEmail(),
-        t.getNumeromatricula(),
-      ];
+      const values = [t.getNome(), t.getTelefone(), t.getEmail(), t.getStatus];
       // Executar a query
       const res = await this.conexao.query(insert, values);
 
@@ -41,13 +36,7 @@ export class AlunoDAO implements IDAO<Aluno> {
 
       if (client) {
         return client.map((p) => {
-          return new Aluno(
-            p.nome,
-            p.telefone,
-            p.email,
-            p.numeromatricula,
-            p.id
-          );
+          return new Aluno(p.nome, p.telefone, p.email, p.id,p.status);
         });
       } else {
         return [];
@@ -58,16 +47,11 @@ export class AlunoDAO implements IDAO<Aluno> {
     }
   }
   async atualizar(id: number, dados: Aluno): Promise<Aluno> {
-    const update = "UPDATE alunos SET email = 1$, nome = 2$, telefone = 3$, numeromatricula = 4$ RETURNING *";
-   
+    const update =
+      "UPDATE alunos SET email = 1$, nome = 2$, telefone = 3$ RETURNING *";
+
     try {
-      const values = [
-       dados.getEmail,
-       dados.getNome,
-       dados.getTelefone,
-       dados.getNumeromatricula,
-       id,     
-      ];
+      const values = [dados.getEmail, dados.getNome, dados.getTelefone, id];
 
       const res = await this.conexao.query(update, values);
       return res && res[0] ? (res[0] as Aluno) : dados;
@@ -75,7 +59,7 @@ export class AlunoDAO implements IDAO<Aluno> {
       console.log("Erro na atualização do aluno", err);
       return dados;
     }
-  } 
+  }
   async deletar(id: number): Promise<Aluno | null> {
     const deletar = "DELETE FROM alunos WHERE id = 1$ RETURNING *";
 
@@ -84,10 +68,9 @@ export class AlunoDAO implements IDAO<Aluno> {
       const res = await this.conexao.query(deletar, values);
 
       return res && res[0] ? (res[0] as Aluno) : null;
-    } catch(err) {
+    } catch (err) {
       console.log("Erro ao deletar aluno", err);
       return null;
-    
     }
   }
 }
