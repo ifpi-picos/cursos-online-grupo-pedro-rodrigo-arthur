@@ -4,7 +4,7 @@ export class Conexao {
   private static config: ClientConfig = {
     host: "localhost",
     port: 5432,
-    database: "cursosonline",
+    database: "teste",
     user: "postgres",
     password: "1234",
   };
