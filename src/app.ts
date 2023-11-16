@@ -1,56 +1,46 @@
+import { AlunoDAO } from "./DAO/AlunoDAO";
 import Conexao from "./DAO/Conexao";
+import { CursoAlunoDAO } from "./DAO/CursoAlunoDAO";
 import { CursoDAO } from "./DAO/CursoDAO";
-import { IProfessor } from "./DAO/IDAO";
 import { ProfessorDAO } from "./DAO/ProfessorDAO";
+import { StatusAluno } from "./ENUM/StatusAluno";
 import { StatusCurso } from "./ENUM/StatusCurso";
+import { Aluno } from "./Entidades/Aluno";
 import { Curso } from "./Entidades/Curso";
+
 import { Professor } from "./Entidades/Professor";
 
 async function cadastrarProfessor() {
   try {
     const conexao = new Conexao();
+    const cursoAlunoDAO = new CursoAlunoDAO(conexao);
+    const alunoDAO = new AlunoDAO(conexao);
     const cursoDAO = new CursoDAO(conexao);
     const professorDAO = new ProfessorDAO(conexao);
 
-    // Criar professor
-    const professor = new Professor(
-      "Faiska Massacre",
-      "44444",
-      "faika@gmail.com"
-    );
+    const professor3 = new Professor("Jose", "123456789", "jose@gmail.com");
 
-    // Cadastrar professor no banco de dados
-    const professorCadastrado = (await professorDAO.cadastrar(
-      professor
-    )) as unknown as IProfessor;
-    // console.log(professorCadastrado.id);
+    // const professorCadastrado = await professorDAO.cadastrar(professor3);
 
-    if (!professorCadastrado) {
-      console.log("Erro ao cadastrar o professor.");
-      return;
-    }
-    // const id_professor = professorCadastrado.getId();
-    // console.log(professorCadastrado);
+    const curso1 = new Curso("Matemática", 100, StatusCurso.ATIVO);
 
-    // Criar curso associado ao professor cadastrado
-    const curso = new Curso(
-      "Curso Como pegar mulher casada",
-      100,
-      StatusCurso.ATIVO,
-      professorCadastrado.id
-    );
+    // if (professorCadastrado) {
+    //   console.log("Professor cadastrado com sucesso!");
+    // } else {
+    //   console.log("Erro ao cadastrar professor");
+    // }
 
-    // Cadastrar curso no banco de dados
-    await cursoDAO.cadastrar(curso);
+    // const cursoCadastrado = await cursoDAO.cadastrar(curso1);
 
-    // Exibir cursos e professores
-    const mostrarCurso = await cursoDAO.buscarTodos();
-    const mostrarProfessor = await professorDAO.buscarTodos();
+    const aluno1 = new Aluno("João", "123456789", 9999999, StatusAluno.ATIVO);
+    const cadastrarAluno = await alunoDAO.cadastrar(aluno1);
+    const mostrarAluno = await alunoDAO.buscarTodos();
+    const mostrarCursos = await cursoDAO.buscarTodos();
+    const mostrarProfessores = await professorDAO.buscarTodos();
 
-    console.log(mostrarCurso);
-    console.log(mostrarProfessor);
-
-    console.log(curso.getIdProfessor());
+    console.log(mostrarCursos);
+    console.log(mostrarProfessores);
+    console.log(mostrarAluno);
   } catch (err) {
     console.log(err);
   }
