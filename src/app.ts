@@ -18,11 +18,11 @@ async function cadastrarProfessor() {
     const cursoDAO = new CursoDAO(conexao);
     const professorDAO = new ProfessorDAO(conexao);
 
-    const professor3 = new Professor("Jose", "123456789", "jose@gmail.com");
+    const professor3 = new Professor("Pedro", "333333", "pedro@gmail.com");
 
     // const professorCadastrado = await professorDAO.cadastrar(professor3);
 
-    const curso1 = new Curso("Matemática", 100, StatusCurso.ATIVO);
+    const curso1 = new Curso("Biaologia", 100, StatusCurso.INATIVO);
 
     // if (professorCadastrado) {
     //   console.log("Professor cadastrado com sucesso!");
@@ -30,10 +30,12 @@ async function cadastrarProfessor() {
     //   console.log("Erro ao cadastrar professor");
     // }
 
-    // const cursoCadastrado = await cursoDAO.cadastrar(curso1);
+    const cursoCadastrado = await cursoDAO.cadastrar(curso1);
 
     const aluno1 = new Aluno("João", "123456789", 9999999, StatusAluno.ATIVO);
-    const cadastrarAluno = await alunoDAO.cadastrar(aluno1);
+    // const cadastrarAluno = await alunoDAO.cadastrar(aluno1);
+
+    // const deletarProfessor = await professorDAO.deletar(2);
     const mostrarAluno = await alunoDAO.buscarTodos();
     const mostrarCursos = await cursoDAO.buscarTodos();
     const mostrarProfessores = await professorDAO.buscarTodos();
