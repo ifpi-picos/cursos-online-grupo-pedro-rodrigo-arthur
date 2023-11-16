@@ -4,10 +4,3 @@ export interface IDAO<T> {
   atualizar(id: number, dados: T): Promise<T | null>;
   deletar(id: number): Promise<T | null>;
 }
-
-export interface IProfessor {
-  nome: string;
-  telefone: string;
-  email: string;
-  id: number;
-}
