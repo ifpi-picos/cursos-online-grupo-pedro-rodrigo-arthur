@@ -1,7 +1,6 @@
 import { Professor } from "../Entidades/Professor";
 import Conexao from "./Conexao";
 import { IDAO } from "./IDAO";
-
 export class ProfessorDAO implements IDAO<Professor> {
   private conexao: Conexao;
 
@@ -23,7 +22,9 @@ export class ProfessorDAO implements IDAO<Professor> {
       // Executar a query
       const res = await this.conexao.query(insert, values);
 
-      return res && res[0] ? (res[0] as Professor) : null;
+      return res && res[0]
+        ? new Professor(res[0].nome, res[0].telefone, res[0].email, res[0].id)
+        : null;
     } catch (err) {
       console.log(err);
       return null;
@@ -72,8 +73,12 @@ export class ProfessorDAO implements IDAO<Professor> {
     const deletar = "DELETE FROM professor WHERE id = $1 RETURNING *";
 
     try {
-      const values = [id];
-      const res = await this.conexao.query(deletar, values);
+      const checagem = "DELETE * FROM curso WHERE id_professor = $1";
+      const res = await this.conexao.query(deletar, [id]);
+
+      if (res && res.length > 0) {
+        await this.conexao.query(checagem, [id]);
+      }
 
       return res && res[0] ? (res[0] as Professor) : null;
     } catch (err) {
