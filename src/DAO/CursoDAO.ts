@@ -10,21 +10,18 @@ export class CursoDAO implements IDAO<Curso> {
     this.conexao = conexao;
   }
   async cadastrar(t: Curso): Promise<Curso | null> {
-    const insert = `INSERT INTO curso (nome,carga_horaria,status,id_professor) VALUES ($1, $2, $3,$4) RETURNING *`;
+    const insert = `INSERT INTO curso (nome,carga_horaria,status) VALUES ($1, $2, $3) RETURNING *`;
     try {
       const client = await Conexao.getConexao();
       if (!client) {
         throw new Error("Não foi possível conectar ao banco de dados");
       }
 
-      const values = [
-        t.getNome(),
-        t.getCargaHoraria(),
-        t.getStatusAsString(),
-        t.getIdProfessor(),
-      ];
+      const values = [t.getNome(), t.getCargaHoraria(), t.getStatusAsString()];
       const res = await this.conexao.query(insert, values);
-      return res && res[0] ? (res[0] as Curso) : null;
+      return res && res[0]
+        ? new Curso(res[0].nome, res[0].carga_horaria, res[0].status)
+        : null;
     } catch (err) {
       console.log("Erro ao cadastrar curso", err);
 
@@ -41,13 +38,7 @@ export class CursoDAO implements IDAO<Curso> {
         return client.map((p: any) => {
           const status =
             p.status === "ATIVO" ? StatusCurso.ATIVO : StatusCurso.INATIVO;
-          return new Curso(
-            p.nome,
-            p.carga_horaria,
-            status,
-            p.id,
-            p.id_professor
-          );
+          return new Curso(p.nome, p.carga_horaria, status, p.id);
         });
       } else {
         return [];
@@ -60,14 +51,13 @@ export class CursoDAO implements IDAO<Curso> {
   }
   async atualizar(id: number, dados: Curso): Promise<Curso> {
     const update =
-      "UPDATE cursos SET nome = $1, carga_horaria = $2, status = $3,id_professor = $4 WHERE id = $5 RETURNING *";
+      "UPDATE cursos SET nome = $1, carga_horaria = $2, status = $3 WHERE id = $4 RETURNING *";
 
     try {
       const values = [
         dados.getNome(),
         dados.getCargaHoraria(),
         dados.getStatusAsString(),
-        dados.getIdProfessor(),
         id,
       ];
       const res = await this.conexao.query(update, values);
