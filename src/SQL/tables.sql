@@ -9,8 +9,7 @@ CREATE TABLE curso (
     id SERIAL PRIMARY KEY,
     nome VARCHAR(255) NOT NULL,
     carga_horaria INT NOT NULL,
-    status VARCHAR(255) NOT NULL,
-    id_professor INT REFERENCES professor(id)
+    status VARCHAR(255) NOT NULL
 );
 
 CREATE TABLE aluno (
@@ -28,4 +27,10 @@ CREATE TABLE curso_aluno (
     notas2 INT NOT NULL,
     notas3 INT NOT NULL,
     PRIMARY KEY (id_curso, id_aluno)
+);
+
+CREATE TABLE curso_professor (
+    id_curso INT REFERENCES curso(id),
+    id_professor INT REFERENCES professor(id),
+    PRIMARY KEY (id_curso, id_professor)
 );
