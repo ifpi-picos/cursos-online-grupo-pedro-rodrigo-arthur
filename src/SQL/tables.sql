@@ -32,5 +32,6 @@ CREATE TABLE curso_aluno (
 CREATE TABLE curso_professor (
     id_curso INT REFERENCES curso(id),
     id_professor INT REFERENCES professor(id),
+    nome_curso VARCHAR(255) REFERENCES curso(nome),
     PRIMARY KEY (id_curso, id_professor)
 );
