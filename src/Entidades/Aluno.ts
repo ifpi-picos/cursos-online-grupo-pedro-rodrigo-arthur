@@ -1,5 +1,4 @@
 import { StatusAluno } from "../ENUM/StatusAluno";
-import { Curso } from "./Curso";
 
 export class Aluno {
   private id: number;
@@ -7,21 +6,18 @@ export class Aluno {
   private email: string;
   private telefone: number;
   private status: StatusAluno;
-  private cursos: Curso[];
 
   constructor(
     nome: string,
     email: string,
     telefone: number,
     status: StatusAluno,
-    cursos: Curso[] = [],
     id?: number
   ) {
     this.nome = nome;
     this.email = email;
     this.telefone = telefone;
     this.status = status;
-    this.cursos = cursos;
     this.id = id || 0;
   }
 
@@ -57,11 +53,11 @@ export class Aluno {
     return `Nome: ${this.nome} | Email: ${this.email} | Telefone: ${this.telefone}`;
   }
 
-  getStatus(): StatusAluno {
-    return this.status;
+  public getStatusAsString(): String {
+    return this.status === StatusAluno.ATIVO ? "ATIVO" : "INATIVO";
   }
 
-  setStatus(status: StatusAluno): void {
-    this.status = status;
+  public setStatus(status: StatusAluno): void {
+    this.status === StatusAluno.ATIVO ? "ATIVO" : "INATIVO";
   }
 }
