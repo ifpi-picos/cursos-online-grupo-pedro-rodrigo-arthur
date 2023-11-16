@@ -2,6 +2,7 @@ import { Curso } from "../Entidades/Curso";
 import { IDAO } from "./IDAO";
 import Conexao from "./Conexao";
 import { StatusCurso } from "../ENUM/StatusCurso";
+import { Professor } from "../Entidades/Professor";
 
 export class CursoDAO implements IDAO<Curso> {
   private conexao: Conexao;
@@ -78,6 +79,32 @@ export class CursoDAO implements IDAO<Curso> {
     } catch (err) {
       console.log("Erro ao deletar curso", err);
       return null;
+    }
+  }
+
+  async criarTabelaCursoProfessor(
+    idCur: number,
+    idProf: number
+  ): Promise<[Curso | null, Professor | null]> {
+    const insert = `INSERT INTO curso_professor (id_curso,id_professor) VALUES ($1, $2) RETURNING *`;
+
+    try {
+      const values = [idCur, idProf];
+      const res = await this.conexao.query(insert, values);
+      if (!res || !res[0]) {
+        return [null, null];
+      }
+      const curso = new Curso(res[0].nome, res[0].carga_horaria, res[0].status);
+      const professor = new Professor(
+        res[0].nome,
+        res[0].email,
+        res[0].formacao,
+        res[0].id
+      );
+      return [curso, professor];
+    } catch (err) {
+      console.log("Erro ao criar tabela curso_professor", err);
+      return [null, null];
     }
   }
 }
