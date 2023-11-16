@@ -73,12 +73,7 @@ export class ProfessorDAO implements IDAO<Professor> {
     const deletar = "DELETE FROM professor WHERE id = $1 RETURNING *";
 
     try {
-      const checagem = "DELETE * FROM curso WHERE id_professor = $1";
       const res = await this.conexao.query(deletar, [id]);
-
-      if (res && res.length > 0) {
-        await this.conexao.query(checagem, [id]);
-      }
 
       return res && res[0] ? (res[0] as Professor) : null;
     } catch (err) {
