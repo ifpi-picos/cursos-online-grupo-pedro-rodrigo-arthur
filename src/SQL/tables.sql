@@ -17,7 +17,8 @@ CREATE TABLE aluno (
     id SERIAL PRIMARY KEY,
     nome VARCHAR(255) NOT NULL,
     email VARCHAR(320) NOT NULL,  -- Ajustado para o tamanho máximo de um endereço de e-mail
-    telefone VARCHAR(20) NOT NULL  -- Ajustado para um possível formato de telefone
+    telefone VARCHAR(20) NOT NULL,  -- Ajustado para um possível formato de telefone
+    status VARCHAR(255) NOT NULL
 );
 
 CREATE TABLE curso_aluno (
