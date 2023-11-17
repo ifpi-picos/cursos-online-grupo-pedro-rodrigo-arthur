@@ -9,7 +9,7 @@ export class AlunoDAO implements IDAO<Aluno> {
   constructor(conexao: Conexao) {
     this.conexao = conexao;
   }
-  async cadastrar(t: Aluno): Promise<Aluno | null> {
+  async cadastrar(t: Aluno): Promise<Aluno> {
     const insert =
       "INSERT INTO aluno (nome, telefone, email,status) VALUES ($1, $2, $3,$4) RETURNING *";
 
@@ -28,18 +28,20 @@ export class AlunoDAO implements IDAO<Aluno> {
       // Executar a query
       const res = await this.conexao.query(insert, values);
 
-      return res && res[0]
-        ? new Aluno(
-            res[0].nome,
-            res[0].telefone,
-            res[0].email,
-            res[0].status,
-            res[0].id
-          )
-        : null;
+      if (res && res[0]) {
+        return new Aluno(
+          res[0].nome,
+          res[0].telefone,
+          res[0].email,
+          res[0].status,
+          res[0].id
+        );
+      } else {
+        throw new Error("Não foi possível cadastrar o aluno");
+      }
     } catch (err) {
       console.log(err);
-      return null;
+      return t;
     }
   }
   async buscarTodos(): Promise<Aluno[]> {
