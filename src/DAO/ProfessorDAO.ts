@@ -7,7 +7,7 @@ export class ProfessorDAO implements IDAO<Professor> {
     this.conexao = conexao;
   }
 
-  async cadastrar(t: Professor): Promise<Professor | null> {
+  async cadastrar(t: Professor): Promise<Professor> {
     const insert =
       "INSERT INTO professor (nome, telefone, email) VALUES ($1, $2, $3) RETURNING *";
 
@@ -21,15 +21,21 @@ export class ProfessorDAO implements IDAO<Professor> {
       // Executar a query
       const res = await this.conexao.query(insert, values);
 
-      const professorCadastrado =
-        res && res[0]
-          ? new Professor(res[0].nome, res[0].telefone, res[0].email, res[0].id)
-          : null;
-
-      return professorCadastrado;
+      // Verificar se há resultados na resposta
+      if (res && res[0]) {
+        // Retornar o objeto professor
+        return new Professor(
+          res[0].nome,
+          res[0].telefone,
+          res[0].email,
+          res[0].id
+        );
+      } else {
+        throw new Error("Não foi possível cadastrar o professor");
+      }
     } catch (err) {
       console.log(err);
-      return null;
+      return t; // Retornar o objeto professor
     }
   }
   async buscarTodos(): Promise<Professor[]> {
