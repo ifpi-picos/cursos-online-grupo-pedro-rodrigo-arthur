@@ -3,7 +3,6 @@ import Conexao from "./Conexao";
 import { IDAO } from "./IDAO";
 export class ProfessorDAO implements IDAO<Professor> {
   private conexao: Conexao;
-
   constructor(conexao: Conexao) {
     this.conexao = conexao;
   }
@@ -22,9 +21,12 @@ export class ProfessorDAO implements IDAO<Professor> {
       // Executar a query
       const res = await this.conexao.query(insert, values);
 
-      return res && res[0]
-        ? new Professor(res[0].nome, res[0].telefone, res[0].email, res[0].id)
-        : null;
+      const professorCadastrado =
+        res && res[0]
+          ? new Professor(res[0].nome, res[0].telefone, res[0].email, res[0].id)
+          : null;
+
+      return professorCadastrado;
     } catch (err) {
       console.log(err);
       return null;
