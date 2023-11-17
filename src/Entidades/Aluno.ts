@@ -30,7 +30,9 @@ export class Aluno {
   }
 
   public getEmail(): string {
-    return this.email;
+    return this.email.trim() !== "" || this.email.length > 20
+      ? this.email
+      : "Email Inválido";
   }
 
   public getId(): number {
@@ -38,7 +40,7 @@ export class Aluno {
   }
 
   public setNome(nome: string): void {
-    this.nome = nome;
+    nome.trim() !== "" ? (this.nome = nome) : (this.nome = "Nome Inválido");
   }
 
   public setTelefone(telefone: number): void {
