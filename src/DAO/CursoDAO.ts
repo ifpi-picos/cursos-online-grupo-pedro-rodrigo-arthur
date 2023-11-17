@@ -3,6 +3,7 @@ import { IDAO } from "./IDAO";
 import Conexao from "./Conexao";
 import { StatusCurso } from "../ENUM/StatusCurso";
 import { Professor } from "../Entidades/Professor";
+import { Aluno } from "../Entidades/Aluno";
 
 export class CursoDAO implements IDAO<Curso> {
   private conexao: Conexao;
@@ -86,8 +87,10 @@ export class CursoDAO implements IDAO<Curso> {
     idCur: number,
     idProf: number
   ): Promise<[Curso | null, Professor | null]> {
+    if (!idCur || !idProf) {
+      throw new Error("Id do curso ou Id do professor não informado");
+    }
     const insert = `INSERT INTO curso_professor (id_curso,id_professor) VALUES ($1, $2) RETURNING *`;
-
     try {
       const values = [idCur, idProf];
       const res = await this.conexao.query(insert, values);
@@ -104,6 +107,37 @@ export class CursoDAO implements IDAO<Curso> {
       return [curso, professor];
     } catch (err) {
       console.log("Erro ao criar tabela curso_professor", err);
+      return [null, null];
+    }
+  }
+
+  async criarTabelaCursoAluno(
+    idCur: number,
+    idAlu: number,
+    notas: number[]
+  ): Promise<[Curso | null, Aluno | null]> {
+    if (!idCur || !idAlu) {
+      throw new Error("Id do curso ou Id do aluno não informado");
+    }
+    const insert = `INSERT INTO curso_aluno (id_curso,id_aluno,notas1,notas2,notas3,media) VALUES ($1, $2,$3,$4,$5,$6) RETURNING *`;
+
+    try {
+      const media = (notas[0] + notas[1] + notas[2]) / 3;
+      const values = [idCur, idAlu, notas[0], notas[1], notas[2], media];
+      const res = await this.conexao.query(insert, values);
+      if (!res || !res[0]) {
+        return [null, null];
+      }
+      const curso = new Curso(res[0].nome, res[0].carga_horaria, res[0].status);
+      const aluno = new Aluno(
+        res[0].nome,
+        res[0].email,
+        res[0].formacao,
+        res[0].id
+      );
+      return [curso, aluno];
+    } catch (err) {
+      console.log("Erro ao criar tabela curso_aluno", err);
       return [null, null];
     }
   }
