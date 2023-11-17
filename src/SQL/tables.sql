@@ -60,12 +60,10 @@ ADD CONSTRAINT fk_aluno FOREIGN KEY (id_aluno) REFERENCES aluno(id);
 CREATE TABLE curso_professor (
     id_curso INT REFERENCES curso(id),
     id_professor INT REFERENCES professor(id),
-    nome_curso VARCHAR(255) REFERENCES curso(nome),
     PRIMARY KEY (id_curso, id_professor)
 );
 
 -- Adicionando restrições FOREIGN KEY à tabela Curso_Professor
 ALTER TABLE curso_professor
 ADD CONSTRAINT fk_curso FOREIGN KEY (id_curso) REFERENCES curso(id),
-ADD CONSTRAINT fk_professor FOREIGN KEY (id_professor) REFERENCES professor(id),
-ADD CONSTRAINT fk_nome_curso FOREIGN KEY (nome_curso) REFERENCES curso(nome);
+ADD CONSTRAINT fk_professor FOREIGN KEY (id_professor) REFERENCES professor(id);
