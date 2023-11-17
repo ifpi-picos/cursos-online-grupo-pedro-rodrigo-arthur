@@ -21,9 +21,12 @@ export class CursoDAO implements IDAO<Curso> {
 
       const values = [t.getNome(), t.getCargaHoraria(), t.getStatusAsString()];
       const res = await this.conexao.query(insert, values);
-      return res && res[0]
-        ? new Curso(res[0].nome, res[0].carga_horaria, res[0].status)
-        : null;
+      const cursoCadastrado =
+        res && res[0]
+          ? new Curso(res[0].nome, res[0].carga_horaria, res[0].status)
+          : null;
+
+      return cursoCadastrado;
     } catch (err) {
       console.log("Erro ao cadastrar curso", err);
 
@@ -119,7 +122,7 @@ export class CursoDAO implements IDAO<Curso> {
     if (!idCur || !idAlu) {
       throw new Error("Id do curso ou Id do aluno não informado");
     }
-    const insert = `INSERT INTO curso_aluno (id_curso,id_aluno,notas1,notas2,notas3,media) VALUES ($1, $2,$3,$4,$5,$6) RETURNING *`;
+    const insert = `INSERT INTO curso_aluno (id_curso,id_aluno,nota1,nota2,nota3,media) VALUES ($1, $2,$3,$4,$5,$6) RETURNING *`;
 
     try {
       const media = (notas[0] + notas[1] + notas[2]) / 3;
