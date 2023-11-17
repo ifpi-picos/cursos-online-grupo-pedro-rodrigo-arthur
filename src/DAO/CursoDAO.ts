@@ -11,7 +11,7 @@ export class CursoDAO implements IDAO<Curso> {
   constructor(conexao: Conexao) {
     this.conexao = conexao;
   }
-  async cadastrar(t: Curso): Promise<Curso | null> {
+  async cadastrar(t: Curso): Promise<Curso> {
     const insert = `INSERT INTO curso (nome,carga_horaria,status) VALUES ($1, $2, $3) RETURNING *`;
     try {
       const client = await Conexao.getConexao();
@@ -21,16 +21,20 @@ export class CursoDAO implements IDAO<Curso> {
 
       const values = [t.getNome(), t.getCargaHoraria(), t.getStatusAsString()];
       const res = await this.conexao.query(insert, values);
-      const cursoCadastrado =
-        res && res[0]
-          ? new Curso(res[0].nome, res[0].carga_horaria, res[0].status)
-          : null;
 
-      return cursoCadastrado;
+      if (res && res[0]) {
+        return new Curso(
+          res[0].nome,
+          res[0].carga_horaria,
+          res[0].status,
+          res[0].id
+        );
+      } else {
+        throw new Error("Não foi possível cadastrar o curso");
+      }
     } catch (err) {
       console.log("Erro ao cadastrar curso", err);
-
-      return null;
+      return t;
     }
   }
   async buscarTodos(): Promise<Curso[]> {
