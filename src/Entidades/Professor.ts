@@ -16,6 +16,7 @@ export class Professor {
   }
 
   public setNome(nome: string) {
+    nome.trim() !== "" ? (this.nome = nome) : (this.nome = "Nome Inválido");
     return (this.nome = nome);
   }
 
