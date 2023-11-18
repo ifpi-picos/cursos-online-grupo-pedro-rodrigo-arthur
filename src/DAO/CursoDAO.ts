@@ -91,15 +91,20 @@ export class CursoDAO implements IDAO<Curso> {
   }
 
   async criarTabelaCursoProfessor(
-    idCur: number,
-    idProf: number
+    Curs: Curso,
+    Prof: Professor
   ): Promise<[Curso | null, Professor | null]> {
-    if (!idCur || !idProf) {
-      throw new Error("Id do curso ou Id do professor não informado");
+    if (!Curs || !Prof) {
+      throw new Error("Curso ou Professor não cadastrados");
     }
-    const insert = `INSERT INTO curso_professor (id_curso,id_professor) VALUES ($1, $2) RETURNING *`;
+    const insert = `INSERT INTO curso_professor (id_curso,id_professor,nome_curso,nome_professor) VALUES ($1, $2,$3,$4) RETURNING *`;
     try {
-      const values = [idCur, idProf];
+      const values = [
+        Curs.getId(),
+        Prof.getId(),
+        Curs.getNome(),
+        Prof.getNome(),
+      ];
       const res = await this.conexao.query(insert, values);
       if (!res || !res[0]) {
         return [null, null];
@@ -119,18 +124,28 @@ export class CursoDAO implements IDAO<Curso> {
   }
 
   async criarTabelaCursoAluno(
-    idCur: number,
-    idAlu: number,
+    Curs: Curso,
+    Alun: Aluno,
     notas: number[]
   ): Promise<[Curso | null, Aluno | null]> {
-    if (!idCur || !idAlu) {
-      throw new Error("Id do curso ou Id do aluno não informado");
+    if (!Curs || !Alun) {
+      throw new Error("Curso ou Aluno não cadastrados");
     }
-    const insert = `INSERT INTO curso_aluno (id_curso,id_aluno,nota1,nota2,nota3,media) VALUES ($1, $2,$3,$4,$5,$6) RETURNING *`;
+    const insert = `INSERT INTO curso_aluno (id_curso,id_aluno,nota1,nota2,nota3,media,situacao) VALUES ($1, $2,$3,$4,$5,$6,$7) RETURNING *`;
 
     try {
       const media = (notas[0] + notas[1] + notas[2]) / 3;
-      const values = [idCur, idAlu, notas[0], notas[1], notas[2], media];
+      let situação: string =
+        media >= 7 ? "Aprovado" : media >= 5 ? "Recuperação" : "Reprovado";
+      const values = [
+        Curs.getId(),
+        Alun.getId(),
+        notas[0],
+        notas[1],
+        notas[2],
+        media,
+        situação,
+      ];
       const res = await this.conexao.query(insert, values);
       if (!res || !res[0]) {
         return [null, null];
