@@ -4,6 +4,8 @@ import Conexao from "./Conexao";
 import { StatusCurso } from "../ENUM/StatusCurso";
 import { Professor } from "../Entidades/Professor";
 import { Aluno } from "../Entidades/Aluno";
+import { ProfessorDAO } from "./ProfessorDAO";
+import { AlunoDAO } from "./AlunoDAO";
 
 export class CursoDAO implements IDAO<Curso> {
   private conexao: Conexao;
@@ -12,14 +14,33 @@ export class CursoDAO implements IDAO<Curso> {
     this.conexao = conexao;
   }
   async cadastrar(t: Curso): Promise<Curso> {
-    const insert = `INSERT INTO curso (nome,carga_horaria,status) VALUES ($1, $2, $3) RETURNING *`;
+    const professorDAO = new ProfessorDAO(this.conexao);
+    const professorCadastrado = await professorDAO.retonrnaPorEmail(
+      t.getProfessor()
+    );
+
+    let professor;
+    if (professorCadastrado?.getId()) {
+      professor = professorCadastrado;
+    } else {
+      professor = await professorDAO.cadastrar(t.getProfessor());
+    }
+
+    const porfExistente = await professorDAO.buscarPorId(professor.getId());
+    const insert = `INSERT INTO curso (nome, carga_horaria, status, id_professor) VALUES ($1, $2, $3, $4) RETURNING *`;
+
     try {
       const client = await Conexao.getConexao();
       if (!client) {
         throw new Error("Não foi possível conectar ao banco de dados");
       }
 
-      const values = [t.getNome(), t.getCargaHoraria(), t.getStatusAsString()];
+      const values = [
+        t.getNome(),
+        t.getCargaHoraria(),
+        t.getStatusAsString(),
+        professor.getId(),
+      ];
       const res = await this.conexao.query(insert, values);
 
       if (res && res[0]) {
@@ -27,6 +48,7 @@ export class CursoDAO implements IDAO<Curso> {
           res[0].nome,
           res[0].carga_horaria,
           res[0].status,
+          res[0].id_professor,
           res[0].id
         );
       } else {
@@ -34,7 +56,7 @@ export class CursoDAO implements IDAO<Curso> {
       }
     } catch (err) {
       console.log("Erro ao cadastrar curso", err);
-      return t;
+      throw err;
     }
   }
   async buscarTodos(): Promise<Curso[]> {
@@ -44,11 +66,19 @@ export class CursoDAO implements IDAO<Curso> {
       const client = await this.conexao.query(select, []);
 
       if (client) {
-        return client.map((p: any) => {
+        const cursos: Curso[] = client.map((p: any) => {
           const status =
             p.status === "ATIVO" ? StatusCurso.ATIVO : StatusCurso.INATIVO;
-          return new Curso(p.nome, p.carga_horaria, status, p.id);
+
+          return new Curso(
+            p.nome,
+            p.carga_horaria,
+            status,
+            p.id_professor,
+            p.id
+          );
         });
+        return cursos;
       } else {
         return [];
       }
@@ -60,7 +90,7 @@ export class CursoDAO implements IDAO<Curso> {
   }
   async atualizar(id: number, dados: Curso): Promise<Curso> {
     const update =
-      "UPDATE cursos SET nome = $1, carga_horaria = $2, status = $3 WHERE id = $4 RETURNING *";
+      "UPDATE curso SET nome = $1, carga_horaria = $2, status = $3, id_professor = $4 WHERE id = $5 RETURNING *";
 
     try {
       const values = [
@@ -77,7 +107,7 @@ export class CursoDAO implements IDAO<Curso> {
     }
   }
   async deletar(id: number): Promise<Curso | null> {
-    const deletar = "DELETE FROM cursos WHERE id = $1 RETURNING *";
+    const deletar = "DELETE FROM curso WHERE id = $1 RETURNING *";
 
     try {
       const values = [id];
@@ -89,37 +119,25 @@ export class CursoDAO implements IDAO<Curso> {
       return null;
     }
   }
+  async buscarPorId(id: number): Promise<Curso | null> {
+    const select = "SELECT * FROM curso WHERE id = $1";
 
-  async criarTabelaCursoProfessor(
-    Curs: Curso,
-    Prof: Professor
-  ): Promise<[Curso | null, Professor | null]> {
-    if (!Curs || !Prof) {
-      throw new Error("Curso ou Professor não cadastrados");
-    }
-    const insert = `INSERT INTO curso_professor (id_curso,id_professor,nome_curso,nome_professor) VALUES ($1, $2,$3,$4) RETURNING *`;
     try {
-      const values = [
-        Curs.getId(),
-        Prof.getId(),
-        Curs.getNome(),
-        Prof.getNome(),
-      ];
-      const res = await this.conexao.query(insert, values);
-      if (!res || !res[0]) {
-        return [null, null];
-      }
-      const curso = new Curso(res[0].nome, res[0].carga_horaria, res[0].status);
-      const professor = new Professor(
-        res[0].nome,
-        res[0].email,
-        res[0].formacao,
-        res[0].id
-      );
-      return [curso, professor];
+      const values = [id];
+      const res = await this.conexao.query(select, values);
+
+      return res && res[0]
+        ? new Curso(
+            res[0].nome,
+            res[0].carga_horaria,
+            res[0].status,
+            res[0].id_professor,
+            res[0].id
+          )
+        : null;
     } catch (err) {
-      console.log("Erro ao criar tabela curso_professor", err);
-      return [null, null];
+      console.log("Erro na consulta do curso por id", err);
+      return null;
     }
   }
 
@@ -131,15 +149,17 @@ export class CursoDAO implements IDAO<Curso> {
     if (!Curs || !Alun) {
       throw new Error("Curso ou Aluno não cadastrados");
     }
+    const alunoDAO = new AlunoDAO(this.conexao);
     const insert = `INSERT INTO curso_aluno (id_curso,id_aluno,nota1,nota2,nota3,media,situacao) VALUES ($1, $2,$3,$4,$5,$6,$7) RETURNING *`;
 
     try {
+      const alunoCadastrado = await alunoDAO.cadastrar(Alun);
       const media = (notas[0] + notas[1] + notas[2]) / 3;
       let situação: string =
-        media >= 7 ? "Aprovado" : media >= 5 ? "Recuperação" : "Reprovado";
+        media >= 7 ? "Aprovado" : media >= 5 ? "Recuperacao" : "Reprovado";
       const values = [
         Curs.getId(),
-        Alun.getId(),
+        alunoCadastrado.getId(),
         notas[0],
         notas[1],
         notas[2],
@@ -150,7 +170,12 @@ export class CursoDAO implements IDAO<Curso> {
       if (!res || !res[0]) {
         return [null, null];
       }
-      const curso = new Curso(res[0].nome, res[0].carga_horaria, res[0].status);
+      const curso = new Curso(
+        res[0].nome,
+        res[0].carga_horaria,
+        res[0].status,
+        res[0].id_professor
+      );
       const aluno = new Aluno(
         res[0].nome,
         res[0].email,
