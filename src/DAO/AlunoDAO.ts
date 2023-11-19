@@ -9,6 +9,26 @@ export class AlunoDAO implements IDAO<Aluno> {
   constructor(conexao: Conexao) {
     this.conexao = conexao;
   }
+  buscarPorId(id: number): Promise<Aluno | null> {
+    const select = "SELECT * FROM aluno WHERE id = $1";
+
+    return new Promise((resolve, reject) => {
+      this.conexao
+        .query(select, [id])
+        .then((res) => {
+          if (res && res[0]) {
+            const p = res[0];
+            resolve(new Aluno(p.nome, p.telefone, p.email, p.status, p.id));
+          } else {
+            resolve(null);
+          }
+        })
+        .catch((err) => {
+          console.log("Erro na consulta de aluno por id", err);
+          reject(err);
+        });
+    });
+  }
   async cadastrar(t: Aluno): Promise<Aluno> {
     const insert =
       "INSERT INTO aluno (nome, telefone, email,status) VALUES ($1, $2, $3,$4) RETURNING *";
