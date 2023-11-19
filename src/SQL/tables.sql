@@ -11,7 +11,6 @@ telefone VARCHAR(20) NOT NULL,
 email VARCHAR(320) NOT NULL
 );
 
-ADD CONSTRAINT professor_email_key UNIQUE (email);
 -- Definição da Tabela Curso
 CREATE TABLE curso (
 id SERIAL PRIMARY KEY,
