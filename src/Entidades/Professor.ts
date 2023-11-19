@@ -1,14 +1,26 @@
+import { Curso } from "./Curso";
+
 export class Professor {
   private nome: string;
   private id: number;
   private telefone: string;
   private email: string;
+  private cursos: Curso[];
 
   constructor(nome: string, telefone: string, email: string, id?: number) {
     this.nome = nome;
     this.telefone = telefone;
     this.email = email;
     this.id = id || 0;
+    this.cursos = [];
+  }
+
+  public addCurso(curso: Curso): void {
+    this.cursos.push(curso);
+  }
+
+  public getCursos(): Curso[] {
+    return this.cursos;
   }
 
   public getNome(): string {
