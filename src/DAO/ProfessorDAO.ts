@@ -6,6 +6,35 @@ export class ProfessorDAO implements IDAO<Professor> {
   constructor(conexao: Conexao) {
     this.conexao = conexao;
   }
+  async buscarPorId(id: number): Promise<Professor | null> {
+    const select = "SELECT * FROM professor WHERE id = $1";
+
+    try {
+      const values = [id];
+      const res = await this.conexao.query(select, values);
+      return res && res[0]
+        ? new Professor(res[0].nome, res[0].telefone, res[0].email, res[0].id)
+        : null;
+    } catch (err) {
+      console.log("Erro na consulta de professor por id", err);
+      return null;
+    }
+  }
+
+  async retonrnaPorEmail(prof: Professor): Promise<Professor | null> {
+    const select = "SELECT id FROM professor WHERE email = $1";
+
+    try {
+      const values = [prof.getEmail()];
+      const res = await this.conexao.query(select, values);
+      return res && res[0]
+        ? new Professor(res[0].nome, res[0].telefone, res[0].email, res[0].id)
+        : null;
+    } catch (err) {
+      console.log("Erro na consulta de professor por email", err);
+      return null;
+    }
+  }
 
   async cadastrar(t: Professor): Promise<Professor> {
     const insert =
