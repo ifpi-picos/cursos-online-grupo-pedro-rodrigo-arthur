@@ -1,5 +1,6 @@
 import { StatusAluno } from "../ENUM/StatusAluno";
 import { Aluno } from "../Entidades/Aluno";
+import { Professor } from "../Entidades/Professor";
 import Conexao from "./Conexao";
 import { IDAO } from "./IDAO";
 
@@ -9,27 +10,32 @@ export class AlunoDAO implements IDAO<Aluno> {
   constructor(conexao: Conexao) {
     this.conexao = conexao;
   }
-  buscarPorId(id: number): Promise<Aluno | null> {
+  async buscarPorId(id: number): Promise<Aluno | null> {
     const select = "SELECT * FROM aluno WHERE id = $1";
 
-    return new Promise((resolve, reject) => {
-      this.conexao
-        .query(select, [id])
-        .then((res) => {
-          if (res && res[0]) {
-            const p = res[0];
-            resolve(new Aluno(p.nome, p.telefone, p.email, p.status, p.id));
-          } else {
-            resolve(null);
-          }
-        })
-        .catch((err) => {
-          console.log("Erro na consulta de aluno por id", err);
-          reject(err);
-        });
-    });
+    try {
+      const values = [id];
+      const res = await this.conexao.query(select, values);
+      return res && res[0]
+        ? new Aluno(
+            res[0].nome,
+            res[0].telefone,
+            res[0].email,
+            res[0].status,
+            res[0].id
+          )
+        : null;
+    } catch (err) {
+      console.log("Erro na consulta de aluno por id", err);
+      return null;
+    }
   }
   async cadastrar(t: Aluno): Promise<Aluno> {
+    const alunoCadastrado = await this.retornaPorEmail(t);
+    if (alunoCadastrado?.getId()) {
+      return alunoCadastrado;
+    }
+
     const insert =
       "INSERT INTO aluno (nome, telefone, email,status) VALUES ($1, $2, $3,$4) RETURNING *";
 
@@ -113,6 +119,27 @@ export class AlunoDAO implements IDAO<Aluno> {
       return res && res[0] ? (res[0] as Aluno) : null;
     } catch (err) {
       console.log("Erro ao deletar aluno", err);
+      return null;
+    }
+  }
+
+  async retornaPorEmail(aluno: Aluno): Promise<Aluno | null> {
+    const select = "SELECT * FROM aluno WHERE email = $1";
+
+    try {
+      const values = [aluno.getEmail()];
+      const res = await this.conexao.query(select, values);
+      return res && res[0]
+        ? new Aluno(
+            res[0].nome,
+            res[0].telefone,
+            res[0].email,
+            res[0].status,
+            res[0].id
+          )
+        : null;
+    } catch (err) {
+      console.log("Erro na consulta de professor por email", err);
       return null;
     }
   }
