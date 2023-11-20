@@ -21,8 +21,8 @@ export class ProfessorDAO implements IDAO<Professor> {
     }
   }
 
-  async retonrnaPorEmail(prof: Professor): Promise<Professor | null> {
-    const select = "SELECT id FROM professor WHERE email = $1";
+  async retornaPorEmail(prof: Professor): Promise<Professor | null> {
+    const select = "SELECT * FROM professor WHERE email = $1";
 
     try {
       const values = [prof.getEmail()];
@@ -40,6 +40,10 @@ export class ProfessorDAO implements IDAO<Professor> {
     const insert =
       "INSERT INTO professor (nome, telefone, email) VALUES ($1, $2, $3) RETURNING *";
 
+    const professorCadastrado = await this.retornaPorEmail(t);
+    if (professorCadastrado?.getId()) {
+      return professorCadastrado;
+    }
     try {
       const client = await Conexao.getConexao();
       if (!client) {
