@@ -2,7 +2,6 @@ import { Curso } from "../Entidades/Curso";
 import { IDAO } from "./IDAO";
 import Conexao from "./Conexao";
 import { StatusCurso } from "../ENUM/StatusCurso";
-import { Professor } from "../Entidades/Professor";
 import { Aluno } from "../Entidades/Aluno";
 import { ProfessorDAO } from "./ProfessorDAO";
 import { AlunoDAO } from "./AlunoDAO";
@@ -15,7 +14,7 @@ export class CursoDAO implements IDAO<Curso> {
   }
   async cadastrar(t: Curso): Promise<Curso> {
     const professorDAO = new ProfessorDAO(this.conexao);
-    const professorCadastrado = await professorDAO.retonrnaPorEmail(
+    const professorCadastrado = await professorDAO.retornaPorEmail(
       t.getProfessor()
     );
 
@@ -25,8 +24,6 @@ export class CursoDAO implements IDAO<Curso> {
     } else {
       professor = await professorDAO.cadastrar(t.getProfessor());
     }
-
-    const porfExistente = await professorDAO.buscarPorId(professor.getId());
     const insert = `INSERT INTO curso (nome, carga_horaria, status, id_professor) VALUES ($1, $2, $3, $4) RETURNING *`;
 
     try {
@@ -39,7 +36,7 @@ export class CursoDAO implements IDAO<Curso> {
         t.getNome(),
         t.getCargaHoraria(),
         t.getStatusAsString(),
-        professor.getId(),
+        professor?.getId(),
       ];
       const res = await this.conexao.query(insert, values);
 
@@ -90,7 +87,7 @@ export class CursoDAO implements IDAO<Curso> {
   }
   async atualizar(id: number, dados: Curso): Promise<Curso> {
     const update =
-      "UPDATE curso SET nome = $1, carga_horaria = $2, status = $3, id_professor = $4 WHERE id = $5 RETURNING *";
+      "UPDATE curso SET nome = $1, carga_horaria = $2, status = $3 WHERE id = $4 RETURNING *";
 
     try {
       const values = [
@@ -149,17 +146,15 @@ export class CursoDAO implements IDAO<Curso> {
     if (!Curs || !Alun) {
       throw new Error("Curso ou Aluno não cadastrados");
     }
-    const alunoDAO = new AlunoDAO(this.conexao);
     const insert = `INSERT INTO curso_aluno (id_curso,id_aluno,nota1,nota2,nota3,media,situacao) VALUES ($1, $2,$3,$4,$5,$6,$7) RETURNING *`;
 
     try {
-      const alunoCadastrado = await alunoDAO.cadastrar(Alun);
       const media = (notas[0] + notas[1] + notas[2]) / 3;
       let situação: string =
         media >= 7 ? "Aprovado" : media >= 5 ? "Recuperacao" : "Reprovado";
       const values = [
         Curs.getId(),
-        alunoCadastrado.getId(),
+        Alun.getId(),
         notas[0],
         notas[1],
         notas[2],
