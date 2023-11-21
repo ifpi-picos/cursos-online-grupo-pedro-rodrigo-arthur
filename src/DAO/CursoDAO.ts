@@ -12,48 +12,32 @@ export class CursoDAO implements IDAO<Curso> {
   constructor(conexao: Conexao) {
     this.conexao = conexao;
   }
-  async cadastrar(t: Curso): Promise<Curso> {
-    const professorDAO = new ProfessorDAO(this.conexao);
-    const professorCadastrado = await professorDAO.retornaPorEmail(
-      t.getProfessor()
-    );
-
-    let professor;
-    if (professorCadastrado?.getId()) {
-      professor = professorCadastrado;
-    } else {
-      professor = await professorDAO.cadastrar(t.getProfessor());
-    }
-    const insert = `INSERT INTO curso (nome, carga_horaria, status, id_professor) VALUES ($1, $2, $3, $4) RETURNING *`;
+  async cadastrar(t: Curso): Promise<Curso | null> {
+    const insert =
+      "INSERT INTO curso (nome, carga_horaria, status, id_professor) VALUES ($1, $2, $3,$4) RETURNING *";
 
     try {
-      const client = await Conexao.getConexao();
-      if (!client) {
-        throw new Error("Não foi possível conectar ao banco de dados");
-      }
-
       const values = [
         t.getNome(),
         t.getCargaHoraria(),
         t.getStatusAsString(),
-        professor?.getId(),
+        t.getProfessor().getId(),
       ];
       const res = await this.conexao.query(insert, values);
-
       if (res && res[0]) {
         return new Curso(
           res[0].nome,
           res[0].carga_horaria,
           res[0].status,
-          res[0].id_professor,
+          res[0].idProfessor,
           res[0].id
         );
       } else {
-        throw new Error("Não foi possível cadastrar o curso");
+        return null;
       }
     } catch (err) {
       console.log("Erro ao cadastrar curso", err);
-      throw err;
+      return null;
     }
   }
   async buscarTodos(): Promise<Curso[]> {
@@ -65,7 +49,7 @@ export class CursoDAO implements IDAO<Curso> {
       if (client) {
         const cursos: Curso[] = client.map((p: any) => {
           const status =
-            p.status === "ATIVO" ? StatusCurso.ATIVO : StatusCurso.INATIVO;
+            p.status === "ATIVO" ? StatusCurso.ABERTO : StatusCurso.FECHADO;
 
           return new Curso(
             p.nome,
@@ -174,13 +158,36 @@ export class CursoDAO implements IDAO<Curso> {
       const aluno = new Aluno(
         res[0].nome,
         res[0].email,
-        res[0].formacao,
+        res[0].telefone,
+        res[0].status,
+        res[0].senha,
         res[0].id
       );
       return [curso, aluno];
     } catch (err) {
       console.log("Erro ao criar tabela curso_aluno", err);
       return [null, null];
+    }
+  }
+
+  async buscarCursoProfessor(curso: Curso) {
+    const select = `SELECT * FROM curso WHERE id = $1 AND id_professor = $2`;
+
+    try {
+      const values = [curso.getId(), curso.getProfessor().getId()];
+      const res = await this.conexao.query(select, values);
+      return res && res[0]
+        ? new Curso(
+            res[0].nome,
+            res[0].carga_horaria,
+            res[0].status,
+            res[0].id_professor,
+            res[0].id
+          )
+        : null;
+    } catch (err) {
+      console.log("Erro na consulta do curso por id", err);
+      return null;
     }
   }
 }
