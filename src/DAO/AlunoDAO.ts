@@ -1,6 +1,5 @@
 import { StatusAluno } from "../ENUM/StatusAluno";
 import { Aluno } from "../Entidades/Aluno";
-import { Professor } from "../Entidades/Professor";
 import Conexao from "./Conexao";
 import { IDAO } from "./IDAO";
 
