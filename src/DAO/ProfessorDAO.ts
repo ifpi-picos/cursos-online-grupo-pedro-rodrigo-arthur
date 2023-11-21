@@ -13,7 +13,13 @@ export class ProfessorDAO implements IDAO<Professor> {
       const values = [id];
       const res = await this.conexao.query(select, values);
       return res && res[0]
-        ? new Professor(res[0].nome, res[0].telefone, res[0].email, res[0].id)
+        ? new Professor(
+            res[0].nome,
+            res[0].telefone,
+            res[0].email,
+            res[0].senha,
+            res[0].id
+          )
         : null;
     } catch (err) {
       console.log("Erro na consulta de professor por id", err);
@@ -28,7 +34,13 @@ export class ProfessorDAO implements IDAO<Professor> {
       const values = [prof.getEmail()];
       const res = await this.conexao.query(select, values);
       return res && res[0]
-        ? new Professor(res[0].nome, res[0].telefone, res[0].email, res[0].id)
+        ? new Professor(
+            res[0].nome,
+            res[0].telefone,
+            res[0].email,
+            res[0].senha,
+            res[0].id
+          )
         : null;
     } catch (err) {
       console.log("Erro na consulta de professor por email", err);
@@ -38,7 +50,7 @@ export class ProfessorDAO implements IDAO<Professor> {
 
   async cadastrar(t: Professor): Promise<Professor> {
     const insert =
-      "INSERT INTO professor (nome, telefone, email) VALUES ($1, $2, $3) RETURNING *";
+      "INSERT INTO professor (nome, telefone, email,senha) VALUES ($1, $2, $3,$4) RETURNING *";
 
     const professorCadastrado = await this.retornaPorEmail(t);
     if (professorCadastrado?.getId()) {
@@ -50,7 +62,7 @@ export class ProfessorDAO implements IDAO<Professor> {
         throw new Error("Não foi possível conectar ao banco de dados");
       }
       // Armazenar os valores a serem inseridos
-      const values = [t.getNome(), t.getTelefone(), t.getEmail()];
+      const values = [t.getNome(), t.getTelefone(), t.getEmail(), t.getSenha()];
       // Executar a query
       const res = await this.conexao.query(insert, values);
 
@@ -61,6 +73,7 @@ export class ProfessorDAO implements IDAO<Professor> {
           res[0].nome,
           res[0].telefone,
           res[0].email,
+          res[0].senha,
           res[0].id
         );
       } else {
@@ -80,7 +93,7 @@ export class ProfessorDAO implements IDAO<Professor> {
       if (client) {
         // Mapear os resutados do banco de dados para objetos da class Professor
         return client.map((p) => {
-          return new Professor(p.nome, p.telefone, p.email, p.id);
+          return new Professor(p.nome, p.telefone, p.email, p.senha, p.id);
         });
       } else {
         return [];
@@ -93,17 +106,25 @@ export class ProfessorDAO implements IDAO<Professor> {
 
   async atualizar(id: number, dados: Professor): Promise<Professor> {
     const update =
-      "UPDATE professor SET nome = $1, telefone = $2, email = $3 WHERE id = $4 RETURNING *";
+      "UPDATE professor SET nome = $1, telefone = $2, email = $3,senha = $4 WHERE id = $5 RETURNING *";
 
     try {
       const values = [
         dados.getNome(),
         dados.getTelefone(),
         dados.getEmail(),
+        dados.getSenha(),
         id,
       ];
       const res = await this.conexao.query(update, values);
-      return res && res[0] ? (res[0] as Professor) : dados;
+      return res && res[0]
+        ? new Professor(
+            res[0].nome,
+            res[0].telefone,
+            res[0].email,
+            res[0].senha
+          )
+        : dados;
     } catch (err) {
       console.log("Erro na atualização do professor", err);
       return dados;
