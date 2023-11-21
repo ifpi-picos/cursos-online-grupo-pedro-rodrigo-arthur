@@ -43,14 +43,14 @@ export class Curso {
   }
 
   public getStatusAsString(): string {
-    return this.status === StatusCurso.ATIVO ? "ATIVO" : "INATIVO";
+    return this.status === StatusCurso.ABERTO ? "ABERTO" : "FECHADO";
   }
 
   public setStatus(status: StatusCurso): void {
     this.status = status;
   }
 
-  public getProfessor(): Professor {
+  public getProfessor(): Professor | null {
     return this.professor;
   }
 

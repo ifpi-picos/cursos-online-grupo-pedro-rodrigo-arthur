@@ -5,18 +5,34 @@ export class Professor {
   private id: number;
   private telefone: string;
   private email: string;
+  private senha: string;
   private cursos: Curso[];
 
-  constructor(nome: string, telefone: string, email: string, id?: number) {
+  constructor(
+    nome: string,
+    telefone: string,
+    email: string,
+    senha: string,
+    id?: number
+  ) {
     this.nome = nome;
     this.telefone = telefone;
     this.email = email;
-    this.id = id || 0;
     this.cursos = [];
+    this.senha = senha;
+    this.id = id || 0;
   }
 
   public addCurso(curso: Curso): void {
     this.cursos.push(curso);
+  }
+
+  public getSenha(): string {
+    return this.senha;
+  }
+
+  public setSenha(senha: string): void {
+    this.senha = senha;
   }
 
   public getCursos(): Curso[] {

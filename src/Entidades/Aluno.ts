@@ -6,19 +6,30 @@ export class Aluno {
   private email: string;
   private telefone: number;
   private status: StatusAluno;
+  private senha: string;
 
   constructor(
     nome: string,
     email: string,
     telefone: number,
     status: StatusAluno,
+    senha: string,
     id?: number
   ) {
     this.nome = nome;
     this.email = email;
     this.telefone = telefone;
     this.status = status;
+    this.senha = senha;
     this.id = id || 0;
+  }
+
+  public getSenha(): string {
+    return this.senha;
+  }
+
+  public setSenha(senha: string): void {
+    this.senha = senha;
   }
 
   public getNome(): string {
@@ -30,9 +41,7 @@ export class Aluno {
   }
 
   public getEmail(): string {
-    return this.email.trim() !== "" || this.email.length > 20
-      ? this.email
-      : "Email Inválido";
+    return this.email;
   }
 
   public getId(): number {
