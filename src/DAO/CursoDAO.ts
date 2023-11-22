@@ -196,4 +196,48 @@ export class CursoDAO implements IDAO<Curso> {
       return [];
     }
   }
+
+  async buscarCursoAluno(): Promise<any[]> {
+    const select = `SELECT * FROM curso_aluno`;
+
+    try {
+      const res = await this.conexao.query(select, []);
+      return res && res.length > 0
+        ? res.map((row: any) => ({
+            id_curso: row.id_curso,
+            id_aluno: row.id_aluno,
+            nota1: row.nota1,
+            nota2: row.nota2,
+            nota3: row.nota3,
+            media: row.media,
+            situacao: row.situacao,
+          }))
+        : [];
+    } catch (err) {
+      console.log("Erro na consulta do curso", err);
+      return [];
+    }
+  }
+  async buscarCursoAlunoPorId(id: number): Promise<any[]> {
+    const select = `SELECT * FROM curso_aluno WHERE id_aluno = $1`;
+
+    try {
+      const values = [id];
+      const res = await this.conexao.query(select, values);
+      return res && res.length > 0
+        ? res.map((row: any) => ({
+            id_curso: row.id_curso,
+            id_aluno: row.id_aluno,
+            nota1: row.nota1,
+            nota2: row.nota2,
+            nota3: row.nota3,
+            media: row.media,
+            situacao: row.situacao,
+          }))
+        : [];
+    } catch (err) {
+      console.log("Erro na consulta do curso", err);
+      return [];
+    }
+  }
 }
