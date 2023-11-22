@@ -18,10 +18,11 @@ export class CursoDAO implements IDAO<Curso> {
       "INSERT INTO curso (nome, carga_horaria, status, id_professor) VALUES ($1, $2, $3,$4) RETURNING *";
 
     try {
+      const status = t.getStatus() === 1 ? "ABERTO" : "FECHADO";
       const values = [
         t.getNome(),
         t.getCargaHoraria(),
-        t.getStatusAsString(),
+        status,
         t.getProfessor(),
       ];
       const res = await this.conexao.query(insert, values);
@@ -49,7 +50,7 @@ export class CursoDAO implements IDAO<Curso> {
       const client = await this.conexao.query(select, []);
 
       if (client) {
-        const cursos: Curso[] = client.map((p: any) => {
+        const cursos: Curso[] = client.map((p) => {
           const status =
             p.status === "ABERTO" ? StatusCurso.ABERTO : StatusCurso.FECHADO;
 
@@ -79,7 +80,7 @@ export class CursoDAO implements IDAO<Curso> {
       const values = [
         dados.getNome(),
         dados.getCargaHoraria(),
-        dados.getStatusAsString(),
+        dados.getStatus(),
         id,
       ];
       const res = await this.conexao.query(update, values);
@@ -172,24 +173,27 @@ export class CursoDAO implements IDAO<Curso> {
     }
   }
 
-  async buscarCursoProfessor(curso: Curso) {
-    const select = `SELECT * FROM curso WHERE id = $1 AND id_professor = $2`;
+  async buscarCursoProfessor(idProfessor: Professor): Promise<Curso[]> {
+    const select = `SELECT * FROM curso WHERE id_professor = $1`;
 
     try {
-      const values = [curso.getId(), curso.getProfessor()];
+      const values = [idProfessor.getId()];
       const res = await this.conexao.query(select, values);
-      return res && res[0]
-        ? new Curso(
-            res[0].nome,
-            res[0].carga_horaria,
-            res[0].status,
-            res[0].id_professor,
-            res[0].id
+      return res && res.length > 0
+        ? res.map(
+            (curso: any) =>
+              new Curso(
+                curso.nome,
+                curso.carga_horaria,
+                curso.status,
+                curso.id_professor,
+                curso.id
+              )
           )
-        : null;
+        : [];
     } catch (err) {
-      console.log("Erro na consulta do curso por id", err);
-      return null;
+      console.log("Erro na consulta do curso por id do professor", err);
+      return [];
     }
   }
 }
