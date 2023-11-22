@@ -133,9 +133,11 @@ export class ProfessorDAO implements IDAO<Professor> {
 
   async deletar(id: number): Promise<Professor | null> {
     const deletar = "DELETE FROM professor WHERE id = $1 RETURNING *";
-
+    const deletarCurso =
+      "DELETE FROM curso WHERE id_professor = $1 RETURNING *";
     try {
       const res = await this.conexao.query(deletar, [id]);
+      const curso = await this.conexao.query(deletarCurso, [id]);
 
       return res && res[0] ? (res[0] as Professor) : null;
     } catch (err) {
