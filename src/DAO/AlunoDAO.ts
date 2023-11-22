@@ -45,11 +45,12 @@ export class AlunoDAO implements IDAO<Aluno> {
         throw new Error("Não foi possível conectar ao banco de dados");
       }
       // Armazenar os valores a serem inseridos
+      const status = t.getStatus() === 1 ? "ATIVO" : "INATIVO";
       const values = [
         t.getNome(),
         t.getTelefone(),
         t.getEmail(),
-        t.getStatusAsString(),
+        status,
         t.getSenha(),
       ];
       // Executar a query
@@ -97,12 +98,14 @@ export class AlunoDAO implements IDAO<Aluno> {
       "UPDATE aluno SET email = $1, nome = $2, telefone = $3, status = $4, senha=$5 RETURNING *";
 
     try {
+      const status = dados.getStatus() === 1 ? "ATIVO" : "INATIVO";
       const values = [
         dados.getEmail(),
         dados.getNome(),
         dados.getTelefone(),
-        dados.getStatusAsString(),
+        status,
         dados.getSenha(),
+        id,
       ];
 
       const res = await this.conexao.query(update, values);
