@@ -5,7 +5,7 @@ export class Aluno {
   private nome: string;
   private email: string;
   private telefone: string;
-  private status: StatusAluno;
+  private status: StatusAluno | number;
   private senha: string;
 
   constructor(
@@ -64,11 +64,11 @@ export class Aluno {
     return `Nome: ${this.nome} | Email: ${this.email} | Telefone: ${this.telefone}`;
   }
 
-  public getStatusAsString(): String {
-    return this.status === StatusAluno.ATIVO ? "ATIVO" : "INATIVO";
+  public getStatus(): StatusAluno {
+    return this.status;
   }
 
   public setStatus(status: StatusAluno): void {
-    this.status === StatusAluno.ATIVO ? "ATIVO" : "INATIVO";
+    this.status = status;
   }
 }

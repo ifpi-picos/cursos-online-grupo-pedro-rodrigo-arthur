@@ -5,7 +5,7 @@ export class Curso {
   private id: number;
   private nome: string;
   private cargaHoraria: number;
-  private status: StatusCurso | string;
+  private status: StatusCurso | number;
   private professor: number;
 
   constructor(
@@ -42,8 +42,8 @@ export class Curso {
     this.cargaHoraria = cargaHoraria;
   }
 
-  public getStatusAsString(): string {
-    return this.status === StatusCurso.ABERTO ? "ABERTO" : "FECHADO";
+  public getStatus(): StatusCurso {
+    return this.status;
   }
 
   public setStatus(status: StatusCurso): void {

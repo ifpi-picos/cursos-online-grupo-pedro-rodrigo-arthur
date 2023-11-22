@@ -6,7 +6,7 @@ export class Professor {
   private telefone: string;
   private email: string;
   private senha: string;
-  private cursos: Curso[];
+  private cursos: string[];
 
   constructor(
     nome: string,
@@ -23,7 +23,7 @@ export class Professor {
     this.id = id || 0;
   }
 
-  public addCurso(curso: Curso): void {
+  public addCurso(curso: string): void {
     this.cursos.push(curso);
   }
 
@@ -35,7 +35,7 @@ export class Professor {
     this.senha = senha;
   }
 
-  public getCursos(): Curso[] {
+  public getCursos(): string[] {
     return this.cursos;
   }
 
