@@ -29,12 +29,18 @@ async function main() {
       console.log("7 - Listar Alunos");
       console.log("8 - Listar Cursos");
       console.log("9 - Listar Professores");
-      console.log("10 - Listar cursos por professor");
+      console.log("10 - Vizualizar infomações do CursoAluno");
+      console.log("11 - Vizualizar infomações do Professor");
+      console.log("12 - Vizualizar infomações do Aluno");
+      console.log("13 - Vizualizar cursos que o Aluno está matriculado");
+      console.log("14 - Delete Professor");
+
       opcao = Number(prompt("Digite a opção desejada: "));
       console.log("******************************");
 
       switch (opcao) {
         case 1:
+          console.log("******* CADASTRANDO PROFESSOR *******");
           const nomeProfessor: string = prompt("Digite o nome do professor: ");
           const telefoneProfessor: string = prompt(
             "Digite o telefone do professor: "
@@ -59,6 +65,7 @@ async function main() {
           }
           break;
         case 2:
+          console.log("******* CADASTRANDO CURSO *******");
           const nomeCurso: string = prompt("Digite o nome do curso: ");
           const cargaHorariaCurso: number = prompt(
             "Digite a carga horária do curso: "
@@ -82,6 +89,7 @@ async function main() {
           }
           break;
         case 3:
+          console.log("******* CADASTRANDO ALUNO *******");
           const nomeAluno: string = prompt("Digite o nome do aluno: ");
           const telefoneAluno: string = prompt("Digite o telefone do aluno: ");
           const emailAluno: string = prompt("Digite o email do aluno: ");
@@ -104,6 +112,7 @@ async function main() {
           }
           break;
         case 4:
+          console.log("******* MATRICULANDO ALUNO *******");
           const idAluno: number = Number(prompt("Digite o id do aluno: "));
           const idCurso: number = Number(prompt("Digite o id do curso: "));
           const notas: number[] = [];
@@ -129,6 +138,7 @@ async function main() {
           }
           break;
         case 5:
+          console.log("******* ALTERANDO PROFESSOR *******");
           const idProfessor: number = Number(
             prompt("Digite o id do professor: ")
           );
@@ -170,6 +180,7 @@ async function main() {
           }
           break;
         case 6:
+          console.log("******* ALTERANDO ALUNO *******");
           const idAlunoAtualizado: number = Number(
             prompt("Digite o id do aluno: ")
           );
@@ -216,35 +227,154 @@ async function main() {
         case 7:
           const alunos = await alunoDAO.buscarTodos();
           console.log("*******ALUNOS CADASTRADOS ******");
+          if (alunos.length === 0) {
+            console.log("Não há alunos cadastrados");
+            break;
+          }
           console.log(alunos);
           break;
         case 8:
           const cursos = await cursoDAO.buscarTodos();
           console.log("*******CURSOS CADASTRADOS ******");
+          if (cursos.length === 0) {
+            console.log("Não há cursos cadastrados");
+            break;
+          }
           console.log(cursos);
           break;
         case 9:
           const professores = await professorDAO.buscarTodos();
           console.log("*******PROFESSORES CADASTRADOS ******");
+          if (professores.length === 0) {
+            console.log("Não há professores cadastrados");
+            break;
+          }
           console.log(professores);
           break;
         case 10:
-          const idProfessorCurso: number = Number(
+          const cursoAluno = await cursoDAO.buscarCursoAluno();
+          console.log("******* ALUNOS MATRICULADOS ******");
+          if (cursoAluno.length === 0) {
+            console.log("Não há alunos matriculados");
+            break;
+          }
+          console.log(cursoAluno);
+          break;
+        case 11:
+          const idProfessorVizualizar: number = Number(
             prompt("Digite o id do professor: ")
           );
-          const encontrarProfessorCurso = await professorDAO.buscarPorId(
-            idProfessorCurso
+
+          const encontrarProfessorVizualizar = await professorDAO.buscarPorId(
+            idProfessorVizualizar
           );
-          if (!encontrarProfessorCurso) {
+          if (!encontrarProfessorVizualizar) {
             console.log("Professor não encontrado");
             break;
           }
-          const cursosProfessor = await cursoDAO.buscarCursoProfessor(
-            encontrarProfessorCurso
+          const senhaProfessorVizualizar = prompt(
+            "Digite a senha do professor: "
           );
+
+          if (
+            encontrarProfessorVizualizar.getSenha() !== senhaProfessorVizualizar
+          ) {
+            console.log("Senha incorreta");
+            break;
+          }
+          console.log("*******PROFESSOR ******");
+          console.log(encontrarProfessorVizualizar);
           console.log("*******CURSOS DO PROFESSOR ******");
-          console.log(cursosProfessor);
+          const cursosProfessorVizualizar = await cursoDAO.buscarCursoProfessor(
+            encontrarProfessorVizualizar
+          );
+          console.log(cursosProfessorVizualizar);
           break;
+        case 12:
+          const idAlunoVizualizar: number = Number(
+            prompt("Digite o id do aluno: ")
+          );
+          const encontrarAlunoVizualizar = await alunoDAO.buscarPorId(
+            idAlunoVizualizar
+          );
+          if (!encontrarAlunoVizualizar) {
+            console.log("Aluno não encontrado");
+            break;
+          }
+
+          const senhaAlunoVizualizar = prompt("Digite a senha do aluno: ");
+          if (encontrarAlunoVizualizar.getSenha() !== senhaAlunoVizualizar) {
+            console.log("Senha incorreta");
+            break;
+          }
+
+          console.log("*******ALUNO ******");
+          console.log(encontrarAlunoVizualizar);
+          break;
+        case 13:
+          const idAlunoMatriculado: number = Number(
+            prompt("Digite o id do aluno: ")
+          );
+          const encontrarAlunoMatriculado = await alunoDAO.buscarPorId(
+            idAlunoMatriculado
+          );
+          if (!encontrarAlunoMatriculado) {
+            console.log("Aluno não encontrado");
+            break;
+          }
+
+          const senhaAlunoMatriculado = prompt("Digite a senha do aluno: ");
+          if (encontrarAlunoMatriculado.getSenha() !== senhaAlunoMatriculado) {
+            console.log("Senha incorreta");
+            break;
+          }
+          const cursosDoAluno = await cursoDAO.buscarCursoAlunoPorId(
+            encontrarAlunoMatriculado.getId()
+          );
+
+          console.log("*******CURSOS DO ALUNO ******");
+          console.log(cursosDoAluno);
+          console.log("**************************");
+
+          break;
+
+        case 14:
+          const idProfessorDeletar: number = Number(
+            prompt("Digite o id do professor que deseja deletar: ")
+          );
+          const encontrarProfessorDeletar = await professorDAO.buscarPorId(
+            idProfessorDeletar
+          );
+          if (!encontrarProfessorDeletar) {
+            console.log("Professor não encontrado");
+            break;
+          }
+          const senhaProfessorDeletar = prompt("Digite a senha do professor: ");
+          if (encontrarProfessorDeletar.getSenha() !== senhaProfessorDeletar) {
+            console.log("Senha incorreta");
+            break;
+          }
+
+          const cursosDoProfessor = await cursoDAO.buscarCursoProfessor(
+            encontrarProfessorDeletar
+          );
+
+          for (const curso of cursosDoProfessor) {
+            await cursoDAO.deletar(curso.getId());
+          }
+
+          const professorDeletado = await professorDAO.deletar(
+            idProfessorDeletar
+          );
+          if (professorDeletado) {
+            console.log("Professor deletado com sucesso!");
+          } else {
+            console.log("Erro ao deletar professor");
+          }
+          break;
+
+        default:
+          console.log("Opção inválida");
       }
     } while (opcao != 0);
   } catch (err) {
