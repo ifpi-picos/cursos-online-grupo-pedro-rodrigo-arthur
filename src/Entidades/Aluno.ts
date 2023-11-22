@@ -4,14 +4,14 @@ export class Aluno {
   private id: number;
   private nome: string;
   private email: string;
-  private telefone: number;
+  private telefone: string;
   private status: StatusAluno;
   private senha: string;
 
   constructor(
     nome: string,
     email: string,
-    telefone: number,
+    telefone: string,
     status: StatusAluno,
     senha: string,
     id?: number
@@ -36,7 +36,7 @@ export class Aluno {
     return this.nome;
   }
 
-  public getTelefone(): number {
+  public getTelefone(): string {
     return this.telefone;
   }
 
@@ -52,7 +52,7 @@ export class Aluno {
     nome.trim() !== "" ? (this.nome = nome) : (this.nome = "Nome Inválido");
   }
 
-  public setTelefone(telefone: number): void {
+  public setTelefone(telefone: string): void {
     this.telefone = telefone;
   }
 

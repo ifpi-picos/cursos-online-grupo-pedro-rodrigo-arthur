@@ -5,14 +5,14 @@ export class Curso {
   private id: number;
   private nome: string;
   private cargaHoraria: number;
-  private status: StatusCurso;
-  private professor: Professor;
+  private status: StatusCurso | string;
+  private professor: number;
 
   constructor(
     nome: string,
     cargaHoraria: number,
     status: StatusCurso,
-    professor: Professor,
+    professor: number,
     id?: number
   ) {
     this.nome = nome;
@@ -50,11 +50,11 @@ export class Curso {
     this.status = status;
   }
 
-  public getProfessor(): Professor | null {
+  public getProfessor(): number {
     return this.professor;
   }
 
-  public setProfessor(professor: Professor): void {
+  public setProfessor(professor: number): void {
     this.professor = professor;
   }
 
