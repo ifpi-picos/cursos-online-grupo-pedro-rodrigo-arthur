@@ -5,6 +5,7 @@ import { StatusCurso } from "../ENUM/StatusCurso";
 import { Aluno } from "../Entidades/Aluno";
 import { ProfessorDAO } from "./ProfessorDAO";
 import { AlunoDAO } from "./AlunoDAO";
+import { Professor } from "../Entidades/Professor";
 
 export class CursoDAO implements IDAO<Curso> {
   private conexao: Conexao;
@@ -21,17 +22,18 @@ export class CursoDAO implements IDAO<Curso> {
         t.getNome(),
         t.getCargaHoraria(),
         t.getStatusAsString(),
-        t.getProfessor().getId(),
+        t.getProfessor(),
       ];
       const res = await this.conexao.query(insert, values);
       if (res && res[0]) {
-        return new Curso(
+        const curso = new Curso(
           res[0].nome,
           res[0].carga_horaria,
           res[0].status,
           res[0].idProfessor,
           res[0].id
         );
+        return curso;
       } else {
         return null;
       }
@@ -49,7 +51,7 @@ export class CursoDAO implements IDAO<Curso> {
       if (client) {
         const cursos: Curso[] = client.map((p: any) => {
           const status =
-            p.status === "ATIVO" ? StatusCurso.ABERTO : StatusCurso.FECHADO;
+            p.status === "ABERTO" ? StatusCurso.ABERTO : StatusCurso.FECHADO;
 
           return new Curso(
             p.nome,
@@ -126,7 +128,7 @@ export class CursoDAO implements IDAO<Curso> {
     Curs: Curso,
     Alun: Aluno,
     notas: number[]
-  ): Promise<[Curso | null, Aluno | null]> {
+  ): Promise<[Curso, Aluno]> {
     if (!Curs || !Alun) {
       throw new Error("Curso ou Aluno não cadastrados");
     }
@@ -147,7 +149,7 @@ export class CursoDAO implements IDAO<Curso> {
       ];
       const res = await this.conexao.query(insert, values);
       if (!res || !res[0]) {
-        return [null, null];
+        return [Curs, Alun];
       }
       const curso = new Curso(
         res[0].nome,
@@ -163,10 +165,10 @@ export class CursoDAO implements IDAO<Curso> {
         res[0].senha,
         res[0].id
       );
-      return [curso, aluno];
+      return [curso, aluno] as [Curso, Aluno];
     } catch (err) {
       console.log("Erro ao criar tabela curso_aluno", err);
-      return [null, null];
+      return [Curs, Alun];
     }
   }
 
@@ -174,7 +176,7 @@ export class CursoDAO implements IDAO<Curso> {
     const select = `SELECT * FROM curso WHERE id = $1 AND id_professor = $2`;
 
     try {
-      const values = [curso.getId(), curso.getProfessor().getId()];
+      const values = [curso.getId(), curso.getProfessor()];
       const res = await this.conexao.query(select, values);
       return res && res[0]
         ? new Curso(
