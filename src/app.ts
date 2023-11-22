@@ -4,6 +4,7 @@ import { CursoDAO } from "./DAO/CursoDAO";
 import { ProfessorDAO } from "./DAO/ProfessorDAO";
 import { StatusAluno } from "./ENUM/StatusAluno";
 import { StatusCurso } from "./ENUM/StatusCurso";
+import { StatusMatricula } from "./ENUM/StatusMatricula";
 import { Aluno } from "./Entidades/Aluno";
 import { Curso } from "./Entidades/Curso";
 
@@ -29,7 +30,7 @@ async function main() {
       console.log("7 - Listar Alunos");
       console.log("8 - Listar Cursos");
       console.log("9 - Listar Professores");
-      console.log("10 - Vizualizar infomações do CursoAluno");
+      console.log("10 - Vizualizar infomações da tabela CursoAluno");
       console.log("11 - Vizualizar infomações do Professor");
       console.log("12 - Vizualizar infomações do Aluno");
       console.log("13 - Vizualizar cursos que o Aluno está matriculado");
@@ -73,7 +74,9 @@ async function main() {
           const statusCurso: StatusCurso = Number(
             prompt("Digite o status do curso (1:ABERTO || 0: FECHADO): ")
           );
-          const idProfessorCad: number = prompt("Digite o id do professor: ");
+          const idProfessorCad: Professor = prompt(
+            "Digite o id do professor: "
+          );
           statusCurso.toString();
           const curso = new Curso(
             nomeCurso,
@@ -96,13 +99,19 @@ async function main() {
           const statusAluno: string | number = Number(
             prompt("Digite o status do aluno (1:ATIVO || 0:INATIVO): ")
           );
+          const statusMatricula: string | number = Number(
+            prompt(
+              "Digite o status da matricula (1:MATRICULADO || 0:CANCELADO): "
+            )
+          );
           const senhaAluno: string = prompt("Digite a senha do aluno: ");
           const aluno = new Aluno(
             nomeAluno,
             emailAluno,
             telefoneAluno,
             statusAluno as StatusAluno,
-            senhaAluno
+            senhaAluno,
+            statusMatricula as StatusMatricula
           );
           const alunoCadastrado = await alunoDAO.cadastrar(aluno);
           if (alunoCadastrado) {

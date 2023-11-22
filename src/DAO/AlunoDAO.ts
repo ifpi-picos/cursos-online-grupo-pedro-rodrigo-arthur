@@ -1,4 +1,5 @@
 import { StatusAluno } from "../ENUM/StatusAluno";
+import { StatusMatricula } from "../ENUM/StatusMatricula";
 import { Aluno } from "../Entidades/Aluno";
 import Conexao from "./Conexao";
 import { IDAO } from "./IDAO";
@@ -22,6 +23,7 @@ export class AlunoDAO implements IDAO<Aluno> {
             res[0].email,
             res[0].status,
             res[0].senha,
+            res[0].statusMatricula,
             res[0].id
           )
         : null;
@@ -63,6 +65,7 @@ export class AlunoDAO implements IDAO<Aluno> {
           res[0].email,
           res[0].status,
           res[0].senha,
+          res[0].statusMatricula,
           res[0].id
         );
       } else {
@@ -83,7 +86,19 @@ export class AlunoDAO implements IDAO<Aluno> {
         return client.map((p) => {
           const status =
             p.status === "ATIVO" ? StatusAluno.ATIVO : StatusAluno.INATIVO;
-          return new Aluno(p.nome, p.telefone, p.email, status, p.senha, p.id);
+          const statsMat =
+            p.statusMatricula === "MATRICULADO"
+              ? StatusMatricula.MATRICULADO
+              : StatusMatricula.CANCELADO;
+          return new Aluno(
+            p.nome,
+            p.telefone,
+            p.email,
+            status,
+            p.senha,
+            statsMat,
+            p.id
+          );
         });
       } else {
         return [];
@@ -95,16 +110,19 @@ export class AlunoDAO implements IDAO<Aluno> {
   }
   async atualizar(id: number, dados: Aluno): Promise<Aluno> {
     const update =
-      "UPDATE aluno SET email = $1, nome = $2, telefone = $3, status = $4, senha=$5 RETURNING *";
+      "UPDATE aluno SET email = $1, nome = $2, telefone = $3, status = $4, senha=$5,statusMatricula = $6 RETURNING *";
 
     try {
       const status = dados.getStatus() === 1 ? "ATIVO" : "INATIVO";
+      const statusMat =
+        dados.getStatusMatricula() === 1 ? "MATRICULADO" : "CANCELADO";
       const values = [
         dados.getEmail(),
         dados.getNome(),
         dados.getTelefone(),
         status,
         dados.getSenha(),
+        statusMat,
         id,
       ];
 
@@ -142,6 +160,7 @@ export class AlunoDAO implements IDAO<Aluno> {
             res[0].email,
             res[0].status,
             res[0].senha,
+            res[0].statusMatricula,
             res[0].id
           )
         : aluno;

@@ -1,4 +1,5 @@
 import { StatusAluno } from "../ENUM/StatusAluno";
+import { StatusMatricula } from "../ENUM/StatusMatricula";
 
 export class Aluno {
   private id: number;
@@ -7,6 +8,7 @@ export class Aluno {
   private telefone: string;
   private status: StatusAluno | number;
   private senha: string;
+  private statusMatricula: StatusMatricula | number;
 
   constructor(
     nome: string,
@@ -14,6 +16,7 @@ export class Aluno {
     telefone: string,
     status: StatusAluno,
     senha: string,
+    statusMatricula?: StatusMatricula,
     id?: number
   ) {
     this.nome = nome;
@@ -21,7 +24,16 @@ export class Aluno {
     this.telefone = telefone;
     this.status = status;
     this.senha = senha;
+    this.statusMatricula = statusMatricula || StatusMatricula.MATRICULADO;
     this.id = id || 0;
+  }
+
+  public getStatusMatricula(): StatusMatricula {
+    return this.statusMatricula;
+  }
+
+  public setStatusMatricula(statusMatricula: StatusMatricula): void {
+    this.statusMatricula = statusMatricula;
   }
 
   public getSenha(): string {

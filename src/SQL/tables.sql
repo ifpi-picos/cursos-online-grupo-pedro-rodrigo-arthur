@@ -40,6 +40,7 @@
             nota3 NUMERIC(5, 2) NOT NULL,
             media NUMERIC(5, 2) NOT NULL,
             situacao VARCHAR(255) NOT NULL,
+            statusMatricula VARCHAR(255) NOT NULL,
             PRIMARY KEY (id_curso, id_aluno)
             );
 

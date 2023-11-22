@@ -133,12 +133,14 @@ export class CursoDAO implements IDAO<Curso> {
     if (!Curs || !Alun) {
       throw new Error("Curso ou Aluno não cadastrados");
     }
-    const insert = `INSERT INTO curso_aluno (id_curso,id_aluno,nota1,nota2,nota3,media,situacao) VALUES ($1, $2,$3,$4,$5,$6,$7) RETURNING *`;
+    const insert = `INSERT INTO curso_aluno (id_curso,id_aluno,nota1,nota2,nota3,media,situacao,statusMatricula) VALUES ($1, $2,$3,$4,$5,$6,$7,$8) RETURNING *`;
 
     try {
       const media = (notas[0] + notas[1] + notas[2]) / 3;
       let situação: string =
         media >= 7 ? "Aprovado" : media >= 5 ? "Recuperacao" : "Reprovado";
+      const statusMatricula =
+        Alun.getStatusMatricula() === 1 ? "MATRICULADO" : "CANCELADO";
       const values = [
         Curs.getId(),
         Alun.getId(),
@@ -147,6 +149,7 @@ export class CursoDAO implements IDAO<Curso> {
         notas[2],
         media,
         situação,
+        statusMatricula,
       ];
       const res = await this.conexao.query(insert, values);
       if (!res || !res[0]) {
@@ -164,6 +167,7 @@ export class CursoDAO implements IDAO<Curso> {
         res[0].telefone,
         res[0].status,
         res[0].senha,
+        res[0].statusMatricula,
         res[0].id
       );
       return [curso, aluno] as [Curso, Aluno];
@@ -211,6 +215,7 @@ export class CursoDAO implements IDAO<Curso> {
             nota3: row.nota3,
             media: row.media,
             situacao: row.situacao,
+            statusMatricula: row.statusMatricula,
           }))
         : [];
     } catch (err) {
@@ -233,6 +238,7 @@ export class CursoDAO implements IDAO<Curso> {
             nota3: row.nota3,
             media: row.media,
             situacao: row.situacao,
+            statusMatricula: row.statusMatricula,
           }))
         : [];
     } catch (err) {
