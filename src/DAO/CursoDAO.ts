@@ -7,6 +7,7 @@ import { ProfessorDAO } from "./ProfessorDAO";
 import { AlunoDAO } from "./AlunoDAO";
 import { Professor } from "../Entidades/Professor";
 import { StatusMatricula } from "../ENUM/StatusMatricula";
+import test from "node:test";
 
 export class CursoDAO implements IDAO<Curso> {
   private conexao: Conexao;
@@ -52,13 +53,10 @@ export class CursoDAO implements IDAO<Curso> {
 
       if (client) {
         const cursos: Curso[] = client.map((p) => {
-          const status =
-            p.status === "ABERTO" ? StatusCurso.ABERTO : StatusCurso.FECHADO;
-
           return new Curso(
             p.nome,
             p.carga_horaria,
-            status,
+            p.status,
             p.id_professor,
             p.id
           );
@@ -134,7 +132,7 @@ export class CursoDAO implements IDAO<Curso> {
     if (!Curs || !Alun) {
       throw new Error("Curso ou Aluno não cadastrados");
     }
-    const insert = `INSERT INTO curso_aluno (id_curso,id_aluno,nota1,nota2,nota3,media,situacao,statusMatricula) VALUES ($1, $2,$3,$4,$5,$6,$7,$8) RETURNING *`;
+    const insert = `INSERT INTO curso_aluno (id_curso,id_aluno,nota1,nota2,nota3,media,situacao,statusmatricula) VALUES ($1, $2,$3,$4,$5,$6,$7,$8) RETURNING *`;
 
     try {
       const media = (notas[0] + notas[1] + notas[2]) / 3;
@@ -218,7 +216,7 @@ export class CursoDAO implements IDAO<Curso> {
             nota3: row.nota3,
             media: row.media,
             situacao: row.situacao,
-            statusMatricula: row.statusMatricula,
+            statusmatricula: row.statusmatricula,
           }))
         : [];
     } catch (err) {
@@ -241,7 +239,7 @@ export class CursoDAO implements IDAO<Curso> {
             nota3: row.nota3,
             media: row.media,
             situacao: row.situacao,
-            statusMatricula: row.statusMatricula,
+            statusmatricula: row.statusmatricula,
           }))
         : [];
     } catch (err) {

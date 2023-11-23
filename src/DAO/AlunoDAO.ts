@@ -1,4 +1,5 @@
 import { StatusAluno } from "../ENUM/StatusAluno";
+import { StatusCurso } from "../ENUM/StatusCurso";
 import { StatusMatricula } from "../ENUM/StatusMatricula";
 import { Aluno } from "../Entidades/Aluno";
 import Conexao from "./Conexao";
@@ -82,27 +83,23 @@ export class AlunoDAO implements IDAO<Aluno> {
     try {
       const client = await this.conexao.query(select, []);
 
-      if (client) {
-        return client.map((p) => {
-          const status: StatusAluno =
-            p.status === "ATIVO" ? StatusAluno.ATIVO : StatusAluno.INATIVO;
-          const statusMat: StatusMatricula =
-            p.statusMatricula === "MATRICULADO"
-              ? StatusMatricula.MATRICULADO
-              : StatusMatricula.CANCELADO;
-          return new Aluno(
-            p.nome,
-            p.telefone,
-            p.email,
-            status,
-            p.senha,
-            statusMat,
-            p.id
-          );
-        });
-      } else {
-        return [];
-      }
+      return client && client.length > 0
+        ? client.map((p) => {
+            const statusMat =
+              p.statusmatricula === StatusMatricula.NAO_MATRICULADO
+                ? StatusMatricula.MATRICULADO
+                : StatusMatricula.NAO_MATRICULADO;
+            return new Aluno(
+              p.nome,
+              p.telefone,
+              p.email,
+              p.status,
+              p.senha,
+              statusMat,
+              p.id
+            );
+          })
+        : [];
     } catch (err) {
       console.log(err);
       return [];
