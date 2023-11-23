@@ -84,9 +84,9 @@ export class AlunoDAO implements IDAO<Aluno> {
 
       if (client) {
         return client.map((p) => {
-          const status =
+          const status: StatusAluno =
             p.status === "ATIVO" ? StatusAluno.ATIVO : StatusAluno.INATIVO;
-          const statsMat =
+          const statusMat: StatusMatricula =
             p.statusMatricula === "MATRICULADO"
               ? StatusMatricula.MATRICULADO
               : StatusMatricula.CANCELADO;
@@ -96,7 +96,7 @@ export class AlunoDAO implements IDAO<Aluno> {
             p.email,
             status,
             p.senha,
-            statsMat,
+            statusMat,
             p.id
           );
         });
@@ -114,8 +114,7 @@ export class AlunoDAO implements IDAO<Aluno> {
 
     try {
       const status = dados.getStatus() === 1 ? "ATIVO" : "INATIVO";
-      const statusMat =
-        dados.getStatusMatricula() === 1 ? "MATRICULADO" : "CANCELADO";
+      const statusMat = dados.getStatusMatricula();
       const values = [
         dados.getEmail(),
         dados.getNome(),

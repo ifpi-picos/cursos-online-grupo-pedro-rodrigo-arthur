@@ -8,7 +8,7 @@ export class Aluno {
   private telefone: string;
   private status: StatusAluno | number;
   private senha: string;
-  private statusMatricula: StatusMatricula | number;
+  private statusMatricula: StatusMatricula;
 
   constructor(
     nome: string,
@@ -24,11 +24,11 @@ export class Aluno {
     this.telefone = telefone;
     this.status = status;
     this.senha = senha;
-    this.statusMatricula = statusMatricula || StatusMatricula.MATRICULADO;
+    this.statusMatricula = statusMatricula || StatusMatricula.NAO_MATRICULADO;
     this.id = id || 0;
   }
 
-  public getStatusMatricula(): StatusMatricula {
+  public getStatusMatricula(): StatusMatricula | string {
     return this.statusMatricula;
   }
 

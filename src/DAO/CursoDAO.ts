@@ -6,6 +6,7 @@ import { Aluno } from "../Entidades/Aluno";
 import { ProfessorDAO } from "./ProfessorDAO";
 import { AlunoDAO } from "./AlunoDAO";
 import { Professor } from "../Entidades/Professor";
+import { StatusMatricula } from "../ENUM/StatusMatricula";
 
 export class CursoDAO implements IDAO<Curso> {
   private conexao: Conexao;
@@ -125,7 +126,7 @@ export class CursoDAO implements IDAO<Curso> {
     }
   }
 
-  async criarTabelaCursoAluno(
+  async matricularAluno(
     Curs: Curso,
     Alun: Aluno,
     notas: number[]
@@ -140,7 +141,9 @@ export class CursoDAO implements IDAO<Curso> {
       let situação: string =
         media >= 7 ? "Aprovado" : media >= 5 ? "Recuperacao" : "Reprovado";
       const statusMatricula =
-        Alun.getStatusMatricula() === 1 ? "MATRICULADO" : "CANCELADO";
+        Alun.getStatusMatricula() === "NAO_MATRICULADO"
+          ? "CANCELADO"
+          : "MATRICULADO";
       const values = [
         Curs.getId(),
         Alun.getId(),
