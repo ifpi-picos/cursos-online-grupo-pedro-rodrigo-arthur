@@ -99,19 +99,13 @@ async function main() {
           const statusAluno: string | number = Number(
             prompt("Digite o status do aluno (1:ATIVO || 0:INATIVO): ")
           );
-          const statusMatricula: string | number = Number(
-            prompt(
-              "Digite o status da matricula (1:MATRICULADO || 0:CANCELADO): "
-            )
-          );
           const senhaAluno: string = prompt("Digite a senha do aluno: ");
           const aluno = new Aluno(
             nomeAluno,
             emailAluno,
             telefoneAluno,
             statusAluno as StatusAluno,
-            senhaAluno,
-            statusMatricula as StatusMatricula
+            senhaAluno
           );
           const alunoCadastrado = await alunoDAO.cadastrar(aluno);
           if (alunoCadastrado) {
@@ -137,7 +131,7 @@ async function main() {
             notas.push(Number(prompt(`Digite a ${i + 1}ª nota do aluno: `)));
           }
 
-          const alunoMatriculado = await cursoDAO.criarTabelaCursoAluno(
+          const alunoMatriculado = await cursoDAO.matricularAluno(
             encontrarCurso,
             encontrarAluno,
             notas
@@ -215,12 +209,20 @@ async function main() {
           const senhaAlunoAtualizado: string = prompt(
             "Digite a senha do aluno: "
           );
+          const stats: string = prompt(
+            "Digite o status da matricula (M:MATRICULAR || C: CANCELAR): "
+          );
+          const statusMatriculaAtualizar =
+            stats.toUpperCase() === "M"
+              ? StatusMatricula.MATRICULADO
+              : StatusMatricula.CANCELADO;
           const alunoAtualizado = new Aluno(
             nomeAlunoAtualizado,
             emailAlunoAtualizado,
             telefoneAlunoAtualizado,
             statusAlunoAtualizado,
             senhaAlunoAtualizado,
+            statusMatriculaAtualizar,
             idAlunoAtualizado
           );
           const alunoAlterado = await alunoDAO.atualizar(
@@ -240,7 +242,7 @@ async function main() {
             console.log("Não há alunos cadastrados");
             break;
           }
-          console.log(alunos);
+          console.table(alunos);
           break;
         case 8:
           const cursos = await cursoDAO.buscarTodos();
@@ -249,7 +251,7 @@ async function main() {
             console.log("Não há cursos cadastrados");
             break;
           }
-          console.log(cursos);
+          console.table(cursos);
           break;
         case 9:
           const professores = await professorDAO.buscarTodos();
@@ -258,7 +260,7 @@ async function main() {
             console.log("Não há professores cadastrados");
             break;
           }
-          console.log(professores);
+          console.table(professores);
           break;
         case 10:
           const cursoAluno = await cursoDAO.buscarCursoAluno();
@@ -267,7 +269,7 @@ async function main() {
             console.log("Não há alunos matriculados");
             break;
           }
-          console.log(cursoAluno);
+          console.table(cursoAluno);
           break;
         case 11:
           const idProfessorVizualizar: number = Number(
@@ -292,12 +294,12 @@ async function main() {
             break;
           }
           console.log("*******PROFESSOR ******");
-          console.log(encontrarProfessorVizualizar);
+          console.table(encontrarProfessorVizualizar);
           console.log("*******CURSOS DO PROFESSOR ******");
           const cursosProfessorVizualizar = await cursoDAO.buscarCursoProfessor(
             encontrarProfessorVizualizar
           );
-          console.log(cursosProfessorVizualizar);
+          console.table(cursosProfessorVizualizar);
           break;
         case 12:
           const idAlunoVizualizar: number = Number(
@@ -318,7 +320,7 @@ async function main() {
           }
 
           console.log("*******ALUNO ******");
-          console.log(encontrarAlunoVizualizar);
+          console.table(encontrarAlunoVizualizar);
           break;
         case 13:
           const idAlunoMatriculado: number = Number(
@@ -342,7 +344,7 @@ async function main() {
           );
 
           console.log("*******CURSOS DO ALUNO ******");
-          console.log(cursosDoAluno);
+          console.table(cursosDoAluno);
           console.log("**************************");
 
           break;
