@@ -16,8 +16,8 @@ export class Aluno {
     telefone: string,
     status: StatusAluno,
     senha: string,
-    statusMatricula?: StatusMatricula,
-    id?: number
+    id?: number,
+    statusMatricula?: StatusMatricula
   ) {
     this.nome = nome;
     this.email = email;

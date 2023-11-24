@@ -1,12 +1,9 @@
-import { Curso } from "./Curso";
-
 export class Professor {
   private nome: string;
   private id: number;
   private telefone: string;
   private email: string;
   private senha: string;
-  private cursos: string[];
 
   constructor(
     nome: string,
@@ -18,13 +15,8 @@ export class Professor {
     this.nome = nome;
     this.telefone = telefone;
     this.email = email;
-    this.cursos = [];
     this.senha = senha;
     this.id = id || 0;
-  }
-
-  public addCurso(curso: string): void {
-    this.cursos.push(curso);
   }
 
   public getSenha(): string {
@@ -33,10 +25,6 @@ export class Professor {
 
   public setSenha(senha: string): void {
     this.senha = senha;
-  }
-
-  public getCursos(): string[] {
-    return this.cursos;
   }
 
   public getNome(): string {
