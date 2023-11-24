@@ -26,33 +26,11 @@ export class ProfessorDAO implements IDAO<Professor> {
       return null;
     }
   }
-
-  async retornaPorEmail(prof: Professor): Promise<Professor | null> {
-    const select = "SELECT * FROM professor WHERE email = $1";
-
-    try {
-      const values = [prof.getEmail()];
-      const res = await this.conexao.query(select, values);
-      return res && res[0]
-        ? new Professor(
-            res[0].nome,
-            res[0].telefone,
-            res[0].email,
-            res[0].senha,
-            res[0].id
-          )
-        : null;
-    } catch (err) {
-      console.log("Erro na consulta de professor por email", err);
-      return null;
-    }
-  }
-
   async cadastrar(t: Professor): Promise<Professor> {
     const insert =
       "INSERT INTO professor (nome, telefone, email,senha) VALUES ($1, $2, $3,$4) RETURNING *";
 
-    const professorCadastrado = await this.retornaPorEmail(t);
+    const professorCadastrado = await this.buscarPorId(t.getId());
     if (professorCadastrado?.getId()) {
       return professorCadastrado;
     }

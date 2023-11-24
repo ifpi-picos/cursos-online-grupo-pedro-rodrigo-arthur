@@ -24,8 +24,8 @@ export class AlunoDAO implements IDAO<Aluno> {
             res[0].email,
             res[0].status,
             res[0].senha,
-            res[0].statusMatricula,
-            res[0].id
+            res[0].id,
+            res[0].statusMatricula
           )
         : null;
     } catch (err) {
@@ -34,7 +34,7 @@ export class AlunoDAO implements IDAO<Aluno> {
     }
   }
   async cadastrar(t: Aluno): Promise<Aluno> {
-    const alunoCadastrado = await this.retornaPorEmail(t);
+    const alunoCadastrado = await this.buscarPorId(t.getId());
     if (alunoCadastrado?.getId()) {
       return alunoCadastrado;
     }
@@ -66,8 +66,8 @@ export class AlunoDAO implements IDAO<Aluno> {
           res[0].email,
           res[0].status,
           res[0].senha,
-          res[0].statusMatricula,
-          res[0].id
+          res[0].id,
+          res[0].statusMatricula
         );
       } else {
         throw new Error("Não foi possível cadastrar o aluno");
@@ -86,7 +86,7 @@ export class AlunoDAO implements IDAO<Aluno> {
       return client && client.length > 0
         ? client.map((p) => {
             const statusMat =
-              p.statusmatricula === StatusMatricula.NAO_MATRICULADO
+              p.statusmatricula === StatusMatricula.MATRICULADO
                 ? StatusMatricula.MATRICULADO
                 : StatusMatricula.NAO_MATRICULADO;
             return new Aluno(
@@ -95,8 +95,8 @@ export class AlunoDAO implements IDAO<Aluno> {
               p.email,
               p.status,
               p.senha,
-              statusMat,
-              p.id
+              p.id,
+              statusMat
             );
           })
         : [];
@@ -107,18 +107,16 @@ export class AlunoDAO implements IDAO<Aluno> {
   }
   async atualizar(id: number, dados: Aluno): Promise<Aluno> {
     const update =
-      "UPDATE aluno SET email = $1, nome = $2, telefone = $3, status = $4, senha=$5,statusMatricula = $6 RETURNING *";
+      "UPDATE aluno SET email = $1, nome = $2, telefone = $3, status = $4, senha=$5 WHERE id = $6 RETURNING *";
 
     try {
       const status = dados.getStatus() === 1 ? "ATIVO" : "INATIVO";
-      const statusMat = dados.getStatusMatricula();
       const values = [
         dados.getEmail(),
         dados.getNome(),
         dados.getTelefone(),
         status,
         dados.getSenha(),
-        statusMat,
         id,
       ];
 
@@ -140,29 +138,6 @@ export class AlunoDAO implements IDAO<Aluno> {
     } catch (err) {
       console.log("Erro ao deletar aluno", err);
       return null;
-    }
-  }
-
-  async retornaPorEmail(aluno: Aluno): Promise<Aluno> {
-    const select = "SELECT * FROM aluno WHERE email = $1";
-
-    try {
-      const values = [aluno.getEmail()];
-      const res = await this.conexao.query(select, values);
-      return res && res[0]
-        ? new Aluno(
-            res[0].nome,
-            res[0].telefone,
-            res[0].email,
-            res[0].status,
-            res[0].senha,
-            res[0].statusMatricula,
-            res[0].id
-          )
-        : aluno;
-    } catch (err) {
-      console.log("Erro na consulta de aluno por email", err);
-      return aluno;
     }
   }
 }
