@@ -1,4 +1,5 @@
 import { AlunoDAO } from "./DAO/AlunoDAO";
+import { Autenticacao } from "./DAO/Autenticacao/Atenticacao";
 import Conexao from "./DAO/Conexao";
 import { CursoDAO } from "./DAO/CursoDAO";
 import { ProfessorDAO } from "./DAO/ProfessorDAO";
@@ -27,14 +28,15 @@ async function main() {
       console.log("4 - Matricular Aluno");
       console.log("5 - Atualizar dados do Professor");
       console.log("6 - Alterar dados do Aluno");
-      console.log("7 - Listar Alunos");
-      console.log("8 - Listar Cursos");
-      console.log("9 - Listar Professores");
-      console.log("10 - Vizualizar infomações da tabela CursoAluno");
-      console.log("11 - Vizualizar infomações do Professor");
-      console.log("12 - Vizualizar infomações do Aluno");
-      console.log("13 - Vizualizar cursos que o Aluno está matriculado");
-      console.log("14 - Delete Professor");
+      console.log("7 - Alterar dados do curso");
+      console.log("8 - Listar Alunos");
+      console.log("9 - Listar Cursos");
+      console.log("10 - Listar Professores");
+      console.log("11 - Vizualizar infomações da tabela CursoAluno");
+      console.log("12 - Vizualizar infomações do Professor");
+      console.log("13 - Vizualizar infomações do Aluno");
+      console.log("14 - Vizualizar cursos que o Aluno está matriculado");
+      console.log("15 - Delete Professor");
 
       opcao = Number(prompt("Digite a opção desejada: "));
       console.log("******************************");
@@ -209,20 +211,12 @@ async function main() {
           const senhaAlunoAtualizado: string = prompt(
             "Digite a senha do aluno: "
           );
-          const stats: string = prompt(
-            "Digite o status da matricula (M:MATRICULAR || C: CANCELAR): "
-          );
-          const statusMatriculaAtualizar =
-            stats.toUpperCase() === "M"
-              ? StatusMatricula.MATRICULADO
-              : StatusMatricula.CANCELADO;
           const alunoAtualizado = new Aluno(
             nomeAlunoAtualizado,
             emailAlunoAtualizado,
             telefoneAlunoAtualizado,
             statusAlunoAtualizado,
             senhaAlunoAtualizado,
-            statusMatriculaAtualizar,
             idAlunoAtualizado
           );
           const alunoAlterado = await alunoDAO.atualizar(
@@ -236,6 +230,54 @@ async function main() {
           }
           break;
         case 7:
+          console.log("******* ALTERANDO CURSO *******");
+          const idCursoAtualizado: number = Number(
+            prompt("Digite o id do curso: ")
+          );
+          const encontrarCursoAtualizado = await cursoDAO.buscarPorId(
+            idCursoAtualizado
+          );
+          if (!encontrarCursoAtualizado) {
+            console.log("Curso não encontrado");
+            break;
+          }
+          const nomeCursoAtualizado: string = prompt(
+            "Digite o nome do curso: "
+          );
+          const cargaHorariaCursoAtualizado: number = Number(
+            prompt("Digite a carga horária do curso: ")
+          );
+          const statusCursoAtualizado: StatusCurso | number = Number(
+            prompt("Digite o status do curso: ")
+          );
+          const idProfessorAtualizado: number = Number(
+            prompt("Digite o id do professor: ")
+          );
+          const professorAlteradoCurso = await professorDAO.buscarPorId(
+            idProfessorAtualizado
+          );
+          if (!professorAlteradoCurso) {
+            console.log("Professor não encontrado");
+            break;
+          }
+          const cursoAtualizado = new Curso(
+            nomeCursoAtualizado,
+            cargaHorariaCursoAtualizado,
+            statusCursoAtualizado,
+            professorAlteradoCurso,
+            idCursoAtualizado
+          );
+          const cursoAlterado = await cursoDAO.atualizar(
+            idCursoAtualizado,
+            cursoAtualizado
+          );
+          if (cursoAlterado) {
+            console.log("Curso alterado com sucesso!");
+          } else {
+            console.log("Erro ao alterar curso");
+          }
+          break;
+        case 8:
           const alunos = await alunoDAO.buscarTodos();
           console.log("*******ALUNOS CADASTRADOS ******");
           if (alunos.length === 0) {
@@ -244,7 +286,7 @@ async function main() {
           }
           console.table(alunos);
           break;
-        case 8:
+        case 9:
           const cursos = await cursoDAO.buscarTodos();
           console.log("*******CURSOS CADASTRADOS ******");
           if (cursos.length === 0) {
@@ -253,7 +295,7 @@ async function main() {
           }
           console.table(cursos);
           break;
-        case 9:
+        case 10:
           const professores = await professorDAO.buscarTodos();
           console.log("*******PROFESSORES CADASTRADOS ******");
           if (professores.length === 0) {
@@ -262,7 +304,7 @@ async function main() {
           }
           console.table(professores);
           break;
-        case 10:
+        case 11:
           const cursoAluno = await cursoDAO.buscarCursoAluno();
           console.log("******* ALUNOS MATRICULADOS ******");
           if (cursoAluno.length === 0) {
@@ -271,76 +313,71 @@ async function main() {
           }
           console.table(cursoAluno);
           break;
-        case 11:
+        case 12:
           const idProfessorVizualizar: number = Number(
             prompt("Digite o id do professor: ")
           );
 
-          const encontrarProfessorVizualizar = await professorDAO.buscarPorId(
-            idProfessorVizualizar
-          );
-          if (!encontrarProfessorVizualizar) {
-            console.log("Professor não encontrado");
-            break;
-          }
           const senhaProfessorVizualizar = prompt(
             "Digite a senha do professor: "
           );
 
-          if (
-            encontrarProfessorVizualizar.getSenha() !== senhaProfessorVizualizar
-          ) {
-            console.log("Senha incorreta");
-            break;
-          }
-          console.log("*******PROFESSOR ******");
-          console.table(encontrarProfessorVizualizar);
-          console.log("*******CURSOS DO PROFESSOR ******");
-          const cursosProfessorVizualizar = await cursoDAO.buscarCursoProfessor(
-            encontrarProfessorVizualizar
+          const autenticarProfessorPorIdEsenha = await new Autenticacao(
+            conexao
+          ).autenticarProfessorPorIdEsenha(
+            idProfessorVizualizar,
+            senhaProfessorVizualizar
           );
-          console.table(cursosProfessorVizualizar);
+
+          if (autenticarProfessorPorIdEsenha) {
+            console.log("*******PROFESSOR ******");
+            console.table(autenticarProfessorPorIdEsenha);
+            console.log("*******CURSOS DO PROFESSOR ******");
+            const cursosProfessorVizualizar =
+              await cursoDAO.buscarCursoProfessor(
+                autenticarProfessorPorIdEsenha
+              );
+            console.table(cursosProfessorVizualizar);
+          } else {
+            console.log("Professor não encontrado");
+          }
           break;
-        case 12:
+        case 13:
           const idAlunoVizualizar: number = Number(
             prompt("Digite o id do aluno: ")
           );
-          const encontrarAlunoVizualizar = await alunoDAO.buscarPorId(
-            idAlunoVizualizar
-          );
-          if (!encontrarAlunoVizualizar) {
-            console.log("Aluno não encontrado");
-            break;
-          }
 
           const senhaAlunoVizualizar = prompt("Digite a senha do aluno: ");
-          if (encontrarAlunoVizualizar.getSenha() !== senhaAlunoVizualizar) {
-            console.log("Senha incorreta");
-            break;
-          }
+
+          const autenticarAlunoPorIdEsenha = await new Autenticacao(
+            conexao
+          ).autenticarAlunoPorIdEsenha(idAlunoVizualizar, senhaAlunoVizualizar);
 
           console.log("*******ALUNO ******");
-          console.table(encontrarAlunoVizualizar);
+          console.table(autenticarAlunoPorIdEsenha);
+
           break;
-        case 13:
+        case 14:
           const idAlunoMatriculado: number = Number(
             prompt("Digite o id do aluno: ")
           );
-          const encontrarAlunoMatriculado = await alunoDAO.buscarPorId(
-            idAlunoMatriculado
+
+          const senhaAlunoMatriculado = prompt("Digite a senha do aluno: ");
+
+          const autenticarAlunoPorIdEsenhaMatriculado = await new Autenticacao(
+            conexao
+          ).autenticarAlunoPorIdEsenha(
+            idAlunoMatriculado,
+            senhaAlunoMatriculado
           );
-          if (!encontrarAlunoMatriculado) {
+
+          if (!autenticarAlunoPorIdEsenhaMatriculado) {
             console.log("Aluno não encontrado");
             break;
           }
 
-          const senhaAlunoMatriculado = prompt("Digite a senha do aluno: ");
-          if (encontrarAlunoMatriculado.getSenha() !== senhaAlunoMatriculado) {
-            console.log("Senha incorreta");
-            break;
-          }
           const cursosDoAluno = await cursoDAO.buscarCursoAlunoPorId(
-            encontrarAlunoMatriculado.getId()
+            autenticarAlunoPorIdEsenhaMatriculado.getId()
           );
 
           console.log("*******CURSOS DO ALUNO ******");
@@ -349,7 +386,7 @@ async function main() {
 
           break;
 
-        case 14:
+        case 15:
           const idProfessorDeletar: number = Number(
             prompt("Digite o id do professor que deseja deletar: ")
           );
