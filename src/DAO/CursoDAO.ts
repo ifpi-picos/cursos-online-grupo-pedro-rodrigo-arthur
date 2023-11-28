@@ -281,7 +281,7 @@ export class CursoDAO implements IDAO<Curso> {
     }
   }
 
-  async calcularMediaGeral(curso: Curso): Promise<number> {
+  async calcularMediaGeral(curso_id: number): Promise<number> {
     const select = `
       SELECT AVG(media) AS media_geral
       FROM curso_aluno
@@ -289,12 +289,60 @@ export class CursoDAO implements IDAO<Curso> {
     `;
 
     try {
-      const res = await this.conexao.query(select, [curso.getId()]);
+      const res = await this.conexao.query(select, [curso_id]);
       const turma = res && res.length > 0 ? res[0] : null;
       return turma ? turma.media_geral : 0;
     } catch (err) {
       console.log("Erro na consulta do curso", err);
       return 0;
     }
+  }
+
+  async porcentagemAprovadosEReprovados(
+    curso_id: number
+  ): Promise<{ percentualAprovados: number; percentualReprovados: number }> {
+    const select = `
+      SELECT
+        COUNT(CASE WHEN media >= 7 THEN 1 END) AS aprovados,
+        COUNT(CASE WHEN media < 7 THEN 1 END) AS reprovados,
+        COUNT(*) AS total_alunos,
+        (COUNT(CASE WHEN media >= 7 THEN 1 END) * 100.0 / COUNT(*)) AS percentual_aprovados,
+        (COUNT(CASE WHEN media < 7 THEN 1 END) * 100.0 / COUNT(*)) AS percentual_reprovados
+      FROM curso_aluno
+      WHERE id_curso = $1
+    `;
+
+    try {
+      const res = await this.conexao.query(select, [curso_id]);
+      const turma = res && res.length > 0 ? res[0] : null;
+
+      if (turma) {
+        return {
+          percentualAprovados: turma.percentual_aprovados || 0,
+          percentualReprovados: turma.percentual_reprovados || 0,
+        };
+      } else {
+        return { percentualAprovados: 0, percentualReprovados: 0 };
+      }
+    } catch (err) {
+      console.log("Erro na consulta do curso", err);
+      return { percentualAprovados: 0, percentualReprovados: 0 };
+    }
+  }
+
+  async estatisticasCurso(id_curso: number): Promise<any> {
+    const qtdAlunoCurso = await this.quantidadeAlunosPorCurso(id_curso);
+
+    const mediaGeral = await this.calcularMediaGeral(id_curso);
+
+    const { percentualAprovados, percentualReprovados } =
+      await this.porcentagemAprovadosEReprovados(id_curso);
+
+    return {
+      qtdAlunoCurso,
+      mediaGeral,
+      percentualAprovados,
+      percentualReprovados,
+    };
   }
 }

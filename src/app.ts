@@ -37,11 +37,8 @@ async function main() {
       console.log("13 - Vizualizar infomações do Aluno");
       console.log("14 - Vizualizar cursos que o Aluno está matriculado");
       console.log("15 - Delete Professor");
-      console.log(
-        "16 - Verificar quantidade de alunos matriculados em um curso"
-      );
+      console.log("16 = Estatistica do curso");
       console.log("17 - Cursos concliuidos pelo aluno");
-      console.log("18 - Exibir Media geral da turma");
 
       opcao = Number(prompt("Digite a opção desejada: "));
       console.log("******************************");
@@ -444,20 +441,21 @@ async function main() {
           }
           break;
         case 16:
-          console.log(
-            "*** Verificando a quantidade de alunos matriculados em um curso ***"
-          );
-          const idCursoV = Number(prompt("Digite o id do curso: "));
-          const cursoV = await cursoDAO.buscarPorId(idCursoV);
-          if (!cursoV) {
+          console.log("*** Estatistica do curso ***");
+          const idCursoE = Number(prompt("Digite o id do curso: "));
+          const cursoE = await cursoDAO.buscarPorId(idCursoE);
+          if (!cursoE) {
             console.log("Curso não encontrado");
             break;
           }
-          const quantidadeAlunos = await cursoDAO.quantidadeAlunosPorCurso(
-            cursoV.getId()
+          const estatisticaCurso = await cursoDAO.estatisticasCurso(
+            cursoE.getId()
           );
-          console.log("Quantidade de alunos matriculados no curso: ");
-          console.info(quantidadeAlunos);
+          if (estatisticaCurso === null) {
+            console.log("Não há alunos matriculados no curso");
+            break;
+          }
+          console.table(estatisticaCurso);
           break;
 
         case 17:
@@ -479,17 +477,6 @@ async function main() {
           console.log("Cursos concluídos pelo aluno: ", cursosConcluidos);
           break;
 
-        case 18:
-          console.log("*** Média geral da turma ***");
-          const idCursoM = Number(prompt("Digite o id do curso: "));
-          const cursoM = await cursoDAO.buscarPorId(idCursoM);
-          if (!cursoM) {
-            console.log("Curso não encontrado");
-            break;
-          }
-          const mediaGeral = await cursoDAO.calcularMediaGeral(cursoM);
-          console.log("Média geral da turma: ", mediaGeral);
-          break;
         default:
           console.log("Opção inválida");
       }
