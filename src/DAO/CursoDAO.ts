@@ -345,4 +345,49 @@ export class CursoDAO implements IDAO<Curso> {
       percentualReprovados,
     };
   }
+
+  async porcentagemAproveitamentoAluno(aluno_id: number): Promise<number> {
+    const select = `
+      SELECT
+        COUNT(CASE WHEN media >= 7 THEN 1 END) AS aprovados,
+        COUNT(*) AS total_alunos,
+        (COUNT(CASE WHEN media >= 7 THEN 1 END) * 100.0 / NULLIF(COUNT(*), 0)) AS percentual_aproveitamento
+      FROM curso_aluno
+      WHERE id_aluno = $1
+    `;
+
+    try {
+      const res = await this.conexao.query(select, [aluno_id]);
+      const resultados = res && res.length > 0 ? res[0] : null;
+
+      if (resultados) {
+        return resultados.percentual_aproveitamento || 0;
+      } else {
+        return 0;
+      }
+    } catch (err) {
+      console.log("Erro na consulta do aproveitamento do aluno", err);
+      return 0;
+    }
+  }
+
+  async desmatricularAluno(
+    id_curso: number,
+    id_aluno: number
+  ): Promise<boolean> {
+    const update = `
+      UPDATE curso_aluno
+      SET statusmatricula = $1
+      WHERE id_curso = $2 AND id_aluno = $3
+    `;
+
+    try {
+      const values = [StatusMatricula.CANCELADO, id_curso, id_aluno];
+      await this.conexao.query(update, values);
+      return true;
+    } catch (err) {
+      console.log("Erro na consulta do aproveitamento do aluno", err);
+      return false;
+    }
+  }
 }

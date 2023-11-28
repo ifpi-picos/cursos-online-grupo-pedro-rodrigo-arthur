@@ -35,10 +35,9 @@ async function main() {
       console.log("11 - Vizualizar infomações da tabela CursoAluno");
       console.log("12 - Vizualizar infomações do Professor");
       console.log("13 - Vizualizar infomações do Aluno");
-      console.log("14 - Vizualizar cursos que o Aluno está matriculado");
-      console.log("15 - Delete Professor");
-      console.log("16 = Estatistica do curso");
-      console.log("17 - Cursos concliuidos pelo aluno");
+      console.log("14 - Delete Professor");
+      console.log("15 = Estatistica do curso");
+      console.log("16 - Desmatricular aluno");
 
       opcao = Number(prompt("Digite a opção desejada: "));
       console.log("******************************");
@@ -373,40 +372,47 @@ async function main() {
             conexao
           ).autenticarAlunoPorIdEsenha(idAlunoVizualizar, senhaAlunoVizualizar);
 
-          console.log("*******ALUNO ******");
-          console.table(autenticarAlunoPorIdEsenha);
+          if (autenticarAlunoPorIdEsenha) {
+            console.log("*******ALUNO ******");
+            console.table(autenticarAlunoPorIdEsenha);
+            console.log("*******CURSOS DO ALUNO ******");
+            const cursosDoAlunoVizualizar =
+              await cursoDAO.buscarCursoAlunoPorId(
+                autenticarAlunoPorIdEsenha.getId()
+              );
+            console.table(cursosDoAlunoVizualizar);
+          } else {
+            console.log("Aluno não encontrado");
+          }
+
+          console.log("*******CURSOS DO CONCLUIDOS DO ALUNO ******");
+          if (autenticarAlunoPorIdEsenha) {
+            const cursosConcluidosDoAluno =
+              await cursoDAO.cursosConcluidosAluno(
+                autenticarAlunoPorIdEsenha.getId()
+              );
+            console.log(cursosConcluidosDoAluno);
+          } else {
+            console.log("Aluno não encontrado");
+          }
+
+          console.log("******* APROVEITAMAENTO DO ALUNO ******");
+          if (autenticarAlunoPorIdEsenha) {
+            const aproveitamentoDoAluno =
+              await cursoDAO.porcentagemAproveitamentoAluno(
+                autenticarAlunoPorIdEsenha.getId()
+              );
+            console.log(
+              "Aproveitamento do aluno: ",
+              aproveitamentoDoAluno,
+              "%"
+            );
+          } else {
+            console.log("Aluno não encontrado");
+          }
 
           break;
         case 14:
-          const idAlunoMatriculado: number = Number(
-            prompt("Digite o id do aluno: ")
-          );
-
-          const senhaAlunoMatriculado = prompt("Digite a senha do aluno: ");
-
-          const autenticarAlunoPorIdEsenhaMatriculado = await new Autenticacao(
-            conexao
-          ).autenticarAlunoPorIdEsenha(
-            idAlunoMatriculado,
-            senhaAlunoMatriculado
-          );
-
-          if (!autenticarAlunoPorIdEsenhaMatriculado) {
-            console.log("Aluno não encontrado");
-            break;
-          }
-
-          const cursosDoAluno = await cursoDAO.buscarCursoAlunoPorId(
-            autenticarAlunoPorIdEsenhaMatriculado.getId()
-          );
-
-          console.log("*******CURSOS DO ALUNO ******");
-          console.table(cursosDoAluno);
-          console.log("**************************");
-
-          break;
-
-        case 15:
           const idProfessorDeletar: number = Number(
             prompt("Digite o id do professor que deseja deletar: ")
           );
@@ -440,7 +446,7 @@ async function main() {
             console.log("Erro ao deletar professor");
           }
           break;
-        case 16:
+        case 15:
           console.log("*** Estatistica do curso ***");
           const idCursoE = Number(prompt("Digite o id do curso: "));
           const cursoE = await cursoDAO.buscarPorId(idCursoE);
@@ -457,26 +463,41 @@ async function main() {
           }
           console.table(estatisticaCurso);
           break;
+        case 16:
+          console.log("*** Desmatricular aluno ***");
 
-        case 17:
-          console.log("*** Cursos concluídos pelo aluno ***");
-          const idAlunoC = Number(prompt("Digite o id do aluno: "));
-          const alunoC = await alunoDAO.buscarPorId(idAlunoC);
-          if (!alunoC) {
+          const idAlunoDesmatricularE: number = Number(
+            prompt("Digite o id do aluno: ")
+          );
+          const senhaAlunoDesmatricularE = prompt("Digite a senha do aluno: ");
+
+          const autenticarAlunoPorIdEsenhaDesmatricular =
+            await new Autenticacao(conexao).autenticarAlunoPorIdEsenha(
+              idAlunoDesmatricularE,
+              senhaAlunoDesmatricularE
+            );
+
+          if (!autenticarAlunoPorIdEsenhaDesmatricular) {
             console.log("Aluno não encontrado");
             break;
           }
-          const cursosConcluidos = await cursoDAO.cursosConcluidosAluno(
-            alunoC.getId()
-          );
 
-          if (cursosConcluidos.length === 0) {
-            console.log("Aluno não possui cursos concluídos");
+          const idCursoDesmatricularE: number = Number(
+            prompt("Digite o id do curso: ")
+          );
+          const cursoDesmatricularE = await cursoDAO.buscarPorId(
+            idCursoDesmatricularE
+          );
+          if (!cursoDesmatricularE) {
+            console.log("Curso não encontrado");
             break;
           }
-          console.log("Cursos concluídos pelo aluno: ", cursosConcluidos);
-          break;
 
+          const desmatricularAluno = await cursoDAO.desmatricularAluno(
+            cursoDesmatricularE.getId(),
+            autenticarAlunoPorIdEsenhaDesmatricular.getId()
+          );
+          break;
         default:
           console.log("Opção inválida");
       }
