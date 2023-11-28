@@ -1,5 +1,5 @@
 import { AlunoDAO } from "./DAO/AlunoDAO";
-import { Autenticacao } from "./DAO/Autenticacao/Atenticacao";
+import { Autenticacao } from "./Autenticacao/Atenticacao";
 import Conexao from "./DAO/Conexao";
 import { CursoDAO } from "./DAO/CursoDAO";
 import { ProfessorDAO } from "./DAO/ProfessorDAO";
@@ -37,6 +37,11 @@ async function main() {
       console.log("13 - Vizualizar infomações do Aluno");
       console.log("14 - Vizualizar cursos que o Aluno está matriculado");
       console.log("15 - Delete Professor");
+      console.log(
+        "16 - Verificar quantidade de alunos matriculados em um curso"
+      );
+      console.log("17 - Cursos concliuidos pelo aluno");
+      console.log("18 - Exibir Media geral da turma");
 
       opcao = Number(prompt("Digite a opção desejada: "));
       console.log("******************************");
@@ -68,6 +73,24 @@ async function main() {
           }
           break;
         case 2:
+          const idProfessorCurso: number = Number(
+            prompt("Digite o id do professor: ")
+          );
+
+          const senhaProfessorCurso = prompt("Digite a senha do professor: ");
+
+          const autenticarProfessorCurso = await new Autenticacao(
+            conexao
+          ).autenticarProfessorPorIdEsenha(
+            idProfessorCurso,
+            senhaProfessorCurso
+          );
+
+          if (!autenticarProfessorCurso) {
+            console.log("Professor não encontrado");
+            break;
+          }
+
           console.log("******* CADASTRANDO CURSO *******");
           const nomeCurso: string = prompt("Digite o nome do curso: ");
           const cargaHorariaCurso: number = prompt(
@@ -420,7 +443,53 @@ async function main() {
             console.log("Erro ao deletar professor");
           }
           break;
+        case 16:
+          console.log(
+            "*** Verificando a quantidade de alunos matriculados em um curso ***"
+          );
+          const idCursoV = Number(prompt("Digite o id do curso: "));
+          const cursoV = await cursoDAO.buscarPorId(idCursoV);
+          if (!cursoV) {
+            console.log("Curso não encontrado");
+            break;
+          }
+          const quantidadeAlunos = await cursoDAO.quantidadeAlunosPorCurso(
+            cursoV.getId()
+          );
+          console.log("Quantidade de alunos matriculados no curso: ");
+          console.info(quantidadeAlunos);
+          break;
 
+        case 17:
+          console.log("*** Cursos concluídos pelo aluno ***");
+          const idAlunoC = Number(prompt("Digite o id do aluno: "));
+          const alunoC = await alunoDAO.buscarPorId(idAlunoC);
+          if (!alunoC) {
+            console.log("Aluno não encontrado");
+            break;
+          }
+          const cursosConcluidos = await cursoDAO.cursosConcluidosAluno(
+            alunoC.getId()
+          );
+
+          if (cursosConcluidos.length === 0) {
+            console.log("Aluno não possui cursos concluídos");
+            break;
+          }
+          console.log("Cursos concluídos pelo aluno: ", cursosConcluidos);
+          break;
+
+        case 18:
+          console.log("*** Média geral da turma ***");
+          const idCursoM = Number(prompt("Digite o id do curso: "));
+          const cursoM = await cursoDAO.buscarPorId(idCursoM);
+          if (!cursoM) {
+            console.log("Curso não encontrado");
+            break;
+          }
+          const mediaGeral = await cursoDAO.calcularMediaGeral(cursoM);
+          console.log("Média geral da turma: ", mediaGeral);
+          break;
         default:
           console.log("Opção inválida");
       }

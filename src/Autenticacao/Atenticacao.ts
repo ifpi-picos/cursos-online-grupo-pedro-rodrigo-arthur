@@ -1,8 +1,8 @@
-import { Aluno } from "../../Entidades/Aluno";
-import { Professor } from "../../Entidades/Professor";
-import { AlunoDAO } from "../AlunoDAO";
-import Conexao from "../Conexao";
-import { ProfessorDAO } from "../ProfessorDAO";
+import { Aluno } from "../Entidades/Aluno";
+import { Professor } from "../Entidades/Professor";
+import { AlunoDAO } from "../DAO/AlunoDAO";
+import Conexao from "../DAO/Conexao";
+import { ProfessorDAO } from "../DAO/ProfessorDAO";
 
 export class Autenticacao {
   private conexao: Conexao;
@@ -26,6 +26,20 @@ export class Autenticacao {
   }
 
   async autenticarProfessorPorIdEsenha(
+    id: number,
+    senha: string
+  ): Promise<Professor | null> {
+    const professor = await new ProfessorDAO(this.conexao).buscarPorId(id);
+    if (professor) {
+      if (professor.getSenha() === senha) {
+        return professor && professor.getId() ? professor : null;
+      }
+      console.log("Senha incorreta");
+    }
+    return null;
+  }
+
+  async autenticarCadastro(
     id: number,
     senha: string
   ): Promise<Professor | null> {

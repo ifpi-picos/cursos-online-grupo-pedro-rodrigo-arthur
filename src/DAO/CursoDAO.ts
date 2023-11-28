@@ -247,4 +247,54 @@ export class CursoDAO implements IDAO<Curso> {
       return [];
     }
   }
+
+  async quantidadeAlunosPorCurso(id_curso: number): Promise<number> {
+    const select = `
+      SELECT COUNT(id_aluno) AS quantidade_de_alunos
+      FROM curso_aluno
+      WHERE id_curso = $1
+      GROUP BY id_curso
+    `;
+
+    try {
+      const res = await this.conexao.query(select, [id_curso]);
+      const curso = res && res.length > 0 ? res[0] : null;
+      return curso ? curso.quantidade_de_alunos : 0;
+    } catch (err) {
+      console.log("Erro na consulta do curso", err);
+      return 0;
+    }
+  }
+  async cursosConcluidosAluno(idAluno: number): Promise<string[]> {
+    const select = `SELECT * FROM curso_aluno WHERE id_aluno = $1 AND situacao = 'Aprovado'`;
+
+    try {
+      const res = await this.conexao.query(select, [idAluno]);
+      if (res && res.length > 0) {
+        return res.map((row: any) => row.id_curso);
+      } else {
+        return [];
+      }
+    } catch (err) {
+      console.log("Erro na consulta do curso", err);
+      return [];
+    }
+  }
+
+  async calcularMediaGeral(curso: Curso): Promise<number> {
+    const select = `
+      SELECT AVG(media) AS media_geral
+      FROM curso_aluno
+      WHERE id_curso = $1
+    `;
+
+    try {
+      const res = await this.conexao.query(select, [curso.getId()]);
+      const turma = res && res.length > 0 ? res[0] : null;
+      return turma ? turma.media_geral : 0;
+    } catch (err) {
+      console.log("Erro na consulta do curso", err);
+      return 0;
+    }
+  }
 }
