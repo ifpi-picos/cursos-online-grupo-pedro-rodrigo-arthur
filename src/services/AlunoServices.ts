@@ -37,10 +37,10 @@ export class AlunoServices extends AlunoRepository {
   }
 
   async buscarTodos(): Promise<Aluno[]> {
-    if ((await super.buscarTodos()).length == 0) {
-      throw new Error("Não há alunos cadastrados");
-    }
+    
     const buscaT = super.buscarTodos();
+
+    if(!buscaT) throw new Error("Aluno não encontrado");
     return buscaT;
   }
 
