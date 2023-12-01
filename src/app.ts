@@ -5,11 +5,8 @@ import alunos from "./routes/alunos";
 import cursoAlunos from "./routes/cursoAlunos";
 import cursos from "./routes/cursos";
 
-import { ProfessorServices } from "./services/ProfessorServices";
-import { AlunoServices } from "./services/AlunoServices";
-import { CursoServices } from "./services/CursoSevices";
 const app = Express();
-import cors = require('cors');
+const cors = require('cors')
 
 app.use(cors())
 
