@@ -10,16 +10,14 @@ export abstract class CursoAlunoRepository extends RepositoryMetods<CursoAluno> 
   }
 
   async buscarPorId(id: number): Promise<CursoAluno> {
-    return super.buscarPorId(id);
+    const cursoAluno = await this.buscarTodos();
+    return cursoAluno.find((curso) => curso.id_curso === id);
   }
 
   async buscarTodos(): Promise<CursoAluno[]> {
     return AppDataSource.getRepository(CursoAluno)
       .createQueryBuilder("curso_aluno")
-      .getMany()
-      .then((objeto) => {
-        return objeto as CursoAluno[];
-      });
+      .getMany();
   }
 
   async deletarCursoAluno(idCurso: number, idAluno: number): Promise<void> {
