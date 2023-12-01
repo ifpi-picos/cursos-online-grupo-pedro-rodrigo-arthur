@@ -4,10 +4,14 @@ import professores from "./routes/professores";
 import alunos from "./routes/alunos";
 import cursoAlunos from "./routes/cursoAlunos";
 import cursos from "./routes/cursos";
+
 import { ProfessorServices } from "./services/ProfessorServices";
 import { AlunoServices } from "./services/AlunoServices";
 import { CursoServices } from "./services/CursoSevices";
 const app = Express();
+import cors = require('cors');
+
+app.use(cors())
 
 app.use(Express.json());
 
