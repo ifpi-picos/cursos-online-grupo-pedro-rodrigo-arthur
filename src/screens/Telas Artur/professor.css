@@ -60,7 +60,7 @@ body {
 
 .login-button button {
     border: none;
-    background-color: #40ab23;
+    background-color: #3e8d3c;
     padding: 0.4rem 1rem;
     border-radius: 5px;
     cursor: pointer;
@@ -68,7 +68,8 @@ body {
 }
 
 .login-button  button:hover {
-    background-color: #6b63fff1;
+    background-color: rgb(51, 181, 33);
+    transition-duration: .5s;
 }
 .login-button a {
    text-decoration: none;
@@ -136,7 +137,8 @@ body {
 }
 
 .continue-button button:hover {
-    background-color: #6b63fff1;
+    background-color: rgb(51, 181, 33);
+    transition-duration: .5s;
 }
 
 .continue-button button a {
