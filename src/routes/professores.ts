@@ -63,4 +63,15 @@ router.get("/email/:email", async (req, res) => {
   }
 });
 
+router.get("/autenticar/:email/:senha", async (req, res) => {
+  try {
+    const email = req.params.email;
+    const senha = req.params.senha;
+    const professor = await professorServices.autenticar(email, senha);
+    res.json(professor);
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+  }
+})
+
 export default router;
