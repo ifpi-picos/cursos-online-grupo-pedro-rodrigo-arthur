@@ -11,9 +11,12 @@ router.get("/buscarTodos", async (req, res) => {
 
 router.post("/cadastro", async (req, res) => {
   try {
-    const aluno = req.body;
-    const alunoSalvo = await alunoServices.cadastrar(aluno);
-    res.json(alunoSalvo);
+    const {nome,email,senha ,telefone,status} = req.body;
+    
+    const aluno = await alunoServices.cadastrar({
+      nome, email, senha, telefone, status
+    });
+    res.json(aluno);
   } catch (error) {
     res.status(400).json({ error: error.message });
   }
@@ -64,9 +67,6 @@ router.post("/login", async (req, res) => {
   try {
     const { email, senha } = req.body;
     const aluno = await alunoServices.autenticar(email, senha);
-
-    if(!aluno) throw new Error("Aluno não encontrado");
-    if(aluno.senha !== senha) throw new Error("Senha incorreta");
 
     if(senha === aluno.senha && email === aluno.email){
       res.json({success: true, message: "Login realizado com sucesso"});
