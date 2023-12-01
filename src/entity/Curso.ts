@@ -5,7 +5,7 @@ import { Professor } from "./Professor";
 @Entity()
 export class Curso {
   @PrimaryGeneratedColumn()
-  id: number;
+  id?: number;
 
   @Column()
   nome: string;
