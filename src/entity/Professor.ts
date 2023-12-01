@@ -4,7 +4,7 @@ import { Curso } from "./Curso";
 @Entity()
 export class Professor {
   @PrimaryGeneratedColumn()
-  id: number;
+  id?: number;
 
   @Column()
   nome: string;
@@ -19,5 +19,5 @@ export class Professor {
   senha: string;
 
   @OneToMany(() => Curso, (curso) => curso.id_professor)
-  cursos: Curso[];
+  cursos?: Curso[];
 }

@@ -21,9 +21,12 @@ router.get("/buscarPorId/:id", async (req, res) => {
 
 router.post("/cadastro", async (req, res) => {
   try {
-    const professor = req.body;
-    const professorSalvo = await professorServices.cadastrar(professor);
-    res.json(professorSalvo);
+    const {nome,email,telefone,senha} = req.body;
+    
+    const professor = await professorServices.cadastrar({
+      nome, email, telefone, senha
+    });
+    res.json(professor);
   } catch (error) {
     res.status(400).json({ error: error.message });
   }
