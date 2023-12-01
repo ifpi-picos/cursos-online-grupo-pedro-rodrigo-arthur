@@ -1,9 +1,10 @@
-const formCadAluno = document.getElementById("cadastro-aluno");
+const form = document.getElementById("contact-us-form");
 
-formCadAluno.addEventListener("submit", formCadAluno);
+form.addEventListener("submit", formSubmit);
 
-function formCadAluno(e) {
+function formSubmit(e) {
     e.preventDefault()
+    console.log("é maee é mae")
 
     const nome = document.getElementById("firstname").value;
     const email = document.getElementById("email").value;
@@ -18,6 +19,9 @@ function formCadAluno(e) {
         telefone: telefone,
         status: status,
     }
+
+    console.log("aluno", aluno)
+
 
   fetch("http://localhost:3000/alunos/cadastro", {
         method: "POST",
