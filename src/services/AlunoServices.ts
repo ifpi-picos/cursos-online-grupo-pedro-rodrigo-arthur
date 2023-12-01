@@ -68,7 +68,7 @@ export class AlunoServices extends AlunoRepository {
   }
 
   async verificarEmailSenha(email: string, senha: string): Promise<Aluno> {
-    const alunoAutenticado = await super.buscarPorEmail(email);
+    const alunoAutenticado = await this.buscarPorEmail(email);
     if (alunoAutenticado.senha != senha) {
       throw new Error("Senha incorreta");
     }
