@@ -21,12 +21,13 @@ export abstract class RepositoryMetods<T> implements Repository<T> {
   }
 
   async atualizar(id: number, objeto: T) {
-    return await AppDataSource.getRepository(this.entityClass)
-      .update(id, objeto as any)
-      .catch((error) => {
-        throw new Error(error);
-      });
-  }
+    try{
+      const update = await AppDataSource.getRepository(this.entityClass).update(id,objeto as any);
+      return update;
+    }catch(error){
+      throw new Error(error);
+    }
+    }
 
   async deletar(id: number): Promise<T> {
     await AppDataSource.getRepository(this.entityClass).delete(id);
