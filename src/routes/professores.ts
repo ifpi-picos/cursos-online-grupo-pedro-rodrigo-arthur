@@ -4,12 +4,12 @@ import { ProfessorServices } from "../services/ProfessorServices";
 const router = Express.Router();
 const professorServices = new ProfessorServices();
 
-router.get("/", async (req, res) => {
+router.get("/buscarTodos", async (req, res) => {
   const professores = await professorServices.buscarTodos();
   res.json(professores);
 });
 
-router.get("/:id", async (req, res) => {
+router.get("/buscarPorId/:id", async (req, res) => {
   try {
     const id = Number(req.params.id);
     const professor = await professorServices.buscarPorId(id);
@@ -19,7 +19,7 @@ router.get("/:id", async (req, res) => {
   }
 });
 
-router.post("/", async (req, res) => {
+router.post("/cadastro", async (req, res) => {
   try {
     const professor = req.body;
     const professorSalvo = await professorServices.cadastrar(professor);
@@ -29,7 +29,7 @@ router.post("/", async (req, res) => {
   }
 });
 
-router.delete("/:id", async (req, res) => {
+router.delete("/deletarPorId/:id", async (req, res) => {
   try {
     const id = Number(req.params.id);
     const professorDeletado = await professorServices.deletar(id);
@@ -39,7 +39,7 @@ router.delete("/:id", async (req, res) => {
   }
 });
 
-router.put("/:id", async (req, res) => {
+router.put("/atualizar/:id", async (req, res) => {
   try {
     const id = Number(req.params.id);
     const professor = req.body;
@@ -53,7 +53,7 @@ router.put("/:id", async (req, res) => {
   }
 });
 
-router.get("/email/:email", async (req, res) => {
+router.get("/buscarPorEmail/:email", async (req, res) => {
   try {
     const email = req.params.email;
     const professor = await professorServices.buscarPorEmail(email);
@@ -63,14 +63,19 @@ router.get("/email/:email", async (req, res) => {
   }
 });
 
-router.get("/autenticar/:email/:senha", async (req, res) => {
+router.get("/login", async (req, res) => {
   try {
-    const email = req.params.email;
-    const senha = req.params.senha;
+    const { email, senha } = req.body;
     const professor = await professorServices.autenticar(email, senha);
-    res.json(professor);
+
+    if (!professor) throw new Error("Professor não encontrado");
+    if(professor.senha != senha) throw new Error("Senha incorreta");
+
+    if(professor.senha == senha && professor.email == email){
+    res.json({success: true, message: "Login realizado com sucesso"});
+    }
   } catch (error) {
-    res.status(400).json({ error: error.message });
+    res.status(401).json({success: false , message : "Login não realizado" });
   }
 })
 

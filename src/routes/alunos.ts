@@ -4,12 +4,12 @@ import { AlunoServices } from "../services/AlunoServices";
 const router = Express.Router();
 const alunoServices = new AlunoServices();
 
-router.get("/", async (req, res) => {
+router.get("/buscarTodos", async (req, res) => {
   const alunos = await alunoServices.buscarTodos();
   res.json(alunos);
 });
 
-router.post("/", async (req, res) => {
+router.post("/cadastro", async (req, res) => {
   try {
     const aluno = req.body;
     const alunoSalvo = await alunoServices.cadastrar(aluno);
@@ -19,7 +19,7 @@ router.post("/", async (req, res) => {
   }
 });
 
-router.delete("/:id", async (req, res) => {
+router.delete("/deletar/:id", async (req, res) => {
   try {
     const id = Number(req.params.id);
     const alunoDeletado = await alunoServices.deletar(id);
@@ -29,7 +29,7 @@ router.delete("/:id", async (req, res) => {
   }
 });
 
-router.put("/:id", async (req, res) => {
+router.put("/atualizar/:id", async (req, res) => {
   try {
     const id = Number(req.params.id);
     const aluno = req.body;
@@ -40,7 +40,7 @@ router.put("/:id", async (req, res) => {
   }
 });
 
-router.get("/email/:email", async (req, res) => {
+router.get("/buscarPorEmail/:email", async (req, res) => {
   try {
     const email = req.params.email;
     const aluno = await alunoServices.buscarPorEmail(email);
@@ -50,7 +50,7 @@ router.get("/email/:email", async (req, res) => {
   }
 });
 
-router.get("/:id", async (req, res) => {
+router.get("/buscarPorId/:id", async (req, res) => {
   try {
     const id = Number(req.params.id);
     const aluno = await alunoServices.buscarPorId(id);
@@ -59,5 +59,22 @@ router.get("/:id", async (req, res) => {
     res.status(400).json({ error: error.message });
   }
 });
+
+router.post("/login", async (req, res) => {
+  try {
+    const { email, senha } = req.body;
+    const aluno = await alunoServices.autenticar(email, senha);
+
+    if(!aluno) throw new Error("Aluno não encontrado");
+    if(aluno.senha !== senha) throw new Error("Senha incorreta");
+
+    if(senha === aluno.senha && email === aluno.email){
+      res.json({success: true, message: "Login realizado com sucesso"});
+    }
+    
+  } catch (error) {
+    res.status(401).json({ sucess: false, message: "Credenciais inválidas" });
+  }
+})
 
 export default router;
