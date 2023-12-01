@@ -4,7 +4,7 @@ import { StatusAluno } from "../ENUM/StatusAluno";
 @Entity()
 export class Aluno {
   @PrimaryGeneratedColumn()
-  id: number;
+  id?: number;
 
   @Column()
   nome: string;
