@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="cadPro.css" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;600&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <div class="background">
+      <div class="shape"></div>
+      <div class="shape"></div>
+    </div>
+    <form>
+      <h3>Cadastro de Professor</h3>
+      <label for="nomeProfessor">Nome:</label>
+      <input
+        type="text"
+        id="nomeProfessor"
+        name="nomeProfessor"
+        required
+      /><br /><br />
+
+      <label for="telefoneProfessor">Telefone:</label>
+      <input
+        type="text"
+        id="telefoneProfessor"
+        name="telefoneProfessor"
+        required
+      /><br /><br />
+
+      <label for="emailProfessor">Email:</label>
+      <input
+        type="email"
+        id="emailProfessor"
+        name="emailProfessor"
+        required
+        pattern="[a-zA-Z0-9._%+-]+&#64;[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}"
+      /><br /><br />
+
+      <label for="senhaProfessor">Senha:</label>
+      <input
+        type="password"
+        id="senhaProfessor"
+        name="senhaProfessor"
+        required
+      /><br /><br />
+
+      <button>Cadastrar</button>
+    </form>
+  </body>
+</html>
