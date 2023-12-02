@@ -135,21 +135,15 @@ button:hover {
 .navbar {
   overflow: hidden;
   background-color: #333;
-  display: flex;
-  justify-content: space-around;
 }
 
-.navbar a {
-  text-decoration: none;
-  color: black;
-  font-size: 440px;
-}
+.navbar a,
 .navbar .dropbtn {
   float: left;
   display: block;
   color: #f2f2f2;
   text-align: center;
-  padding: 14px 16px;
+  padding: 24px 25px;
   text-decoration: none;
 }
 
@@ -201,25 +195,14 @@ button:hover {
   display: block;
 }
 
-table {
+.profile {
   width: 100%;
-  border-collapse: collapse;
-  margin-top: 20px;
+  padding: 40px;
+  background-color: #f1f1f1;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
 }
-
-table,
-th,
-td {
-  border: 1px solid black;
-  padding: 15px;
-  text-align: left;
-}
-
-th {
-  background-color: #61b364;
-  color: white;
-}
-
-tr:nth-child(even) {
-  background-color: #f2f2f2;
+.profile h2,
+.profile p {
+  margin: 20px;
+  padding: 0px;
 }
