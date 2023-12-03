@@ -1,17 +1,12 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="light">
+<html lang="pt-br" data-theme="light">
   <head>
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="../../assets/css/cadAlu.css"  />
+    <link rel="stylesheet" href="../../assets/css/cadastroAluno.css" />
     <title>Cursos Online</title>
-    
-    <link rel="preconnect" href="https://fonts.gstatic.com" />
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
-    />
+
     <link
       href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;600&display=swap"
       rel="stylesheet"
@@ -22,7 +17,7 @@
       <div class="shape"></div>
       <div class="shape"></div>
     </div>
-    <form>
+    <form id="aluno_form">
       <h3>Cadastro de Aluno</h3>
       <label for="nomeAluno">Nome do Aluno:</label>
       <input type="text" id="nomeAluno" name="nomeAluno" required /><br /><br />
@@ -49,22 +44,12 @@
 
       <label for="statusAluno">Status:</label>
       <select id="statusAluno" name="statusAluno">
-        <option value="1" onclick="uncheckInactive()">Ativo</option>
-        <option value="2" onclick="uncheckActive()">Inativo</option>
+        <option value="1">Ativo</option>
+        <option value="2">Inativo</option>
       </select>
 
-      <script>
-        function uncheckInactive() {
-          document.getElementById("statusInativo").checked = false;
-        }
-
-        function uncheckActive() {
-          document.getElementById("statusAtivo").checked = false;
-        }
-      </script>
-
-      <button>Cadastrar</button>
+      <button onclick="formSubmit(event)">Cadastrar</button>
     </form>
-    <script src="../../assets/ts/cadAlu.js"></script>
+    <script src="../../assets/js/cadastroAluno.js"></script>
   </body>
 </html>
