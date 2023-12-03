@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="../../assets/css/cadAlu.css" />
+    <link rel="stylesheet" href="../../assets/css/login.css" />
     <link rel="preconnect" href="https://fonts.gstatic.com" />
     <link
       rel="stylesheet"
@@ -21,18 +21,8 @@
       <div class="shape"></div>
     </div>
     <form>
-      <h3>Cadastro de Aluno</h3>
-      <label for="nomeAluno">Nome do Aluno:</label>
-      <input type="text" id="nomeAluno" name="nomeAluno" required /><br /><br />
-
-      <label for="telefoneAluno">Telefone:</label>
-      <input
-        type="text"
-        id="telefoneAluno"
-        name="telefoneAluno"
-        required
-      /><br /><br />
-
+      <h3>Login</h3>
+      <br /><br />
       <label for="emailAluno">Email:</label>
       <input
         type="email"
@@ -45,23 +35,7 @@
       <label for="senhaAluno">Senha:</label>
       <input type="password" id="senhaAluno" name="senhaAluno" required /><br />
 
-      <label for="statusAluno">Status:</label>
-      <select id="statusAluno" name="statusAluno">
-        <option value="1" onclick="uncheckInactive()">Ativo</option>
-        <option value="2" onclick="uncheckActive()">Inativo</option>
-      </select>
-
-      <script>
-        function uncheckInactive() {
-          document.getElementById("statusInativo").checked = false;
-        }
-
-        function uncheckActive() {
-          document.getElementById("statusAtivo").checked = false;
-        }
-      </script>
-
-      <button>Cadastrar</button>
+      <button>Entrar</button>
     </form>
     <script src="cadAlu.js"></script>
   </body>
