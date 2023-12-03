@@ -156,3 +156,18 @@ label[for="statusAluno"] {
   margin-right: -50px; /* espaço entre o rótulo e o dropdown */
   text-align: 50px; /* alinha o texto à direita */
 }
+.navbar {
+  background-color: #8a8a8a; /* Cor dos links na barra de navegação */
+}
+
+.nav-link {
+  color: #ffffff;
+  text-decoration: none;
+}
+a {
+  color: rgb(255, 255, 255);
+  text-decoration: underline;
+}
+a:hover {
+  color: #ffffff;
+}
