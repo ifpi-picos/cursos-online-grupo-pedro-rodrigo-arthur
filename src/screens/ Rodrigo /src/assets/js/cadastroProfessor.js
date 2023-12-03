@@ -11,7 +11,7 @@ function cadastrarProfessor(event) {
     telefone: document.getElementById("telefoneProfessor").value,
   };
 
-  fetch("http://localhost:3000/alunos/cadastro", {
+  fetch("http://localhost:3000/professores/cadastro", {
     method: "POST",
     headers: {
       "content-type": "application/json",
