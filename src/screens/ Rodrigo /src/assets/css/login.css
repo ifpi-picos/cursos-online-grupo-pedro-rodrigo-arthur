@@ -194,3 +194,19 @@ label[for="statusAluno"] {
   background-color: #080710;
   color: white;
 }
+
+.form-select {
+  padding: 1px;
+  font-size: 16px;
+  border-radius: 4px;
+  border: 1px solid #000000;
+  color: #333;
+}
+
+.form-select option[value="1"] {
+  background-color: #3b3b3b;
+}
+
+.form-select option[value="2"] {
+  background-color: #3d3d3d;
+}

@@ -171,3 +171,7 @@ a {
 a:hover {
   color: #ffffff;
 }
+
+.navbar-nav .nav-link:hover {
+  color: #000000; /* Por exemplo, vermelho ao passar o mouse */
+}
