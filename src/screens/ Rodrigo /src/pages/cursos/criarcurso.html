@@ -22,37 +22,27 @@
       <div class="shape"></div>
       <div class="shape"></div>
     </div>
-    <form>
+    <form id="curso_form">
       <h3>Criar Curso</h3>
-      <label for="nomeAluno">Nome:</label>
-      <input type="text" id="nomeAluno" name="nomeAluno" required /><br /><br />
+      <label for="nomeCurso">Nome:</label>
+      <input type="text" id="nomeCurso" name="nomeCurso" required /><br /><br />
 
-      <label for="telefoneAluno">Carga Horária:</label>
+      <label for="cargaHoraria">Carga Horária:</label>
       <input
         type="number"
-        id="telefoneAluno"
-        name="telefoneAluno"
+        id="cargaHoraria"
+        name="cargaHoraria"
         required
       /><br /><br />
 
-      <label for="statusAluno">Status:</label>
-      <select id="statusAluno" name="statusAluno">
-        <option value="1" onclick="uncheckInactive()">Ativo</option>
-        <option value="2" onclick="uncheckActive()">Inativo</option>
+      <label for="statusCurso">Status:</label>
+      <select id="statusCurso" name="statusCurso">
+        <option value="1">Ativo</option>
+        <option value="2">Inativo</option>
       </select>
-
-      <script>
-        function uncheckInactive() {
-          document.getElementById("statusInativo").checked = false;
-        }
-
-        function uncheckActive() {
-          document.getElementById("statusAtivo").checked = false;
-        }
-      </script>
 
       <button>Criar</button>
     </form>
-    <script src="cadAlu.js"></script>
   </body>
+  <script src="../../assets/js/criarcurso.js"></script>
 </html>

@@ -26,12 +26,6 @@ body {
   border-radius: 50%;
 }
 
-.shape:first-child {
-  background: linear-gradient(#1a172f, #201b3b);
-  left: -80px;
-  top: -80px;
-}
-
 .shape:last-child {
   background: linear-gradient(to right, #161330, #1b1831);
   right: -30px;
@@ -127,23 +121,6 @@ input {
   color: #e5e5e5;
 }
 
-button {
-  margin-top: 5px;
-  width: 100%;
-  background-color: #ffffff;
-  color: #080710;
-  padding: 15px 0;
-  font-size: 18px;
-  font-weight: 600;
-  border-radius: 5px;
-  cursor: pointer;
-  transition: 0.2s ease;
-}
-
-button:hover {
-  background-color: #d185ff;
-}
-
 .social {
   margin-top: 30px;
   display: flex;
@@ -178,19 +155,4 @@ label[for="statusAluno"] {
   width: 150px; /* largura do rótulo */
   margin-right: -50px; /* espaço entre o rótulo e o dropdown */
   text-align: 50px; /* alinha o texto à direita */
-}
-
-#statusAluno {
-  /* Adicione seus estilos aqui */
-  padding: 7px;
-  font-size: 16px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  background-color: rgb(36, 36, 56);
-  color: white;
-}
-
-#statusAluno option {
-  background-color: #080710;
-  color: white;
 }
