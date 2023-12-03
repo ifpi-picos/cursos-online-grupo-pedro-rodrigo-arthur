@@ -1,13 +1,13 @@
-document.getElementById("loginPro_form").addEventListener("submit", loginPro);
+document.getElementById("loginAluno_form").addEventListener("submit", loginAluno);
 
-function loginPro(event) {
+function loginAluno(event) {
   event.preventDefault();
   const curso = {
-    email: document.getElementById("emailProfessor").value,
-    senha: document.getElementById("senhaProfessor").value,
+    email: document.getElementById("emailAluno").value,
+    senha: document.getElementById("senhaAluno").value,
   };
   console.log(curso);
-  fetch("http://localhost:3000/professores/login", {
+  fetch("http://localhost:3000/alunos/login", {
     method: "POST",
     headers: {
       "content-type": "application/json",
@@ -20,7 +20,7 @@ function loginPro(event) {
       if (res.success) {
         localStorage.setItem("usuario", JSON.stringify(res.professor));
         window.location.href =
-          "http://localhost:5500/cursos-online-grupo-pedro-rodrigo-arthur/src/screens/%20Rodrigo%20/src/pages/professor/perfil.html";
+          "http://localhost:5500/cursos-online-grupo-pedro-rodrigo-arthur/src/screens/%20Rodrigo%20/src/pages/aluno/perfil.html";
       }
     })
     .catch((err) => {

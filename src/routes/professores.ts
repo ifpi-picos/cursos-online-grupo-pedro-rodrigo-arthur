@@ -79,7 +79,13 @@ router.post("/login", async (req, res) => {
     if (professor.senha != senha) throw new Error("Senha incorreta");
 
     if (professor.senha == senha && professor.email == email) {
-      res.json({ success: true, message: "Login realizado com sucesso" });
+      delete professor.senha;
+
+      res.json({
+        success: true,
+        message: "Login realizado com sucesso",
+        professor: professor,
+      });
     }
   } catch (error) {
     res.status(401).json({ success: false, message: "Login não realizado" });
