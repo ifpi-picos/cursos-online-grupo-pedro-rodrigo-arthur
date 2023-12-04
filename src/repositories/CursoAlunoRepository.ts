@@ -67,4 +67,58 @@ export abstract class CursoAlunoRepository extends RepositoryMetods<CursoAluno> 
     }
     return cursos.filter((curso) => curso.id_aluno === id);
   }
+
+  async quanridadeDeAlunosPorCurso(id: number): Promise<number> {
+    const cursos = await this.buscarTodos();
+    if (cursos.length === 0) {
+      throw new Error("Nenhum curso cadastrado");
+    }
+    return cursos.filter((curso) => curso.id_aluno).length;
+  }
+
+  async porcentagemDeAlunosAprovadosPorCurso(id: number): Promise<number> {
+    const cursos = await this.buscarTodos();
+    if (cursos.length === 0) {
+      throw new Error("Nenhum curso cadastrado");
+    }
+    const alunos = cursos.filter((curso) => curso.id_curso === id);
+    const alunosAprovados = alunos.filter((aluno) => aluno.situacao === "Aprovado");
+    return alunosAprovados.length / alunos.length;
+  }
+
+  async porcentagemDeAlunosReprovadosPorCurso(id: number): Promise<number> {
+    const cursos = await this.buscarTodos();
+    if (cursos.length === 0) {
+      throw new Error("Nenhum curso cadastrado");
+    }
+    const alunos = cursos.filter((curso) => curso.id_curso === id);
+    const alunosReprovados = alunos.filter((aluno) => aluno.situacao === "Reprovado");
+    return alunosReprovados.length / alunos.length;
+  }
+
+  async mediaGeralDeAlunosPorCurso(id: number): Promise<number> {
+    const cursos = await this.buscarTodos();
+    if (cursos.length === 0) {
+      throw new Error("Nenhum curso cadastrado");
+    }
+    const alunos = cursos.filter((curso) => curso.id_curso === id);
+    const mediaGeral = alunos.reduce((acc, aluno) => acc + Number(aluno.media), 0);
+    return mediaGeral / alunos.length;
+  }
+
+  async cursosConcluidosPorAluno(id: number): Promise<CursoAluno[]> {
+    const cursos = await this.buscarTodos();
+    if (cursos.length === 0) {
+      throw new Error("Nenhum curso cadastrado");
+    }
+    return cursos.filter((curso) => curso.id_aluno === id && curso.situacao === "Aprovado");
+  }
+
+  async cursosAlunoMatriculado(id: number): Promise<CursoAluno[]> {
+    const cursos = await this.buscarTodos();
+    if (cursos.length === 0) {
+      throw new Error("Nenhum curso cadastrado");
+    }
+    return cursos.filter((curso) => curso.id_aluno === id && curso.statusmatricula === "MATRICULADO");
+  }
 }
