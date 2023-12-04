@@ -26,12 +26,6 @@ body {
   border-radius: 50%;
 }
 
-.shape:first-child {
-  background: linear-gradient(#1a172f, #201b3b);
-  left: -80px;
-  top: -80px;
-}
-
 .shape:last-child {
   background: linear-gradient(to right, #161330, #1b1831);
   right: -30px;
@@ -39,12 +33,12 @@ body {
 }
 
 form {
-  height: 650px;
+  height: 600px;
   width: 400px;
   background-color: rgba(255, 255, 255, 0.13);
   position: absolute;
   transform: translate(-50%, -50%);
-  top: 50%;
+  top: 55%;
   left: 50%;
   border-radius: 10px;
   backdrop-filter: blur(10px);
@@ -75,39 +69,39 @@ label {
   font-size: 16px;
   font-weight: 500;
 }
-label[for="nomeProfessor"] {
+label[for="nomeAluno"] {
   margin-top: 24px; /* Move o label para baixo */
 }
 
 /* OU */
 
-label[for="nomeProfessor"] {
+label[for="nomeAluno"] {
   margin-bottom: 2px; /* Move o label para cima */
 }
-label[for="telefoneProfessor"] {
+label[for="telefoneAluno"] {
   margin-top: -20px; /* Move o label para baixo */
 }
 
 /* OU */
 
-label[for="telefoneProfessor"] {
+label[for="teleAluno"] {
   margin-bottom: 2px; /* Move o label para cima */
 }
-label[for="emailProfessor"] {
+label[for="emailAluno"] {
   margin-top: -20px; /* Move o label para baixo */
 }
 /* OU */
 
-label[for="emailProfessor"] {
+label[for="emailAluno"] {
   margin-bottom: 2px; /* Move o label para cima */
 }
-label[for="senhaProfessor"] {
+label[for="senhaAluno"] {
   margin-top: -20px; /* Move o label para baixo */
 }
 
 /* OU */
 
-label[or="senhaProfessor"] {
+label[or="senhaAluno"] {
   margin-bottom: 2px; /* Move o label para cima */
 }
 
@@ -125,23 +119,6 @@ input {
 
 ::placeholder {
   color: #e5e5e5;
-}
-
-button {
-  margin-top: 5px;
-  width: 100%;
-  background-color: #ffffff;
-  color: #080710;
-  padding: 15px 0;
-  font-size: 18px;
-  font-weight: 600;
-  border-radius: 5px;
-  cursor: pointer;
-  transition: 0.2s ease;
-}
-
-button:hover {
-  background-color: #d185ff;
 }
 
 .social {
@@ -171,3 +148,50 @@ button:hover {
   margin-right: 4px;
 }
 /* ... Seu CSS existente ... */
+label[for="statusAluno"] {
+  /* Adicione seus estilos aqui */
+  margin-top: -30px;
+  display: inline-block;
+  width: 150px; /* largura do rótulo */
+  margin-right: -50px; /* espaço entre o rótulo e o dropdown */
+  text-align: 50px; /* alinha o texto à direita */
+}
+.navbar {
+  background-color: #8a8a8a; /* Cor dos links na barra de navegação */
+}
+
+.nav-link {
+  color: #ffffff;
+  text-decoration: none;
+}
+a {
+  color: rgb(255, 255, 255);
+  text-decoration: underline;
+}
+a:hover {
+  color: #ffffff;
+}
+
+.navbar-nav .nav-link:hover {
+  color: #000000; /* Por exemplo, vermelho ao passar o mouse */
+}
+#btn-search {
+  background-color: #ffffff;
+  color: #000000;
+
+  font-weight: bold;
+  padding: 1px 135px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 15px;
+}
+#alterar{
+  background-color: #ffffff;
+  color: #000000;
+
+  font-weight: bold;
+  padding: 1px 135px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 15px;
+}

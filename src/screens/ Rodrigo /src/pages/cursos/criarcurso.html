@@ -4,6 +4,12 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
+      crossorigin="anonymous"
+    />
     <link rel="stylesheet" href="../../assets/css/criarcurso.css" />
     <title>Cursos Online</title>
 
@@ -18,6 +24,54 @@
     />
   </head>
   <body>
+    <nav class="navbar navbar-expand-lg">
+      <div class="container-fluid">
+        <a class="navbar-brand" href="#">Cursos Online</a>
+
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarNav"
+          aria-controls="navbarNav"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+          <ul class="navbar-nav">
+            <li class="nav-item">
+              <a
+                class="nav-link active"
+                aria-current="page"
+                href="../../../index.html"
+                >Início</a
+              >
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="../cursos/criarcurso.html"
+                >Criar Curso</a
+              >
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="../professor/cursoProfessor.html"
+                >Cursos</a
+              >
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="../professor/perfil.html">Perfil</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="../professor/alterar.html"
+                >Alterar Perfil</a
+              >
+            </li>
+            <!-- Adicione mais itens de navegação conforme necessário -->
+          </ul>
+        </div>
+      </div>
+    </nav>
     <div class="background">
       <div class="shape"></div>
       <div class="shape"></div>
@@ -25,7 +79,7 @@
     <form id="curso_form">
       <h3>Criar Curso</h3>
       <label for="nomeCurso">Nome:</label>
-      <input type="text" id="nomeCurso" name="nomeCurso" required /><br /><br />
+      <input type="text" id="nomeCurso" name="nomeCurso" required /><br />
 
       <label for="cargaHoraria">Carga Horária:</label>
       <input
@@ -33,16 +87,34 @@
         id="cargaHoraria"
         name="cargaHoraria"
         required
-      /><br /><br />
+      /><br />
 
       <label for="statusCurso">Status:</label>
-      <select id="statusCurso" name="statusCurso">
+      <select
+        class="form-select"
+        name="form-select"
+        aria-label="Default select example"
+      >
         <option value="1">Ativo</option>
         <option value="2">Inativo</option>
       </select>
-
-      <button>Criar</button>
+      <button id="criar">Criar</button>
     </form>
   </body>
   <script src="../../assets/js/criarcurso.js"></script>
+  <script
+    src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+    crossorigin="anonymous"
+  ></script>
+  <script
+    src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"
+    integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p"
+    crossorigin="anonymous"
+  ></script>
+  <script
+    src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js"
+    integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF"
+    crossorigin="anonymous"
+  ></script>
 </html>
