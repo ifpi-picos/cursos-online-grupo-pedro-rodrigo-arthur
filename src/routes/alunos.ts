@@ -11,10 +11,14 @@ router.get("/buscarTodos", async (req, res) => {
 
 router.post("/cadastro", async (req, res) => {
   try {
-    const {nome,email,senha ,telefone,status} = req.body;
-    
+    const { nome, email, senha, telefone, status } = req.body;
+
     const aluno = await alunoServices.cadastrar({
-      nome, email, senha, telefone, status
+      nome,
+      email,
+      senha,
+      telefone,
+      status,
     });
     res.json(aluno);
   } catch (error) {
@@ -68,13 +72,17 @@ router.post("/login", async (req, res) => {
     const { email, senha } = req.body;
     const aluno = await alunoServices.autenticar(email, senha);
 
-    if(senha === aluno.senha && email === aluno.email){
-      res.json({success: true, message: "Login realizado com sucesso"});
+    if (senha === aluno.senha && email === aluno.email) {
+      delete aluno.senha;
+      res.json({
+        success: true,
+        message: "Login realizado com sucesso",
+        usuario: aluno,
+      });
     }
-    
   } catch (error) {
     res.status(401).json({ sucess: false, message: "Credenciais inválidas" });
   }
-})
+});
 
 export default router;

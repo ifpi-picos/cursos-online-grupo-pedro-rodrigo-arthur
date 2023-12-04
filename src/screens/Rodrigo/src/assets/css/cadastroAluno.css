@@ -8,8 +8,6 @@
 
 body {
   background-color: #080710;
-  margin: 0;
-  font-family: Arial, Helvetica, sans-serif;
 }
 
 .background {
@@ -22,14 +20,26 @@ body {
 }
 
 .background .shape {
-  height: 200px;
+  height: 208px;
   width: 200px;
   position: absolute;
   border-radius: 50%;
 }
 
+.shape:first-child {
+  background: linear-gradient(#1a172f, #201b3b);
+  left: -80px;
+  top: -80px;
+}
+
+.shape:last-child {
+  background: linear-gradient(to right, #161330, #1b1831);
+  right: -30px;
+  bottom: -80px;
+}
+
 form {
-  height: 520px;
+  height: 700px;
   width: 400px;
   background-color: rgba(255, 255, 255, 0.13);
   position: absolute;
@@ -56,13 +66,62 @@ form h3 {
   font-weight: 500;
   line-height: 42px;
   text-align: center;
+  margin-top: 5px;
 }
 
 label {
   display: block;
-  margin-top: 30px;
+  margin-top: 5px;
   font-size: 16px;
   font-weight: 500;
+}
+
+label[for="nomeAluno"] {
+  margin-top: 24px;
+  /* Move o label para baixo */
+}
+
+/* OU */
+
+label[for="nomeAluno"] {
+  margin-bottom: 2px;
+  /* Move o label para cima */
+}
+
+label[for="telefoneAluno"] {
+  margin-top: -20px;
+  /* Move o label para baixo */
+}
+
+/* OU */
+
+label[for="teleAluno"] {
+  margin-bottom: 2px;
+  /* Move o label para cima */
+}
+
+label[for="emailAluno"] {
+  margin-top: -20px;
+  /* Move o label para baixo */
+}
+
+/* OU */
+
+label[for="emailAluno"] {
+  margin-bottom: 2px;
+  /* Move o label para cima */
+}
+
+label[for="senhaAluno"] {
+  margin-top: -20px;
+  /* Move o label para baixo */
+}
+
+/* OU */
+
+label[or="senhaAluno"] {
+  margin-bottom: 2px;
+  /* Move o label para cima */
 }
 
 input {
@@ -82,9 +141,9 @@ input {
 }
 
 button {
-  margin-top: 50px;
+  margin-top: 5px;
   width: 100%;
-  background-color: #dbdbdb;
+  background-color: #ffffff;
   color: #080710;
   padding: 15px 0;
   font-size: 18px;
@@ -95,7 +154,7 @@ button {
 }
 
 button:hover {
-  background-color: #716ea7;
+  background-color: #d185ff;
 }
 
 .social {
@@ -125,95 +184,34 @@ button:hover {
   margin-right: 4px;
 }
 
-#ou {
+/* ... Seu CSS existente ... */
+label[for="statusAluno"] {
   /* Adicione seus estilos aqui */
-  margin-top: 30px; /* Move o elemento para baixo */
-}
-#butao {
-  margin-top: 35px;
-}
-.navbar {
-  overflow: hidden;
-  background-color: #333;
-}
-
-.navbar a,
-.navbar .dropbtn {
-  float: left;
-  display: block;
-  color: #f2f2f2;
-  text-align: center;
-  padding: 14px 16px;
-  text-decoration: none;
+  margin-top: -30px;
+  display: inline-block;
+  width: 150px;
+  /* largura do rótulo */
+  margin-right: -50px;
+  /* espaço entre o rótulo e o dropdown */
+  text-align: 50px;
+  /* alinha o texto à direita */
 }
 
-.navbar a:hover,
-.dropdown:hover .dropbtn {
-  background-color: #ddd;
-  color: black;
-}
-
-.dropdown {
-  float: left;
-  overflow: hidden;
-}
-
-.dropdown .dropbtn {
+#statusAluno {
+  /* Adicione seus estilos aqui */
+  padding: 7px;
   font-size: 16px;
-  border: none;
-  outline: none;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  background-color: rgb(36, 36, 56);
   color: white;
-  padding: 14px 16px;
-  background-color: inherit;
-  font-family: inherit;
-  margin: 0;
-}
-
-.dropdown-content {
-  display: none;
-  position: absolute;
-  background-color: #f9f9f9;
-  min-width: 160px;
-  box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
-  z-index: 1;
-}
-
-.dropdown-content a {
-  float: none;
-  color: black;
-  padding: 12px 16px;
-  text-decoration: none;
-  display: block;
-  text-align: left;
-}
-
-.dropdown-content a:hover {
-  background-color: #ddd;
-}
-
-.dropdown:hover .dropdown-content {
-  display: block;
-}
-
-table {
   width: 100%;
-  border-collapse: collapse;
-  margin-top: 20px;
+  height: 50px;
+  margin-top: 8px;
+  margin-bottom: 20px;
 }
 
-table,
-th,
-td {
-  border: 1px solid black;
-  padding: 15px;
-  text-align: left;
-}
-
-th {
-  background-color: #61b364;
+#statusAluno option {
+  background-color: #080710;
   color: white;
-}
-
-tr:nth-child(even) {
-  background-color: #f2f2f2;
 }

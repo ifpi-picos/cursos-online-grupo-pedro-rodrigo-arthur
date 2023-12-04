@@ -21,10 +21,13 @@ router.get("/buscarPorId/:id", async (req, res) => {
 
 router.post("/cadastro", async (req, res) => {
   try {
-    const {nome,email,telefone,senha} = req.body;
-    
+    const { nome, email, telefone, senha } = req.body;
+
     const professor = await professorServices.cadastrar({
-      nome, email, telefone, senha
+      nome,
+      email,
+      telefone,
+      senha,
     });
     res.json(professor);
   } catch (error) {
@@ -66,20 +69,27 @@ router.get("/buscarPorEmail/:email", async (req, res) => {
   }
 });
 
-router.get("/login", async (req, res) => {
+router.post("/login", async (req, res) => {
   try {
     const { email, senha } = req.body;
+
     const professor = await professorServices.autenticar(email, senha);
 
     if (!professor) throw new Error("Professor não encontrado");
-    if(professor.senha != senha) throw new Error("Senha incorreta");
+    if (professor.senha != senha) throw new Error("Senha incorreta");
 
-    if(professor.senha == senha && professor.email == email){
-    res.json({success: true, message: "Login realizado com sucesso"});
+    if (professor.senha == senha && professor.email == email) {
+      delete professor.senha;
+
+      res.json({
+        success: true,
+        message: "Login realizado com sucesso",
+        usuario: professor,
+      });
     }
   } catch (error) {
-    res.status(401).json({success: false , message : "Login não realizado" });
+    res.status(401).json({ success: false, message: "Login não realizado" });
   }
-})
+});
 
 export default router;
