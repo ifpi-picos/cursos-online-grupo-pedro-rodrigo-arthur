@@ -6,8 +6,17 @@ function loginPro(event) {
     email: document.getElementById("emailProfessor").value,
     senha: document.getElementById("senhaProfessor").value,
   };
-  console.log(curso);
-  fetch("http://localhost:3000/professores/login", {
+
+  const tipo = document.getElementById("tipoUsuario").value;
+  let url = "";
+
+  if (tipo === "1") {
+    url = "alunos";
+  } else {
+    url = "professores";
+  }
+
+  fetch(`http://localhost:3000/${url}/login`, {
     method: "POST",
     headers: {
       "content-type": "application/json",
@@ -18,13 +27,18 @@ function loginPro(event) {
     .then((res) => {
       if (res.error) alert(res.error);
       if (res.success) {
-        localStorage.setItem("usuario", JSON.stringify(res.professor));
-        window.location.href =
-          "http://localhost:5500/cursos-online-grupo-pedro-rodrigo-arthur/src/screens/%20Rodrigo%20/src/pages/professor/perfil.html";
+        localStorage.setItem("usuario", JSON.stringify(res.usuario));
+        console.log("file: loginProfessor.js:25 - .then - tipo:", tipo);
+        if (tipo === "1") {
+          window.location.href =
+            "http://localhost:5500/cursos-online-grupo-pedro-rodrigo-arthur/src/screens/%20Rodrigo%20/src/pages/aluno/perfil.html";
+        } else {
+          window.location.href =
+            "http://localhost:5500/cursos-online-grupo-pedro-rodrigo-arthur/src/screens/%20Rodrigo%20/src/pages/professor/perfil.html";
+        }
       }
     })
     .catch((err) => {
-      console.log(err);
       alert("Erro ao Fazer Login!");
     });
 }

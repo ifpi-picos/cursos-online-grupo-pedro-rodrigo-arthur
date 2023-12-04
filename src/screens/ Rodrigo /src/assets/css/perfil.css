@@ -69,40 +69,53 @@ label {
   font-size: 16px;
   font-weight: 500;
 }
+
 label[for="nomeAluno"] {
-  margin-top: 24px; /* Move o label para baixo */
+  margin-top: 24px;
+  /* Move o label para baixo */
 }
 
 /* OU */
 
 label[for="nomeAluno"] {
-  margin-bottom: 2px; /* Move o label para cima */
+  margin-bottom: 2px;
+  /* Move o label para cima */
 }
+
 label[for="telefoneAluno"] {
-  margin-top: -20px; /* Move o label para baixo */
+  margin-top: -20px;
+  /* Move o label para baixo */
 }
 
 /* OU */
 
 label[for="teleAluno"] {
-  margin-bottom: 2px; /* Move o label para cima */
+  margin-bottom: 2px;
+  /* Move o label para cima */
 }
+
 label[for="emailAluno"] {
-  margin-top: -20px; /* Move o label para baixo */
+  margin-top: -20px;
+  /* Move o label para baixo */
 }
+
 /* OU */
 
 label[for="emailAluno"] {
-  margin-bottom: 2px; /* Move o label para cima */
+  margin-bottom: 2px;
+  /* Move o label para cima */
 }
+
 label[for="senhaAluno"] {
-  margin-top: -20px; /* Move o label para baixo */
+  margin-top: -20px;
+  /* Move o label para baixo */
 }
 
 /* OU */
 
 label[or="senhaAluno"] {
-  margin-bottom: 2px; /* Move o label para cima */
+  margin-bottom: 2px;
+  /* Move o label para cima */
 }
 
 input {
@@ -147,31 +160,27 @@ input {
 .social i {
   margin-right: 4px;
 }
-/* ... Seu CSS existente ... */
-label[for="statusAluno"] {
-  /* Adicione seus estilos aqui */
-  margin-top: -30px;
-  display: inline-block;
-  width: 150px; /* largura do rótulo */
-  margin-right: -50px; /* espaço entre o rótulo e o dropdown */
-  text-align: 50px; /* alinha o texto à direita */
-}
+
 .navbar {
-  background-color: #8a8a8a; /* Cor dos links na barra de navegação */
+  background-color: #8a8a8a;
+  /* Cor dos links na barra de navegação */
 }
 
 .nav-link {
   color: #ffffff;
   text-decoration: none;
 }
+
 a {
   color: rgb(255, 255, 255);
   text-decoration: underline;
 }
+
 a:hover {
   color: #ffffff;
 }
 
 .navbar-nav .nav-link:hover {
-  color: #000000; /* Por exemplo, vermelho ao passar o mouse */
+  color: #000000;
+  /* Por exemplo, vermelho ao passar o mouse */
 }

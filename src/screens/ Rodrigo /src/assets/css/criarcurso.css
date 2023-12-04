@@ -26,6 +26,12 @@ body {
   border-radius: 50%;
 }
 
+.shape:first-child {
+  background: linear-gradient(#1a172f, #201b3b);
+  left: -80px;
+  top: -80px;
+}
+
 .shape:last-child {
   background: linear-gradient(to right, #161330, #1b1831);
   right: -30px;
@@ -33,12 +39,12 @@ body {
 }
 
 form {
-  height: 450px;
+  height: 500px;
   width: 400px;
   background-color: rgba(255, 255, 255, 0.13);
   position: absolute;
   transform: translate(-50%, -50%);
-  top: 55%;
+  top: 50%;
   left: 50%;
   border-radius: 10px;
   backdrop-filter: blur(10px);
@@ -121,6 +127,23 @@ input {
   color: #e5e5e5;
 }
 
+button {
+  margin-top: 5px;
+  width: 100%;
+  background-color: #ffffff;
+  color: #080710;
+  padding: 15px 0;
+  font-size: 18px;
+  font-weight: 600;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: 0.2s ease;
+}
+
+button:hover {
+  background-color: #d185ff;
+}
+
 .social {
   margin-top: 30px;
   display: flex;
@@ -156,61 +179,18 @@ label[for="statusAluno"] {
   margin-right: -50px; /* espaço entre o rótulo e o dropdown */
   text-align: 50px; /* alinha o texto à direita */
 }
-.navbar {
-  background-color: #8a8a8a; /* Cor dos links na barra de navegação */
-}
 
-.nav-link {
-  color: #ffffff;
-  text-decoration: none;
-}
-a {
-  color: rgb(255, 255, 255);
-  text-decoration: underline;
-}
-a:hover {
-  color: #ffffff;
-}
-
-.navbar-nav .nav-link:hover {
-  color: #000000; /* Por exemplo, vermelho ao passar o mouse */
-}
-#btn-search {
-  background-color: #ffffff;
-  color: #000000;
-
-  font-weight: bold;
-  padding: 1px 135px;
-  border-radius: 5px;
-  cursor: pointer;
-  font-size: 15px;
-}
-#criar {
-  background-color: #ffffff;
-  color: #000000;
-
-  font-weight: bold;
-  padding: 6px 143px;
-  border-radius: 3px;
-  cursor: pointer;
-  font-size: 15px;
-  margin-top: 5%;
-}
-
-.form-select {
-  padding: 1px;
-  font-size: 16px 30px;
+#statusAluno {
+  /* Adicione seus estilos aqui */
+  padding: 7px;
+  font-size: 16px;
+  border: 1px solid #ccc;
   border-radius: 4px;
-  border: 1px solid #000000;
-  color: #333;
-  font-weight: bold;
-  cursor: pointer;
+  background-color: rgb(36, 36, 56);
+  color: white;
 }
 
-.form-select option[value="1"] {
-  background-color: #3b3b3b;
-}
-
-.form-select option[value="2"] {
-  background-color: #3d3d3d;
+#statusAluno option {
+  background-color: #080710;
+  color: white;
 }
