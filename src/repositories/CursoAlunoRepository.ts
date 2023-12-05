@@ -76,24 +76,27 @@ export abstract class CursoAlunoRepository extends RepositoryMetods<CursoAluno> 
     return cursos.filter((curso) => curso.id_aluno).length;
   }
 
-  async porcentagemDeAlunosAprovadosPorCurso(id: number): Promise<number> {
+  async porcentagemDeAlunosAprovadosPorCurso(id: number): Promise<string> {
     const cursos = await this.buscarTodos();
     if (cursos.length === 0) {
       throw new Error("Nenhum curso cadastrado");
     }
     const alunos = cursos.filter((curso) => curso.id_curso === id);
     const alunosAprovados = alunos.filter((aluno) => aluno.situacao === "Aprovado");
-    return alunosAprovados.length / alunos.length;
+    const porcentagem =  (alunosAprovados.length / alunos.length) * 100;
+
+    return porcentagem.toFixed(2) + "%";
   }
 
-  async porcentagemDeAlunosReprovadosPorCurso(id: number): Promise<number> {
+  async porcentagemDeAlunosReprovadosPorCurso(id: number): Promise<string> {
     const cursos = await this.buscarTodos();
     if (cursos.length === 0) {
       throw new Error("Nenhum curso cadastrado");
     }
     const alunos = cursos.filter((curso) => curso.id_curso === id);
     const alunosReprovados = alunos.filter((aluno) => aluno.situacao === "Reprovado");
-    return alunosReprovados.length / alunos.length;
+    const porcentagem = (alunosReprovados.length / alunos.length) * 100;
+    return porcentagem.toFixed(2) + "%";
   }
 
   async mediaGeralDeAlunosPorCurso(id: number): Promise<number> {
