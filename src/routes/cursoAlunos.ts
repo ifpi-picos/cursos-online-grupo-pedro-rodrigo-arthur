@@ -4,12 +4,12 @@ import { CursoAlunoServices } from "../services/CursoAlunoServices";
 const router = Express.Router();
 const cursoAlunoServices = new CursoAlunoServices();
 
-router.get("/", async (req, res) => {
+router.get("/buscarTodos", async (req, res) => {
   const cursosAlunos = await cursoAlunoServices.buscarTodos();
   res.json(cursosAlunos);
 });
 
-router.get("/:id", async (req, res) => {
+router.get("/buscarPorId/:id", async (req, res) => {
   try {
     const id = Number(req.params.id);
     const cursoAluno = await cursoAlunoServices.buscarPorId(id);
@@ -19,7 +19,7 @@ router.get("/:id", async (req, res) => {
   }
 })
 
-router.post("/", async (req, res) => {
+router.post("/cadastro", async (req, res) => {
   try {
     const cursoAluno = req.body;
     const cursoAlunoSalvo = await cursoAlunoServices.cadastro(cursoAluno);
@@ -29,7 +29,7 @@ router.post("/", async (req, res) => {
   }
 });
 
-router.delete("/:id", async (req, res) => {
+router.delete("/deletarPorId/:id", async (req, res) => {
   try {
     const id = Number(req);
     const cursoAlunoDeletado = await cursoAlunoServices.deletar(id);
@@ -39,7 +39,7 @@ router.delete("/:id", async (req, res) => {
   }
 });
 
-router.put("/:idCurso/:idAluno", async (req, res) => {
+router.put("/atualizar/:idCurso/:idAluno", async (req, res) => {
   try {
     const idCurso = Number(req.params.idCurso);
     const idAluno = Number(req.params.idAluno);
