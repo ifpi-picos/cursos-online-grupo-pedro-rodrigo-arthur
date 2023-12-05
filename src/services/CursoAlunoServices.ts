@@ -74,5 +74,13 @@ export class CursoAlunoServices extends CursoAlunoRepository {
 
     return cursoAlunoAtualizado;
   }
+
+  async quanridadeDeAlunosPorCurso(id: number): Promise<number> {
+    const cursos = await this.buscarTodos();
+    if (cursos.length === 0) {
+      throw new Error("Nenhum curso cadastrado");
+    }
+    return cursos.filter((curso) => curso.id_curso === id).length;
+  }
    
 }
