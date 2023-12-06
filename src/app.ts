@@ -26,7 +26,7 @@ AppDataSource.initialize()
       console.log("Server started on port 3000");
 
       const cursoAlunoServices = new CursoAlunoServices();
-      console.log(await cursoAlunoServices.quanridadeDeAlunosPorCurso(3));
+      console.log(await cursoAlunoServices.quantidadeDeAlunosPorCurso(3));
       
       console.log(await cursoAlunoServices.porcentagemDeAlunosAprovadosPorCurso(3));
 

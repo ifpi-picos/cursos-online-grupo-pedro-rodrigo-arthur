@@ -68,7 +68,7 @@ export abstract class CursoAlunoRepository extends RepositoryMetods<CursoAluno> 
     return cursos.filter((curso) => curso.id_aluno === id);
   }
 
-  async quanridadeDeAlunosPorCurso(id: number): Promise<number> {
+  async quantidadeDeAlunosPorCurso(id: number): Promise<number> {
     const cursos = await this.buscarTodos();
     if (cursos.length === 0) {
       throw new Error("Nenhum curso cadastrado");
