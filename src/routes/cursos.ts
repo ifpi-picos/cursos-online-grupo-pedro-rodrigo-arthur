@@ -1,5 +1,5 @@
 import * as express from "express";
-import { CursoServices } from "../services/CursoSevices";
+import { CursoServices } from "../services/CursoServices";
 
 const router = express.Router();
 const cursoServices = new CursoServices();
