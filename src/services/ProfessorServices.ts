@@ -3,22 +3,24 @@ import { UpdateResult } from "typeorm";
 import { Professor } from "../entity/Professor";
 import { ProfessoRepository } from "../repositories/ProfessorRepository";
 
-export class ProfessorServices extends ProfessoRepository {
-  constructor() {
-    super();
+export class ProfessorServices {
+  private professorRepository: ProfessoRepository;
+  
+  constructor(professorRepository: ProfessoRepository) {
+    this.professorRepository = professorRepository;
   }
 
   async cadastrar(professor: Professor): Promise<Professor> {
-    const professorEncontrado = await super.buscarPorEmail(professor.email);
+    const professorEncontrado = await this.buscarPorEmail(professor.email);
     if (professorEncontrado) {
       throw new Error("Professor já cadastrado");
     }
-    const professorSalvo = super.salvar(professor);
+    const professorSalvo = await this.professorRepository.salvar(professor);
     return professorSalvo;
   }
 
   async buscarTodos(): Promise<Professor[]> {
-    const buscaTodos = await super.buscarTodos();
+    const buscaTodos = await this.professorRepository.buscarTodos();
     if (!buscaTodos) {
       throw new Error("Nenhum professor cadastrado");
     }
@@ -26,7 +28,7 @@ export class ProfessorServices extends ProfessoRepository {
   }
 
   async buscarPorId(id: number): Promise<Professor> {
-    const buscarID = await super.buscarPorId(id);
+    const buscarID = await this.professorRepository.buscarPorId(id);
     if (!buscarID) {
       throw new Error("Professor não encontrado");
     }
@@ -35,20 +37,19 @@ export class ProfessorServices extends ProfessoRepository {
 
   async deletar(id: number): Promise<Professor> {
     const buscarId = await this.buscarPorId(id);
-
-    const professorDeletado = super.deletar(buscarId.id);
+    const professorDeletado = this.deletar(buscarId.id);
     return professorDeletado;
   }
 
   async atualizar(id: number, objeto: Professor): Promise<UpdateResult> {
     const buscaId = await this.buscarPorId(id);
-    const professorAtualizado = super.atualizar(buscaId.id, objeto);
+    const professorAtualizado = this.atualizar(buscaId.id, objeto);
     return professorAtualizado;
   }
 
   async buscarPorEmail(email: string): Promise<Professor> {
     try {
-      const buscaEmail = super.buscarPorEmail(email);
+      const buscaEmail = this.professorRepository.buscarPorEmail(email);
 
       if (!buscaEmail) {
         throw new Error("Professor não encontrado");

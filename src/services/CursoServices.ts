@@ -2,23 +2,21 @@ import "reflect-metadata";
 import { CursoRepository } from "../repositories/CursoRepository";
 import { Curso } from "../entity/Curso";
 import { UpdateResult } from "typeorm";
-export class CursoServices extends CursoRepository {
-  constructor() {
-    super();
+
+export class CursoServices {
+
+  constructor(private cursoRepository: CursoRepository) {
+    this.cursoRepository = cursoRepository;
   }
 
   async buscarPorId(id: number): Promise<Curso> {
-    const buscarID = await super.buscarPorId(id);
-
+    const buscarID = await this.cursoRepository.buscarPorId(id);
     if (!buscarID) throw new Error("Curso não encontrado");
-
-    const buscaId = super.buscarPorId(buscarID.id);
-
-    return buscaId;
+    return buscarID;
   }
 
   async buscarTodos(): Promise<Curso[]> {
-    const buscaTodos = await super.buscarTodos();
+    const buscaTodos = await this.cursoRepository.buscarTodos();
     if (!buscaTodos) throw new Error("Nenhum curso cadastrado");
     return buscaTodos;
   }
@@ -26,19 +24,21 @@ export class CursoServices extends CursoRepository {
   async deletar(id: number): Promise<Curso> {
     const buscarIdd = await this.buscarPorId(id);
 
-    const cursoDeletado = super.deletar(buscarIdd.id);
-    return cursoDeletado;
+    return await this.cursoRepository.deletar(buscarIdd.id);
   }
 
   async atualizar(id: number, objeto: Curso): Promise<UpdateResult> {
     const buscaIdCurso = await this.buscarPorId(id);
 
-    const cursoAtualizado = super.atualizar(buscaIdCurso.id, objeto);
-    return cursoAtualizado;
+    return await this.cursoRepository.atualizar(buscaIdCurso.id, objeto);
   }
 
   async cadastrar(curso: Curso): Promise<Curso> {
-    const cursoSalvo = super.salvar(curso);
+    const cursoCadastrar = await this.buscarTodos()
+    if (cursoCadastrar.some((curso) => curso.id_professor === curso.id_professor)) {
+      throw new Error("Curso já cadastrado");
+    }
+    const cursoSalvo = this.cursoRepository.salvar(curso);
     return cursoSalvo;
   }
 }
