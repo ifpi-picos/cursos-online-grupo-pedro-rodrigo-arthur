@@ -2,7 +2,6 @@ import "reflect-metadata";
 import { CursoAlunoRepository } from "../repositories/CursoAlunoRepository";
 import { CursoAluno } from "../entity/CursoAluno";
 import { UpdateResult } from "typeorm";
-import { StatusMatricula } from "../ENUM/StatusMatricula";
 export class CursoAlunoServices extends CursoAlunoRepository {
   constructor() {
     super();
