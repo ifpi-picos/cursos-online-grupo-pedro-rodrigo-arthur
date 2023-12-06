@@ -20,7 +20,7 @@ function loginAluno(event) {
       if (res.success) {
         localStorage.setItem("usuario", JSON.stringify(res.professor));
         window.location.href =
-          "http://localhost:5500/cursos-online-grupo-pedro-rodrigo-arthur/src/screens/%20Rodrigo%20/src/pages/aluno/perfil.html";
+          "http://localhost:5500/cursos-online-grupo-pedro-rodrigo-arthur/src/screens/Rodrigo/src/pages/aluno/perfil.html";
       }
     })
     .catch((err) => {

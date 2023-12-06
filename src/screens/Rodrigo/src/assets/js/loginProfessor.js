@@ -31,10 +31,10 @@ function loginPro(event) {
         console.log("file: loginProfessor.js:25 - .then - tipo:", tipo);
         if (tipo === "1") {
           window.location.href =
-            "http://localhost:5500/cursos-online-grupo-pedro-rodrigo-arthur/src/screens/%20Rodrigo%20/src/pages/aluno/perfil.html";
+            "http://localhost:5500/cursos-online-grupo-pedro-rodrigo-arthur/src/screens/Rodrigo/src/pages/aluno/perfil.html";
         } else {
           window.location.href =
-            "http://localhost:5500/cursos-online-grupo-pedro-rodrigo-arthur/src/screens/%20Rodrigo%20/src/pages/professor/perfil.html";
+            "http://localhost:5500/cursos-online-grupo-pedro-rodrigo-arthur/src/screens/Rodrigo/src/pages/professor/perfil.html";
         }
       }
     })
