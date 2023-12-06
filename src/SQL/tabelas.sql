@@ -18,7 +18,7 @@ CREATE TABLE professor (
 );
 
 CREATE TABLE curso (
-    id_curso SERIAL PRIMARY KEY,
+    id SERIAL PRIMARY KEY,
     nome TEXT NOT NULL,
     carga_horaria INT NOT NULL,
     status TEXT NOT NULL,
@@ -26,7 +26,7 @@ CREATE TABLE curso (
 );
 
 CREATE TABLE curso_aluno (
-    id_curso INT REFERENCES curso(id_curso),
+    id_curso INT REFERENCES curso(id),
     id_aluno INT REFERENCES aluno(id),
     nota1 NUMERIC(5,2) NOT NULL,
     nota2 NUMERIC(5,2) NOT NULL,
