@@ -3,8 +3,9 @@ import { CursoAluno } from "../entity/CursoAluno";
 import { RepositoryMetods } from "./RepositoryMetods";
 import { UpdateResult } from "typeorm";
 import { AppDataSource } from "../AppDataSource";
+import { StatusMatricula } from "../ENUM/StatusMatricula";
 
-export abstract class CursoAlunoRepository extends RepositoryMetods<CursoAluno> {
+export class CursoAlunoRepository extends RepositoryMetods<CursoAluno> {
   constructor() {
     super(CursoAluno);
   }
@@ -56,16 +57,38 @@ export abstract class CursoAlunoRepository extends RepositoryMetods<CursoAluno> 
     return super.salvar(cadastro);
   }
 
-  async atualizar(id: number, objeto: CursoAluno): Promise<UpdateResult> {
-    return super.atualizar(id, objeto);
+  async atualizarCursoAlunoMatricula(
+    { id_curso, id_aluno }: { id_curso: number; id_aluno: number},
+    cursoAluno: CursoAluno
+  ): Promise<any> {
+    const cursoAlunoAtualizado = await this.buscarPorId(id_curso);
+    if (!cursoAlunoAtualizado) {
+      throw new Error("Curso não encontrado");
+    }
+    if (cursoAlunoAtualizado.id_aluno !== id_aluno) {
+      throw new Error("Aluno não matriculado no curso");
+    }
+
+    const { nota1, nota2, nota3, media, situacao, statusmatricula } = cursoAluno;
+
+    cursoAlunoAtualizado.nota1 = nota1;
+    cursoAlunoAtualizado.nota2 = nota2;
+    cursoAlunoAtualizado.nota3 = nota3;
+    cursoAlunoAtualizado.media = media;
+    cursoAlunoAtualizado.situacao = situacao;
+    cursoAlunoAtualizado.statusmatricula = statusmatricula;
+    cursoAlunoAtualizado.id_curso = id_curso;
+    cursoAlunoAtualizado.id_aluno = id_aluno;
+
+    return this.salvar(cursoAlunoAtualizado);
   }
 
-  async buscarIdAluno(id: number): Promise<CursoAluno[]> {
+  async buscarIdAluno(idAluno: number): Promise<CursoAluno[]> {
     const cursos = await this.buscarTodos();
     if (cursos.length === 0) {
       throw new Error("Nenhum curso cadastrado");
     }
-    return cursos.filter((curso) => curso.id_aluno === id);
+    return cursos.filter((curso) => curso.id_aluno === idAluno);
   }
 
   async quantidadeDeAlunosPorCurso(id: number): Promise<number> {
@@ -123,5 +146,23 @@ export abstract class CursoAlunoRepository extends RepositoryMetods<CursoAluno> 
       throw new Error("Nenhum curso cadastrado");
     }
     return cursos.filter((curso) => curso.id_aluno === id && curso.statusmatricula === "MATRICULADO");
+  }
+
+  async desmatricular(idCurso: number, idAluno: number): Promise<UpdateResult> {
+    try{
+    const cursoAluno = await this.buscarTodos();
+    if (!cursoAluno) {
+      throw new Error("Curso não encontrado");
+    }
+    const alunoMatriculado = cursoAluno.filter((curso) => curso.id_curso === idCurso && curso.id_aluno === idAluno);
+    if (alunoMatriculado.length === 0) {
+      throw new Error("Aluno não matriculado no curso");
+    }
+    alunoMatriculado[0].statusmatricula = StatusMatricula.CANCELADO;
+    return this.atualizarCursoAlunoMatricula({id_curso: idCurso, id_aluno: idAluno}, alunoMatriculado[0]);
+  }catch(error){
+      throw new Error(error);
+    }
+    
   }
 }

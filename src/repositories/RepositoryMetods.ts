@@ -10,6 +10,7 @@ export abstract class RepositoryMetods<T> implements Repository<T> {
   }
 
   async salvar(objeto: T): Promise<T> {
+    try{
     return AppDataSource.getRepository(this.entityClass)
       .save(objeto)
       .then((objeto) => {
@@ -18,6 +19,9 @@ export abstract class RepositoryMetods<T> implements Repository<T> {
       .catch((error) => {
         throw new Error(error);
       });
+    }catch(error){
+      throw new Error(error);
+    }
   }
 
   async atualizar(id: number, objeto: T) {
@@ -30,14 +34,22 @@ export abstract class RepositoryMetods<T> implements Repository<T> {
     }
 
   async deletar(id: number): Promise<T> {
+    try{
     await AppDataSource.getRepository(this.entityClass).delete(id);
     return {} as T;
+    }catch(error){
+      throw new Error(error);
+    }
   }
 
   async buscarTodos(): Promise<T[]> {
+    try{
     return AppDataSource.getRepository(this.entityClass)
       .createQueryBuilder("entity")
       .getMany();
+    }catch(error){
+      throw new Error(error);
+    }
   }
 
   async buscarPorId(id: number): Promise<T> {

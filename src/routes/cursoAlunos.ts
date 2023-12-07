@@ -1,15 +1,16 @@
 import * as Express from "express";
 import { CursoAlunoServices } from "../services/CursoAlunoServices";
+import { CursoAlunoRepository } from "../repositories/CursoAlunoRepository";
 
 const router = Express.Router();
-const cursoAlunoServices = new CursoAlunoServices();
+const cursoAlunoServices = new CursoAlunoServices(new CursoAlunoRepository());
 
-router.get("/buscarTodos", async (req, res) => {
+router.get("/", async (req, res) => {
   const cursosAlunos = await cursoAlunoServices.buscarTodos();
   res.json(cursosAlunos);
 });
 
-router.get("/buscarPorId/:id", async (req, res) => {
+router.get("/:id", async (req, res) => {
   try {
     const id = Number(req.params.id);
     const cursoAluno = await cursoAlunoServices.buscarPorId(id);
@@ -19,7 +20,7 @@ router.get("/buscarPorId/:id", async (req, res) => {
   }
 })
 
-router.post("/cadastro", async (req, res) => {
+router.post("/", async (req, res) => {
   try {
     const cursoAluno = req.body;
     const cursoAlunoSalvo = await cursoAlunoServices.cadastro(cursoAluno);
@@ -29,17 +30,7 @@ router.post("/cadastro", async (req, res) => {
   }
 });
 
-router.delete("/deletarPorId/:id", async (req, res) => {
-  try {
-    const id = Number(req);
-    const cursoAlunoDeletado = await cursoAlunoServices.deletar(id);
-    res.json(cursoAlunoDeletado);
-  } catch (error) {
-    res.status(400).json({ error: error.message });
-  }
-});
-
-router.put("/atualizar/:idCurso/:idAluno", async (req, res) => {
+router.put("/:idCurso/:idAluno", async (req, res) => {
   try {
     const idCurso = Number(req.params.idCurso);
     const idAluno = Number(req.params.idAluno);
@@ -54,7 +45,7 @@ router.put("/atualizar/:idCurso/:idAluno", async (req, res) => {
   }
 })
 
-router.put("/desmatricular/:idCurso/:idAluno", async (req, res) => {
+router.patch("/:idCurso/:idAluno", async (req, res) => {
   try {
     const idCurso = Number(req.params.idCurso);
     const idAluno = Number(req.params.idAluno);
