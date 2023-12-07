@@ -1,8 +1,10 @@
 import * as express from "express";
 import { CursoServices } from "../services/CursoServices";
+import { CursoRepository } from "../repositories/CursoRepository"; // Add this line
+
 
 const router = express.Router();
-const cursoServices = new CursoServices();
+const cursoServices = new CursoServices(new CursoRepository()); // Update this line
 
 router.get("/", async (req, res) => {
   const cursos = await cursoServices.buscarTodos();
@@ -43,7 +45,7 @@ router.put("/:id", async (req, res) => {
 router.get("/professor/:id", async (req, res) => {
   try {
     const id = Number(req.params.id);
-    const cursos = await cursoServices.buscarCursosIdProfessor(id);
+    const cursos = await cursoServices.buscarCursosDoProfessor(id);
     res.json(cursos);
   } catch (error) {
     res.status(400).json({ error: error.message });
