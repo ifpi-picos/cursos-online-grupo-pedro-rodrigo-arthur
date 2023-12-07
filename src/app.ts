@@ -5,6 +5,9 @@ import alunos from "./routes/alunos";
 import cursoAlunos from "./routes/cursoAlunos";
 import cursos from "./routes/cursos";
 import { CursoAlunoServices } from "./services/CursoAlunoServices";
+import { AlunoServices } from "./services/AlunoServices";
+import { AlunoRepository } from "./repositories/AlunoRepository";
+import { CursoAlunoRepository } from "./repositories/CursoAlunoRepository";
 
 const app = Express();
 const cors = require('cors')
@@ -24,15 +27,6 @@ AppDataSource.initialize()
   .then(async () => {
     app.listen(3000, async () => {
       console.log("Server started on port 3000");
-
-      const cursoAlunoServices = new CursoAlunoServices();
-      console.log(await cursoAlunoServices.quantidadeDeAlunosPorCurso(3));
-      
-      console.log(await cursoAlunoServices.porcentagemDeAlunosAprovadosPorCurso(3));
-
-      console.log(await cursoAlunoServices.mediaGeralDeAlunosPorCurso(3));
-
-      console.log(await cursoAlunoServices.porcentagemDeAlunosReprovadosPorCurso(3));
       
     });
   })
