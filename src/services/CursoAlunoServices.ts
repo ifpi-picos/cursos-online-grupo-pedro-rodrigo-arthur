@@ -2,32 +2,44 @@ import "reflect-metadata";
 import { CursoAlunoRepository } from "../repositories/CursoAlunoRepository";
 import { CursoAluno } from "../entity/CursoAluno";
 import { UpdateResult } from "typeorm";
-export class CursoAlunoServices extends CursoAlunoRepository {
-  constructor() {
-    super();
+export class CursoAlunoServices {
+
+  private cursoAlunoRepository : CursoAlunoRepository;
+  
+  constructor(cursoAlunoRepository: CursoAlunoRepository) {
+    this.cursoAlunoRepository = cursoAlunoRepository;
   }
 
   async buscarPorId(id: number) {
-    return super.buscarPorId(id);
+    const cursosAlunos = await this.buscarTodos();
+    const cursoAluno = cursosAlunos.filter((curso) => curso.id_curso === id);
+    if (cursoAluno.length === 0) {
+      throw new Error("Curso não encontrado");
+    }
+    return cursoAluno;
   }
 
   async buscarTodos() {
-    return super.buscarTodos();
-  }
+    const busccarTodos = await this.cursoAlunoRepository.buscarTodos();
 
-  async deletar(id: number) {
-    return super.deletar(id);
+    if (!busccarTodos) {
+      throw new Error("Nenhum curso cadastrado");
+    }
+    return busccarTodos;
   }
 
   async cadastro(objeto: CursoAluno) {
-    const cadastroCursoAluno = await super.salvar(objeto);
+    const cadastroCursoAluno = await this.cursoAlunoRepository.salvar(objeto);
     if (!cadastroCursoAluno) throw new Error("Curso não cadastrado");
 
     return cadastroCursoAluno;
   }
 
-  async atualizarCursoAlunoService(id: number, objeto: CursoAluno): Promise<UpdateResult> {
-    return super.atualizar(id, objeto);
+  async desmatricularAluno(idCurso: number, idAluno: number) {
+    const desmatricular = await this.cursoAlunoRepository.desmatricular(idCurso, idAluno);
+    if (!desmatricular) throw new Error("Curso não encontrado");
+
+    return desmatricular;
   }
 
   async buscarIdAluno(id: number): Promise<CursoAluno[]> {
@@ -38,45 +50,17 @@ export class CursoAlunoServices extends CursoAlunoRepository {
     return cursos.filter((curso) => curso.id_aluno === id);
   }
 
-  async desmatricular(idCurso:number,idAluno:number){
-    const cursoAluno = await this.buscarPorId(idCurso);
-    if(!cursoAluno){
-      throw new Error("Curso não encontrado");
-    }
-    if(cursoAluno.id_aluno !== idAluno){
-      throw new Error("Aluno não matriculado no curso");
-    }
-
-    return await this.atualizar(idCurso,cursoAluno);
+  async atualizarCursoAluno({ idCurso, idAluno }: { idCurso: number, idAluno: number }, cursoAluno: CursoAluno) {
+    return this.cursoAlunoRepository.atualizarCursoAlunoMatricula({ id_curso: idCurso, id_aluno: idAluno }, cursoAluno);
   }
 
-
-  async atualizarCursoAluno({idCurso, idAluno}: {idCurso: number, idAluno: number}, cursoAluno: CursoAluno) {
-    const cursoAlunoAtualizado = await this.buscarPorId(idCurso);
-    if (!cursoAlunoAtualizado) {
-      throw new Error("Curso não encontrado");
-    }
-    if (cursoAlunoAtualizado.id_aluno !== idAluno) {
-      throw new Error("Aluno não matriculado no curso");
-    }
-
-    const { nota1, nota2, nota3, media, situacao, statusmatricula } = cursoAluno;
-
-    cursoAlunoAtualizado.nota1 = nota1;
-    cursoAlunoAtualizado.nota2 = nota2;
-    cursoAlunoAtualizado.nota3 = nota3;
-    cursoAlunoAtualizado.media = media;
-    cursoAlunoAtualizado.situacao = situacao;
-    cursoAlunoAtualizado.statusmatricula = statusmatricula;
-    cursoAlunoAtualizado.id_curso = idCurso;
-    cursoAlunoAtualizado.id_aluno = idAluno;
-
-    return cursoAlunoAtualizado;
-  }
-
-  async quantidadeDeAlunosPorCurso(id: number): Promise<number> {
-    const quantidade = await super.quantidadeDeAlunosPorCurso(id);
+  async quantidadeDeAlunosPorCurso(idCurso: number): Promise<number> {
+    const quantidade = await this.cursoAlunoRepository.quantidadeDeAlunosPorCurso(idCurso);
     return parseInt(quantidade.toString());
+  }
+
+  async desmatricular(idCurso: number, idAluno: number): Promise<UpdateResult> {
+    return this.cursoAlunoRepository.desmatricular(idCurso, idAluno);
   }
    
 }
