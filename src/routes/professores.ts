@@ -1,15 +1,17 @@
 import * as Express from "express";
 import { ProfessorServices } from "../services/ProfessorServices";
+import { ProfessoRepository } from "../repositories/ProfessorRepository"; // Import the ProfessorRepository class
+
 
 const router = Express.Router();
-const professorServices = new ProfessorServices();
+const professorServices = new ProfessorServices(new ProfessoRepository());
 
-router.get("/buscarTodos", async (req, res) => {
+router.get("/", async (req, res) => {
   const professores = await professorServices.buscarTodos();
   res.json(professores);
 });
 
-router.get("/buscarPorId/:id", async (req, res) => {
+router.get("/:id", async (req, res) => {
   try {
     const id = Number(req.params.id);
     const professor = await professorServices.buscarPorId(id);
@@ -19,7 +21,7 @@ router.get("/buscarPorId/:id", async (req, res) => {
   }
 });
 
-router.post("/cadastro", async (req, res) => {
+router.post("/", async (req, res) => {
   try {
     const { nome, email, telefone, senha } = req.body;
 
@@ -35,7 +37,7 @@ router.post("/cadastro", async (req, res) => {
   }
 });
 
-router.delete("/deletarPorId/:id", async (req, res) => {
+router.delete("/:id", async (req, res) => {
   try {
     const id = Number(req.params.id);
     const professorDeletado = await professorServices.deletar(id);
@@ -45,7 +47,7 @@ router.delete("/deletarPorId/:id", async (req, res) => {
   }
 });
 
-router.put("/atualizar/:id", async (req, res) => {
+router.put("/:id", async (req, res) => {
   try {
     const id = Number(req.params.id);
     const professor = req.body;
@@ -59,7 +61,7 @@ router.put("/atualizar/:id", async (req, res) => {
   }
 });
 
-router.get("/buscarPorEmail/:email", async (req, res) => {
+router.get("/:email", async (req, res) => {
   try {
     const email = req.params.email;
     const professor = await professorServices.buscarPorEmail(email);
