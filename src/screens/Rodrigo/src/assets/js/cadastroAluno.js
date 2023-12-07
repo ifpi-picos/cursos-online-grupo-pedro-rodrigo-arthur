@@ -19,7 +19,7 @@ function cadastrarAluno(event) {
     status: status,
   };
 
-  fetch("http://localhost:3000/alunos/cadastro", {
+  fetch("http://localhost:3000/alunos/", {
     method: "POST",
     headers: {
       "content-type": "application/json",
@@ -32,7 +32,8 @@ function cadastrarAluno(event) {
         alert(res.error);
       } else {
         alert("Aluno cadastrado com sucesso!");
-        window.history.back();
+        window.location.href =
+          "http://localhost:5500/cursos-online-grupo-pedro-rodrigo-arthur/src/screens/Rodrigo/src/pages/professor/login.html";
       }
     })
     .catch((err) => {

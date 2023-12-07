@@ -11,7 +11,7 @@ function cadastrarProfessor(event) {
     telefone: document.getElementById("telefoneProfessor").value,
   };
 
-  fetch("http://localhost:3000/professores/cadastro", {
+  fetch("http://localhost:3000/professores/", {
     method: "POST",
     headers: {
       "content-type": "application/json",
@@ -24,7 +24,8 @@ function cadastrarProfessor(event) {
         alert(res.error);
       } else {
         alert("Professor cadastrado com sucesso!");
-        window.history.back();
+        window.location.href =
+          "http://localhost:5500/cursos-online-grupo-pedro-rodrigo-arthur/src/screens/Rodrigo/src/pages/professor/login.html";
       }
     })
     .catch((err) => {

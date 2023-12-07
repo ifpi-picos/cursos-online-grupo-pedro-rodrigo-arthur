@@ -7,9 +7,9 @@ import cursos from "./routes/cursos";
 import { CursoAlunoServices } from "./services/CursoAlunoServices";
 
 const app = Express();
-const cors = require('cors')
+const cors = require("cors");
 
-app.use(cors())
+app.use(cors());
 
 app.use(Express.json());
 
@@ -25,15 +25,14 @@ AppDataSource.initialize()
     app.listen(3000, async () => {
       console.log("Server started on port 3000");
 
-      const cursoAlunoServices = new CursoAlunoServices();
-      console.log(await cursoAlunoServices.quantidadeDeAlunosPorCurso(3));
-      
-      console.log(await cursoAlunoServices.porcentagemDeAlunosAprovadosPorCurso(3));
+      // const cursoAlunoServices = new CursoAlunoServices();
+      // console.log(await cursoAlunoServices.quantidadeDeAlunosPorCurso(3));
 
-      console.log(await cursoAlunoServices.mediaGeralDeAlunosPorCurso(3));
+      // console.log(await cursoAlunoServices.porcentagemDeAlunosAprovadosPorCurso(3));
 
-      console.log(await cursoAlunoServices.porcentagemDeAlunosReprovadosPorCurso(3));
-      
+      // console.log(await cursoAlunoServices.mediaGeralDeAlunosPorCurso(3));
+
+      // console.log(await cursoAlunoServices.porcentagemDeAlunosReprovadosPorCurso(3));
     });
   })
   .catch((error) => console.log(error));
