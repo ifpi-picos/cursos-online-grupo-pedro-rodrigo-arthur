@@ -1,4 +1,6 @@
-document.getElementById("loginAluno_form").addEventListener("submit", loginAluno);
+document
+  .getElementById("loginAluno_form")
+  .addEventListener("submit", loginAluno);
 
 function loginAluno(event) {
   event.preventDefault();
