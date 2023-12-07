@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="pt-br" data-theme="light">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="../../assets/css/cadastroAluno.css" />
+    <title>Cursos Online</title>
+
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;600&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <div class="background">
+      <div class="shape"></div>
+      <div class="shape"></div>
+    </div>
+    <form id="aluno_form">
+      <h3>Cadastro de Aluno</h3>
+      <label for="nomeAluno">Nome do Aluno:</label>
+      <input type="text" id="nomeAluno" name="nomeAluno" required /><br /><br />
+
+      <label for="telefoneAluno">Telefone:</label>
+      <input
+        type="text"
+        id="telefoneAluno"
+        name="telefoneAluno"
+        required
+      /><br /><br />
+
+      <label for="emailAluno">Email:</label>
+      <input
+        type="email"
+        id="emailAluno"
+        name="emailAluno"
+        required
+        pattern="[a-zA-Z0-9._%+-]+&#64;[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}"
+      /><br /><br />
+
+      <label for="senhaAluno">Senha:</label>
+      <input type="password" id="senhaAluno" name="senhaAluno" required /><br />
+
+      <label for="statusAluno">Status:</label>
+      <select id="statusAluno" name="statusAluno">
+        <option value="1">Ativo</option>
+        <option value="2">Inativo</option>
+      </select>
+
+      <button onclick="formSubmit(event)">Cadastrar</button>
+    </form>
+    <script src="../../assets/js/cadastroAluno.js"></script>
+  </body>
+</html>
