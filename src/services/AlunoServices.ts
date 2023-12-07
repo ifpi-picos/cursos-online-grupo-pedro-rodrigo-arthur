@@ -26,12 +26,14 @@ export class AlunoServices {
   }
 
   async deletar(id: number): Promise<Aluno> {
+    try{
     const deletarAluno = await this.buscarPorId(id);
 
-    if (!deletarAluno) throw new Error("Aluno não encontrado");
-
-    const alunoDeletado = this.alunoRepository.deletar(id);
+    const alunoDeletado = this.alunoRepository.deletar(id);    
     return alunoDeletado;
+    }catch(error){
+      throw new Error("Aluno não encontrado");
+    }
   }
 
   async buscarTodos(): Promise<Aluno[]> {
@@ -45,18 +47,13 @@ export class AlunoServices {
   async buscarPorId(id: number): Promise<Aluno> {
     const buscaI = await this.alunoRepository.buscarPorId(id);
 
-    if (!buscaI) throw new Error("Aluno não encontrado");
-
+    if(!buscaI) throw new Error("Aluno não encontrado");
     return buscaI;
   }
 
   async buscarPorEmail(email: string): Promise<Aluno> {
     try {
-      const buscaEmail = this.alunoRepository.buscarPorEmail(email);
-
-      if (!buscaEmail) {
-        throw new Error("Aluno não encontrado");
-      }
+      const buscaEmail = await this.alunoRepository.buscarPorEmail(email);
       return buscaEmail;
     } catch (error) {
       throw new Error("Aluno não encontrado");

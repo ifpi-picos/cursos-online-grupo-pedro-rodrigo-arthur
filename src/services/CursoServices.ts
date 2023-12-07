@@ -5,7 +5,8 @@ import { UpdateResult } from "typeorm";
 
 export class CursoServices {
 
-  constructor(private cursoRepository: CursoRepository) {
+  private cursoRepository: CursoRepository;
+  constructor( cursoRepository: CursoRepository) {
     this.cursoRepository = cursoRepository;
   }
 
@@ -40,5 +41,9 @@ export class CursoServices {
     }
     const cursoSalvo = this.cursoRepository.salvar(curso);
     return cursoSalvo;
+  }
+
+  buscarCursosDoProfessor(id: number): Promise<Curso[]> {
+    return this.cursoRepository.buscarCursosIdProfessor(id);
   }
 }

@@ -37,7 +37,10 @@ export class ProfessorServices {
 
   async deletar(id: number): Promise<Professor> {
     const buscarId = await this.buscarPorId(id);
-    const professorDeletado = this.deletar(buscarId.id);
+    if (!buscarId) {
+      throw new Error("Professor não encontrado");
+    }
+    const professorDeletado = this.professorRepository.deletar(buscarId.id);
     return professorDeletado;
   }
 
