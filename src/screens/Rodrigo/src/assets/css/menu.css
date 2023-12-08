@@ -157,21 +157,25 @@ label[for="statusAluno"] {
   text-align: 50px; /* alinha o texto à direita */
 }
 .navbar {
-  background-color: #8a8a8a; /* Cor dos links na barra de navegação */
+  background-color: #421a8c78;
+  /* Cor dos links na barra de navegação */
 }
 
 .nav-link {
   color: #ffffff;
   text-decoration: none;
 }
+
 a {
   color: rgb(255, 255, 255);
   text-decoration: underline;
 }
+
 a:hover {
   color: #ffffff;
 }
 
 .navbar-nav .nav-link:hover {
-  color: #000000; /* Por exemplo, vermelho ao passar o mouse */
+  color: #000000;
+  /* Por exemplo, vermelho ao passar o mouse */
 }

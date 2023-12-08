@@ -162,7 +162,7 @@ input {
 }
 
 .navbar {
-  background-color: #8a8a8a;
+  background-color: #421a8c78;
   /* Cor dos links na barra de navegação */
 }
 
@@ -192,6 +192,14 @@ a:hover {
 }
 
 .imagem-centralizada img {
-  max-width: 100%; /* Define a largura máxima da imagem */
-  max-height: 100%; /* Define a altura máxima da imagem */
+  max-width: 60%; /* Define a largura máxima da imagem (80% do contêiner) */
+  max-height: 50%; /* Define a altura máxima da imagem (80% do contêiner) */
+  margin-top: -100px; /* Espaço superior de 20px */
+}
+body,
+html {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  overflow: hidden; /* Impede a barra de rolagem */
 }
