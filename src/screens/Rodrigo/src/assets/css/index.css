@@ -26,12 +26,6 @@ body {
   border-radius: 50%;
 }
 
-.shape:first-child {
-  background: linear-gradient(#1a172f, #201b3b);
-  left: -80px;
-  top: -80px;
-}
-
 .shape:last-child {
   background: linear-gradient(to right, #161330, #1b1831);
   right: -30px;
@@ -39,12 +33,12 @@ body {
 }
 
 form {
-  height: 520px;
+  height: 420px;
   width: 400px;
   background-color: rgba(255, 255, 255, 0.13);
   position: absolute;
   transform: translate(-50%, -50%);
-  top: 50%;
+  top: 60%;
   left: 50%;
   border-radius: 10px;
   backdrop-filter: blur(10px);
@@ -92,7 +86,7 @@ input {
 }
 
 button {
-  margin-top: 50px;
+  margin-top: 30px;
   width: 100%;
   background-color: #dbdbdb;
   color: #080710;
@@ -145,17 +139,37 @@ button:hover {
 .entrar {
   background-color: #3f3b77;
   color: rgb(255, 255, 255);
-  padding: 10px;
+  padding: 7px;
   border: none;
   cursor: pointer;
 
   position: relative;
 
-  top: 30px;
+  top: 1px;
   right: 10px;
   left: 125px;
 }
 
 a.entrar:hover {
   color: rgb(0, 0, 0);
+}
+
+.imagem-centralizada {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 40vh; /* Define a altura para ocupar toda a altura da tela */
+}
+
+.imagem-centralizada img {
+  max-width: 50%; /* Define a largura máxima da imagem (80% do contêiner) */
+  max-height: 58%; /* Define a altura máxima da imagem (80% do contêiner) */
+  margin-top: -100px; /* Espaço superior de 20px */
+}
+body,
+html {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  overflow: hidden; /* Impede a barra de rolagem */
 }
