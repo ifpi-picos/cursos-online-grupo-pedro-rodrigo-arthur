@@ -2,7 +2,6 @@ import * as Express from "express";
 import { ProfessorServices } from "../services/ProfessorServices";
 import { ProfessoRepository } from "../repositories/ProfessorRepository"; // Import the ProfessorRepository class
 
-
 const router = Express.Router();
 const professorServices = new ProfessorServices(new ProfessoRepository());
 

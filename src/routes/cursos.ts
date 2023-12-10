@@ -2,7 +2,6 @@ import * as express from "express";
 import { CursoServices } from "../services/CursoServices";
 import { CursoRepository } from "../repositories/CursoRepository"; // Add this line
 
-
 const router = express.Router();
 const cursoServices = new CursoServices(new CursoRepository()); // Update this line
 

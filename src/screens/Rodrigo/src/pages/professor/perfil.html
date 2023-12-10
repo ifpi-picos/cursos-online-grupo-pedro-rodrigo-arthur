@@ -63,11 +63,6 @@
             <li class="nav-item">
               <a class="nav-link" href="../professor/perfil.html">Perfil</a>
             </li>
-            <li class="nav-item">
-              <a class="nav-link" href="../professor/alterar.html"
-                >Alterar Perfil</a
-              >
-            </li>
 
             <!-- Adicione mais itens de navegação conforme necessário -->
           </ul>
@@ -82,12 +77,30 @@
     <form>
       <section class="perfil">
         <h1>Perfil do Professor</h1>
-        <div class="info">
-          <p id="idUsuario"><strong>ID:</strong></p>
-          <p id="nomeUsuario"><strong>Nome:</strong></p>
-          <p id="emailUsuario"><strong>Email:</strong></p>
-          <p id="telefoneUsuario"><strong>Telefone:</strong></p>
-        </div>
+        <form id="professor_form">
+          <label for="nomeProfessorAtualizado">Nome:</label>
+          <input id="nomeUsuario" type="text" id="nomeProfessorAtualizado" />
+
+          <label for="telefoneProfessorAtualizado">Telefone:</label>
+          <input
+            id="telefoneUsuario"
+            type="text"
+            id="telefoneProfessorAtualizado"
+          />
+
+          <label for="emailProfessorAtualizado">Email:</label>
+          <input id="emailUsuario" type="email" id="emailProfessorAtualizado" />
+
+          <label for="senhaProfessorAtualizado">Nova senha:</label>
+          <input
+            id="senhaUsuario"
+            type="password"
+            id="senhaProfessorAtualizado"
+          />
+          <button class="mt-3" onclick="atualizarProfessor(event)">
+            Alterar
+          </button>
+        </form>
       </section>
 
       <section class="cursos">

@@ -10,44 +10,47 @@ export abstract class RepositoryMetods<T> implements Repository<T> {
   }
 
   async salvar(objeto: T): Promise<T> {
-    try{
-    return AppDataSource.getRepository(this.entityClass)
-      .save(objeto)
-      .then((objeto) => {
-        return objeto as T;
-      })
-      .catch((error) => {
-        throw new Error(error);
-      });
-    }catch(error){
+    try {
+      return AppDataSource.getRepository(this.entityClass)
+        .save(objeto)
+        .then((objeto) => {
+          return objeto as T;
+        })
+        .catch((error) => {
+          throw new Error(error);
+        });
+    } catch (error) {
       throw new Error(error);
     }
   }
 
   async atualizar(id: number, objeto: T) {
-    try{
-      const update = await AppDataSource.getRepository(this.entityClass).update(id,objeto as any);
+    try {
+      const update = await AppDataSource.getRepository(this.entityClass).update(
+        id,
+        objeto as any
+      );
       return update;
-    }catch(error){
+    } catch (error) {
       throw new Error(error);
     }
-    }
+  }
 
   async deletar(id: number): Promise<T> {
-    try{
-    await AppDataSource.getRepository(this.entityClass).delete(id);
-    return {} as T;
-    }catch(error){
+    try {
+      await AppDataSource.getRepository(this.entityClass).delete(id);
+      return {} as T;
+    } catch (error) {
       throw new Error(error);
     }
   }
 
   async buscarTodos(): Promise<T[]> {
-    try{
-    return AppDataSource.getRepository(this.entityClass)
-      .createQueryBuilder("entity")
-      .getMany();
-    }catch(error){
+    try {
+      return AppDataSource.getRepository(this.entityClass)
+        .createQueryBuilder("entity")
+        .getMany();
+    } catch (error) {
       throw new Error(error);
     }
   }

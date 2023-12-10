@@ -4,9 +4,8 @@ import { Curso } from "../entity/Curso";
 import { UpdateResult } from "typeorm";
 
 export class CursoServices {
-
   private cursoRepository: CursoRepository;
-  constructor( cursoRepository: CursoRepository) {
+  constructor(cursoRepository: CursoRepository) {
     this.cursoRepository = cursoRepository;
   }
 
@@ -35,10 +34,10 @@ export class CursoServices {
   }
 
   async cadastrar(curso: Curso): Promise<Curso> {
-    const cursoCadastrar = await this.buscarTodos()
-    if (cursoCadastrar.some((curso) => curso.id_professor === curso.id_professor)) {
-      throw new Error("Curso já cadastrado");
-    }
+    const cursoCadastrar = await this.buscarTodos();
+    // if (cursoCadastrar.some((curso) => curso.id_professor === curso.id_professor)) {
+    //   throw new Error("Curso já cadastrado");
+    // }
     const cursoSalvo = this.cursoRepository.salvar(curso);
     return cursoSalvo;
   }

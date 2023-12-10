@@ -5,7 +5,7 @@ import { ProfessoRepository } from "../repositories/ProfessorRepository";
 
 export class ProfessorServices {
   private professorRepository: ProfessoRepository;
-  
+
   constructor(professorRepository: ProfessoRepository) {
     this.professorRepository = professorRepository;
   }
@@ -29,9 +29,7 @@ export class ProfessorServices {
 
   async buscarPorId(id: number): Promise<Professor> {
     const buscarID = await this.professorRepository.buscarPorId(id);
-    if (!buscarID) {
-      throw new Error("Professor não encontrado");
-    }
+    if (!buscarID) throw new Error("Professor não encontrado");
     return buscarID;
   }
 

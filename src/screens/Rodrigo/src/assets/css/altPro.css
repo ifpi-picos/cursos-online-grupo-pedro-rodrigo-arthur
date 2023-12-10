@@ -75,40 +75,53 @@ label {
   font-size: 16px;
   font-weight: 500;
 }
-label[for="nomeProfessor"] {
-  margin-top: 24px; /* Move o label para baixo */
-}
-
-/* OU */
 
 label[for="nomeProfessor"] {
-  margin-bottom: 2px; /* Move o label para cima */
+  margin-top: 24px;
+  /* Move o label para baixo */
 }
+
+/* OU */
+
+label[for="nomeProfessor"] {
+  margin-bottom: 2px;
+  /* Move o label para cima */
+}
+
 label[for="telefoneProfessor"] {
-  margin-top: -20px; /* Move o label para baixo */
+  margin-top: -20px;
+  /* Move o label para baixo */
 }
 
 /* OU */
 
 label[for="telefoneProfessor"] {
-  margin-bottom: 2px; /* Move o label para cima */
+  margin-bottom: 2px;
+  /* Move o label para cima */
 }
+
 label[for="emailProfessor"] {
-  margin-top: -20px; /* Move o label para baixo */
+  margin-top: -20px;
+  /* Move o label para baixo */
 }
+
 /* OU */
 
 label[for="emailProfessor"] {
-  margin-bottom: 2px; /* Move o label para cima */
+  margin-bottom: 2px;
+  /* Move o label para cima */
 }
+
 label[for="senhaProfessor"] {
-  margin-top: -20px; /* Move o label para baixo */
+  margin-top: -20px;
+  /* Move o label para baixo */
 }
 
 /* OU */
 
 label[or="senhaProfessor"] {
-  margin-bottom: 2px; /* Move o label para cima */
+  margin-bottom: 2px;
+  /* Move o label para cima */
 }
 
 input {
@@ -132,7 +145,7 @@ button {
   width: 100%;
   background-color: #ffffff;
   color: #080710;
-  padding: 1px 0;
+  padding: 15px 0 !important;
   font-size: 18px;
   font-weight: 600;
   border-radius: 5px;
@@ -170,6 +183,7 @@ button:hover {
 .social i {
   margin-right: 4px;
 }
+
 .navbar {
   background-color: #421a8c78;
   /* Cor dos links na barra de navegação */
