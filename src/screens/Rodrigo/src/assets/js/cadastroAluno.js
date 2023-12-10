@@ -40,3 +40,9 @@ function cadastrarAluno(event) {
       alert("Erro ao cadastrar aluno!");
     });
 }
+
+function redirect() {
+  window.location.href = document.querySelector("button").dataset.href;
+}
+
+document.querySelector("button").addEventListener("click", redirect);
